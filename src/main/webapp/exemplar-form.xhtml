@@ -173,7 +173,8 @@
                             <p:selectOneMenu id="inptLivro"
                                              value="#{exemplarFormBean.exemplar.idLivro}"
                                              converter="livroConverter"
-                                             required="true">
+                                             required="true"
+                                             requiredMessage="Não foi selecionado um livro">
                                 
                                 <f:selectItems value="#{exemplarFormBean.livros}"/>
                                 

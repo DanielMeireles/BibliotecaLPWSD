@@ -64,10 +64,12 @@ public class Usuario implements Serializable {
     private List<Reserva> reservaList;
 
     public Usuario() {
+        this.tipo = 'C';
     }
 
     public Usuario(Integer id) {
         this.id = id;
+        this.tipo = 'C';
     }
 
     public Usuario(Integer id, String nome, Character tipo, String email, String usuario, String senha) {
@@ -95,21 +97,22 @@ public class Usuario implements Serializable {
         this.nome = nome;
     }
 
-    public Character getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Character tipo) {
-        this.tipo = tipo;
-    }
-    
-    public String getTipoTexto() {
+    public String getTipo() {
         if(tipo.equals('A')) {
             return "Administrador";
         } else if(tipo.equals('B')) {
             return "Professor";
+        }
+        return "Aluno";
+    }
+
+    public void setTipo(String tipo) {
+        if(tipo.equals("Administrador")) {
+            this.tipo = 'A';
+        } else if(tipo.equals("Professor")) {
+            this.tipo = 'B';
         } else {
-            return "Aluno";
+            this.tipo = 'C';
         }
     }
 

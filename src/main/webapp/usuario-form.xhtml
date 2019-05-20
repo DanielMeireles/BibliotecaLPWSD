@@ -11,11 +11,11 @@
         <f:metadata>
             
             <f:viewParam name="id"
-                         value="#{assuntoFormBean.id}"
+                         value="#{usuarioFormBean.id}"
                          converter="javax.faces.Long"/>
             
             <f:event type="preRenderView"
-                     listener="#{assuntoFormBean.init}"/>
+                     listener="#{usuarioFormBean.init}"/>
             
         </f:metadata>
         
@@ -25,7 +25,7 @@
     
     <ui:define name="title">
         
-        <h:outputText value="Assunto"/>
+        <h:outputText value="Usuario"/>
         
     </ui:define>
     
@@ -42,30 +42,30 @@
                      class="hidden-sm hidden-xs">
                     
                     <p:commandButton value="Salvar"
-                                     action="#{assuntoFormBean.record(actionEvent)}"
+                                     action="#{usuarioFormBean.record(actionEvent)}"
                                      update="@form"
                                      icon="fa fa-check"
                                      styleClass="btn-primary"/>
                     
                     <p:spacer width="5"
-                              rendered="#{assuntoFormBean.isNew()}"/>
+                              rendered="#{usuarioFormBean.isNew()}"/>
                     
                     <p:commandButton value="Limpar"
-                                     action="#{assuntoFormBean.clear}"
+                                     action="#{usuarioFormBean.clear}"
                                      process="@this"
                                      icon="fa fa-refresh"
                                      styleClass="btn-success"
                                      update="@form"
-                                     rendered="#{assuntoFormBean.isNew()}"
+                                     rendered="#{usuarioFormBean.isNew()}"
                                      resetValues="true"/>
                     
                     <p:spacer width="5"
-                              rendered="#{not assuntoFormBean.isNew()}"/>
+                              rendered="#{not usuarioFormBean.isNew()}"/>
 
                     <p:commandButton value="Apagar"
-                                     action="#{assuntoFormBean.exclude(actionEvent)}"
+                                     action="#{usuarioFormBean.exclude(actionEvent)}"
                                      process="@this"
-                                     rendered="#{not assuntoFormBean.isNew()}"
+                                     rendered="#{not usuarioFormBean.isNew()}"
                                      icon="fa fa-trash"
                                      styleClass="btn-danger">
                         
@@ -82,30 +82,30 @@
                     
                     <p:commandButton value="Voltar"
                                      immediate="true"
-                                     action="assunto-list?faces-redirect=true"
+                                     action="usuario-list?faces-redirect=true"
                                      process="@this"
                                      icon="fa fa-reply"/>
                     
                 </div>
                 
                 <p:splitButton value="Salvar"
-                               action="#{assuntoFormBean.record(actionEvent)}"
+                               action="#{usuarioFormBean.record(actionEvent)}"
                                update="@form"
                                icon="fa fa-check"
                                styleClass="hidden-md hidden-lg btn-primary">
                     
                     <p:menuitem value="Limpar"
-                                action="#{assuntoFormBean.clear}"
+                                action="#{usuarioFormBean.clear}"
                                 process="@this"
                                 update="@form"
-                                rendered="#{assuntoFormBean.isNew()}"
+                                rendered="#{usuarioFormBean.isNew()}"
                                 resetValues="true"
                                 icon="fa fa-refresh"/>
                     
                     <p:menuitem value="Apagar"
-                                action="#{assuntoFormBean.exclude(actionEvent)}"
+                                action="#{usuarioFormBean.exclude(actionEvent)}"
                                 process="@this"
-                                rendered="#{not assuntoFormBean.isNew()}"
+                                rendered="#{not usuarioFormBean.isNew()}"
                                 icon="fa fa-trash">
                         
                         <f:setPropertyActionListener value="true"
@@ -120,7 +120,7 @@
                     <p:separator/>
                     
                     <p:menuitem value="Voltar"
-                                action="assunto-list?faces-redirect=true"
+                                action="usuario-list?faces-redirect=true"
                                 process="@this"
                                 immediate="true"
                                 icon="fa fa-reply"/>
@@ -144,7 +144,7 @@
                         <div class="ui-sm-12 ui-g-11" >
                             
                             <p:inputText id="id"
-                                         value="#{assuntoFormBean.assunto.id}"
+                                         value="#{usuarioFormBean.usuario.id}"
                                          readonly="true"
                                          styleClass="form-control ui-state-disabled"
                                          style="width: 100%"/>
@@ -163,21 +163,166 @@
                         
                         <div class="ui-sm-12 ui-g-11">
                             
-                            <p:outputLabel value="Assunto"
-                                           for="inptAssunto"/>
+                            <p:outputLabel value="Nome"
+                                           for="inptNome"/>
                             
                         </div>
                         
                         <div class="ui-sm-12 ui-g-11" >
                             
-                            <p:inputText id="inptAssunto"
-                                         value="#{assuntoFormBean.assunto.assunto}"
+                            <p:inputText id="inptNome"
+                                         value="#{usuarioFormBean.usuario.nome}"
                                          required="true"
-                                         requiredMessage="O assunto não foi preenchido"/>
+                                         requiredMessage="O nome não foi preenchido"/>
                             
                             <span class="help-block"> 
                                 
-                                <p:message for="inptAssunto" /> 
+                                <p:message for="inptNome" /> 
+                                
+                            </span> 
+                            
+                        </div>
+                        
+                    </div>
+                
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Tipo"
+                                           for="inptTipo"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                            
+                            <p:selectOneMenu id="inptTipo"
+                                             value="#{usuarioFormBean.usuario.tipo}"
+                                             required="true"
+                                             requiredMessage="O tipo de usuário não foi selecionado">
+                                
+                                <f:selectItem itemLabel="Administrador"
+                                              itemValue="Administrador" />
+                                
+                                <f:selectItem itemLabel="Professor"
+                                              itemValue="Professor" />
+                                
+                                <f:selectItem itemLabel="Aluno"
+                                              itemValue="Aluno" />
+                                
+                            </p:selectOneMenu>
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="inptTipo" /> 
+                                
+                            </span> 
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="E-mail"
+                                           for="inptEmail"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                            
+                            <p:inputText id="inptEmail"
+                                         value="#{usuarioFormBean.usuario.email}"
+                                         required="true"
+                                         requiredMessage="O e-mail não foi preenchido"/>
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="inptEmail" /> 
+                                
+                            </span> 
+                            
+                        </div>
+                        
+                    </div>
+                
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Usuário"
+                                           for="inptUsuario"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                            
+                            <p:inputText id="inptUsuario"
+                                         value="#{usuarioFormBean.usuario.usuario}"
+                                         required="true"
+                                         requiredMessage="O usuário não foi preenchido"/>
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="inptUsuario" /> 
+                                
+                            </span> 
+                            
+                        </div>
+                        
+                    </div>
+                
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Senha"
+                                           for="inptSenha"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                            
+                            <p:password id="inptSenha"
+                                        value="#{usuarioFormBean.usuario.senha}"
+                                        feedback="true"
+                                        promptLabel="Digite a senha"
+                                        weakLabel="Força da senha : Fraca"
+                                        goodLabel="Força da senha : Média"
+                                        strongLabel="Força da senha : Forte"
+                                        match="inptConfSenha"
+                                        validatorMessage="As duas senhas devem ser iguais"
+                                        required="true"
+                                        requiredMessage="A senha não foi preenchida"/>
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="inptSenha" /> 
+                                
+                            </span> 
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Confirmação de Senha"
+                                           for="inptConfSenha"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                            
+                            <p:password id="inptConfSenha" />
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="inptConfSenha" /> 
                                 
                             </span> 
                             
@@ -194,23 +339,23 @@
                     <hr/>
                     
                     <p:splitButton value="Salvar"
-                                   action="#{assuntoFormBean.record(actionEvent)}"
+                                   action="#{usuarioFormBean.record(actionEvent)}"
                                    update="@form"
                                    icon="fa fa-check"
                                    styleClass="hidden-md hidden-lg btn-primary">
                         
                         <p:menuitem value="Limpar"
-                                    action="#{assuntoFormBean.clear}"
+                                    action="#{usuarioFormBean.clear}"
                                     process="@this"
                                     update="@form"
-                                    rendered="#{assuntoFormBean.isNew()}"
+                                    rendered="#{usuarioFormBean.isNew()}"
                                     resetValues="true"
                                     icon="fa fa-refresh"/>
                         
                         <p:menuitem value="Apagar"
-                                    action="#{assuntoFormBean.exclude(actionEvent)}"
+                                    action="#{usuarioFormBean.exclude(actionEvent)}"
                                     process="@this"
-                                    rendered="#{not assuntoFormBean.isNew()}"
+                                    rendered="#{not usuarioFormBean.isNew()}"
                                     icon="fa fa-trash">
                             
                             <f:setPropertyActionListener value="true"
@@ -225,7 +370,7 @@
                         <p:separator/>
                         
                         <p:menuitem value="Voltar"
-                                    action="assunto-list?faces-redirect=true"
+                                    action="usuario-list?faces-redirect=true"
                                     process="@this"
                                     immediate="true"
                                     icon="fa fa-reply"/>

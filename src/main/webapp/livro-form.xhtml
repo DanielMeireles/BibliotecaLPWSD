@@ -172,7 +172,8 @@
                             
                             <p:inputText id="inptTitulo"
                                          value="#{livroFormBean.livro.titulo}"
-                                         required="true"/>
+                                         required="true"
+                                         requiredMessage="O título não foi preenchido"/>
                             
                             <span class="help-block"> 
                                 
@@ -197,7 +198,8 @@
                             
                             <p:inputText id="inptISBN"
                                          value="#{livroFormBean.livro.isbn}"
-                                         required="true"/>
+                                         required="true"
+                                         requiredMessage="O ISBN não foi preenchido"/>
                             
                             <span class="help-block"> 
                                 
@@ -223,6 +225,7 @@
                             <p:inputNumber id="inptEdicao"
                                            value="#{livroFormBean.livro.edicao}"
                                            required="true"
+                                           requiredMessage="A edição não foi preenchida"
                                            decimalPlaces="0"/> 
                             
                             <span class="help-block"> 
@@ -249,7 +252,9 @@
                             <p:inputNumber id="inptAno"
                                            value="#{livroFormBean.livro.ano}"
                                            required="true"
-                                           decimalPlaces="0"/> 
+                                           requiredMessage="O ano não foi preenchido"
+                                           decimalPlaces="0"
+                                           thousandSeparator=""/> 
                             
                             <span class="help-block"> 
                                 
@@ -272,8 +277,14 @@
                         
                         <div class="ui-sm-12 ui-g-11" >
                             
-                            <p:selectOneMenu id="inptEditora" value="#{livroFormBean.livro.idEditora}" converter="editoraConverter" >
+                            <p:selectOneMenu id="inptEditora"
+                                             value="#{livroFormBean.livro.idEditora}"
+                                             converter="editoraConverter"
+                                             required="true"
+                                             requiredMessage="A editora não foi selecionada">
+                                
                                 <f:selectItems value="#{livroFormBean.editoras}"/>
+                                
                             </p:selectOneMenu>
                             
                             <span class="help-block"> 
@@ -297,9 +308,20 @@
                         
                         <div class="ui-sm-12 ui-g-11" >
                             
-                            <p:selectManyMenu id="inptAssunto" value="#{livroFormBean.livro.assuntoList}" converter="assuntoConverter" >
-                                <f:attribute name="collectionType" value="java.util.ArrayList"/>
-                                <f:selectItems value="#{livroFormBean.assuntos}" var="assunto" itemLabel="#{a.assunto}" itemValue="#{assunto}"/>
+                            <p:selectManyMenu id="inptAssunto"
+                                              value="#{livroFormBean.livro.assuntoList}"
+                                              converter="assuntoConverter"
+                                              required="true"
+                                              requiredMessage="Pelo menos um assunto deve ser selecionado">
+                                
+                                <f:attribute name="collectionType"
+                                             value="java.util.ArrayList"/>
+                                
+                                <f:selectItems value="#{livroFormBean.assuntos}"
+                                               var="assunto"
+                                               itemLabel="#{a.assunto}"
+                                               itemValue="#{assunto}"/>
+                                
                             </p:selectManyMenu>
                             
                             <span class="help-block"> 
@@ -323,9 +345,19 @@
                         
                         <div class="ui-sm-12 ui-g-11" >
                             
-                            <p:selectManyMenu id="inptAutor" value="#{livroFormBean.livro.autorList}" converter="autorConverter" >
-                                <f:attribute name="collectionType" value="java.util.ArrayList"/>
-                                <f:selectItems value="#{livroFormBean.autores}" var="autor" itemLabel="#{autor.nome}" itemValue="#{autor}"/>
+                            <p:selectManyMenu id="inptAutor"
+                                              value="#{livroFormBean.livro.autorList}"
+                                              converter="autorConverter"
+                                              required="true"
+                                              requiredMessage="Pelo menos um autor deve ser selecionado">
+                                
+                                <f:attribute name="collectionType"
+                                             value="java.util.ArrayList"/>
+                                
+                                <f:selectItems value="#{livroFormBean.autores}"
+                                               var="autor" itemLabel="#{autor.nome}"
+                                               itemValue="#{autor}"/>
+                                
                             </p:selectManyMenu>
                             
                             <span class="help-block"> 

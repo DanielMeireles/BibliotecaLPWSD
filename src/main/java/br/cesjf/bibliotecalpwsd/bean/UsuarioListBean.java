@@ -8,10 +8,9 @@ package br.cesjf.bibliotecalpwsd.bean;
 import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
 import br.cesjf.bibliotecalpwsd.model.Usuario;
 import br.cesjf.bibliotecalpwsd.util.ProcessReport;
+import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -24,21 +23,19 @@ import javax.inject.Named;
  */
 @Named
 @ViewScoped
-public class UsuarioBean extends ProcessReport implements Serializable {
+public class UsuarioListBean extends ProcessReport implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private Usuario usuario;
     private List usuarios;
-    private Map<String,String> opcoes;
+    private List usuariosSelecionados;
+    private List usuariosFiltrados;
+    private int id;
 
     //construtor
-    public UsuarioBean() {
+    public UsuarioListBean() {
         usuarios = new UsuarioDAO().buscarTodas();
         usuario = new Usuario();
-        opcoes = new HashMap<String, String>();
-        opcoes.put("Administrador", "A");
-        opcoes.put("Professor", "B");
-        opcoes.put("Aluno", "C");
     }
 
     //Métodos dos botões 
@@ -48,12 +45,21 @@ public class UsuarioBean extends ProcessReport implements Serializable {
     }
 
     public void exclude(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new UsuarioDAO().remover(usuario)));
+        for (Object a: usuariosSelecionados){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new UsuarioDAO().remover((Usuario) a)));
+        }
         usuarios = new UsuarioDAO().buscarTodas();
     }
     
     public void novo(ActionEvent actionEvent) {
         usuario = new Usuario();
+    }
+    
+    public void buscarPorId(Integer id) {
+        if (id == null) {
+            throw new BusinessException("Insira um ID");
+        }
+        usuariosSelecionados.add(new UsuarioDAO().buscar(id));
     }
 
     //getters and setters
@@ -72,13 +78,29 @@ public class UsuarioBean extends ProcessReport implements Serializable {
     public void setUsuarios(List usuarios) {
         this.usuarios = usuarios;
     }
-    
-    public Map<String, String> getOpcoes() {
-        return opcoes;
+
+    public List getUsuariosSelecionados() {
+        return usuariosSelecionados;
     }
 
-    public void setOpcoes(Map<String, String> opcoes) {
-        this.opcoes = opcoes;
+    public void setUsuariosSelecionados(List usuariosSelecionados) {
+        this.usuariosSelecionados = usuariosSelecionados;
+    }
+
+    public List getUsuariosFiltrados() {
+        return usuariosFiltrados;
+    }
+
+    public void setUsuariosFiltrados(List usuariosFiltrados) {
+        this.usuariosFiltrados = usuariosFiltrados;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
 }
