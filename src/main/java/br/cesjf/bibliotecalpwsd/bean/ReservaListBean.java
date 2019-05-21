@@ -6,10 +6,12 @@
 package br.cesjf.bibliotecalpwsd.bean;
 
 import br.cesjf.bibliotecalpwsd.dao.ReservaDAO;
+import br.cesjf.bibliotecalpwsd.model.Emprestimo;
 import br.cesjf.bibliotecalpwsd.model.Reserva;
 import br.cesjf.bibliotecalpwsd.util.ProcessReport;
 import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -101,6 +103,16 @@ public class ReservaListBean extends ProcessReport implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void geraEmprestimo(ActionEvent actionEvent) {
+        Emprestimo emp = new Emprestimo();
+        emp.setIdExemplar(reserva.getIdExemplar());
+        emp.setIdUsuario(reserva.getIdUsuario());
+        emp.setDataEmprestimo(new Date());
+        reserva.setIdEmprestimo(emp);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ReservaDAO().persistir(reserva)));
+        reservas = new ReservaDAO().buscarTodas();
     }
     
 }

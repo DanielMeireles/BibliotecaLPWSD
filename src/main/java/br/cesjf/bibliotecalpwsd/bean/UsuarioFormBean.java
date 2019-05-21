@@ -8,8 +8,6 @@ package br.cesjf.bibliotecalpwsd.bean;
 import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
 import br.cesjf.bibliotecalpwsd.model.Usuario;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
