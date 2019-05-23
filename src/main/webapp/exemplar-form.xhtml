@@ -147,7 +147,8 @@
                                          value="#{exemplarFormBean.exemplar.id}"
                                          readonly="true"
                                          styleClass="form-control ui-state-disabled"
-                                         style="width: 100%"/>
+                                         style="width: 100%"
+                                         placeholder="Novo"/>
                             
                             <span class="help-block"> 
                                 
@@ -174,7 +175,12 @@
                                              value="#{exemplarFormBean.exemplar.idLivro}"
                                              converter="livroConverter"
                                              required="true"
-                                             requiredMessage="Não foi selecionado um livro">
+                                             requiredMessage="Não foi selecionado um livro"
+                                             filter="true"
+                                             filterMatchMode="contains">
+                                
+                                <f:selectItem itemLabel="Selecione o livro"
+                                              itemDisabled="true" />
                                 
                                 <f:selectItems value="#{exemplarFormBean.livros}"/>
                                 

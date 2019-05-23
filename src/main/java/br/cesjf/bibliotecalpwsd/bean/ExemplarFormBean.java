@@ -9,6 +9,7 @@ import br.cesjf.bibliotecalpwsd.dao.ExemplarDAO;
 import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
 import br.cesjf.bibliotecalpwsd.model.Exemplar;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -73,6 +74,7 @@ public class ExemplarFormBean implements Serializable {
     }
 
     public List getLivros() {
+        Collections.sort(livros);
         return livros;
     }
 

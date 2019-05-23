@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Editora.findAll", query = "SELECT e FROM Editora e")
     , @NamedQuery(name = "Editora.findById", query = "SELECT e FROM Editora e WHERE e.id = :id")
     , @NamedQuery(name = "Editora.findByNome", query = "SELECT e FROM Editora e WHERE e.nome = :nome")})
-public class Editora implements Serializable {
+public class Editora implements Serializable, Comparable<Editora> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -105,6 +105,11 @@ public class Editora implements Serializable {
     @Override
     public String toString() {
         return nome;
+    }
+
+    @Override
+    public int compareTo(Editora editora) {
+        return this.nome.toLowerCase().compareTo(editora.getNome().toLowerCase());
     }
     
 }

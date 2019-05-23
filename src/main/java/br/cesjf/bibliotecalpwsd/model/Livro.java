@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Livro.findByIsbn", query = "SELECT l FROM Livro l WHERE l.isbn = :isbn")
     , @NamedQuery(name = "Livro.findByEdicao", query = "SELECT l FROM Livro l WHERE l.edicao = :edicao")
     , @NamedQuery(name = "Livro.findByAno", query = "SELECT l FROM Livro l WHERE l.ano = :ano")})
-public class Livro implements Serializable {
+public class Livro implements Serializable, Comparable<Livro> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,10 +54,10 @@ public class Livro implements Serializable {
     private String isbn;
     @Basic(optional = false)
     @Column(name = "edicao")
-    private int edicao;
+    private Integer edicao;
     @Basic(optional = false)
     @Column(name = "ano")
-    private int ano;
+    private Integer ano;
     @ManyToMany
     @JoinTable(name = "LivroAssunto",
         joinColumns = @JoinColumn(name = "idLivro"),
@@ -83,7 +83,7 @@ public class Livro implements Serializable {
         this.id = id;
     }
 
-    public Livro(Integer id, String titulo, String isbn, int edicao, int ano) {
+    public Livro(Integer id, String titulo, String isbn, int edicao, Integer ano) {
         this.id = id;
         this.titulo = titulo;
         this.isbn = isbn;
@@ -115,19 +115,19 @@ public class Livro implements Serializable {
         this.isbn = isbn;
     }
 
-    public int getEdicao() {
+    public Integer getEdicao() {
         return edicao;
     }
 
-    public void setEdicao(int edicao) {
+    public void setEdicao(Integer edicao) {
         this.edicao = edicao;
     }
 
-    public int getAno() {
+    public Integer getAno() {
         return ano;
     }
 
-    public void setAno(int ano) {
+    public void setAno(Integer ano) {
         this.ano = ano;
     }
     
@@ -205,6 +205,11 @@ public class Livro implements Serializable {
     @Override
     public String toString() {
         return titulo;
+    }
+    
+    @Override
+    public int compareTo(Livro livro) {
+        return this.titulo.toLowerCase().compareTo(livro.getTitulo().toLowerCase());
     }
     
 }

@@ -164,16 +164,11 @@
                         <div class="ui-sm-12 ui-g-11">
                             
                             <p:outputLabel value="Data Reserva"
-                                           for="inptReserva"/>
+                                           for="inptDataReserva"/>
                             
                         </div>
                         
                         <div class="ui-sm-12 ui-g-11" >
-                            
-                            <p:inputText id="inptDataReserva"
-                                         value="#{reservaFormBean.reserva.reserva}"
-                                         required="true"
-                                         requiredMessage="O reserva não foi preenchido"/>
                             
                             
                             <p:calendar id="inptDataReserva"
@@ -185,7 +180,6 @@
                                         mask="true" >
                                 
                                 <p:ajax event="dateSelect"
-                                        update="exemplares"
                                         listener="#{reservaFormBean.calcularExemplaresPermitidos}" />
                                 
                             </p:calendar>
@@ -200,38 +194,38 @@
                         
                     </div>
                     
-                </div>
-                
-                <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
-                        
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+
                         <div class="ui-sm-12 ui-g-11">
-                            
+
                             <p:outputLabel value="Usuário"
                                            for="inptUsuario"/>
-                            
+
                         </div>
-                        
+
                         <div class="ui-sm-12 ui-g-11" >
-                            
+
                             <p:selectOneMenu id="inptUsuario"
-                                             value="#{livroFormBean.reserva.idUsuario}"
+                                             value="#{reservaFormBean.reserva.idUsuario}"
                                              converter="usuarioConverter"
                                              required="true"
                                              requiredMessage="o usuário não foi selecionado">
-                                
-                                <f:selectItems value="#{livroFormBean.usuariosPermitidos}"/>
-                                
+
+                                <f:selectItems value="#{reservaFormBean.usuariosPermitidos}"/>
+
                             </p:selectOneMenu>
-                            
+
                             <span class="help-block"> 
-                                
+
                                 <p:message for="inptUsuario" /> 
-                                
+
                             </span> 
-                            
+
                         </div>
-                        
+
                     </div>
+                    
+                </div>
                 
                 <h:panelGroup id="footer"
                               layout="block"

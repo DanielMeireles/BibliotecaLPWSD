@@ -5,11 +5,13 @@
  */
 package br.cesjf.bibliotecalpwsd.util;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
 import java.util.logging.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.context.FacesContext;
@@ -65,7 +67,29 @@ public class Relatorio {
             Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
         }
             
+    }
+    
+    public Connection getConexao(){        
+        try {            
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/BibliotecaLPWSD?zeroDateTimeBehavior=convertToNull", "root", "root");
+            return con;
             
+        } catch (SQLException ex) {
+            Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return con;
+    }
+    
+    public void fecharConexao(){
+        try {
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

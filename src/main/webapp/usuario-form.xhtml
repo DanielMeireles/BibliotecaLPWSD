@@ -147,7 +147,8 @@
                                          value="#{usuarioFormBean.usuario.id}"
                                          readonly="true"
                                          styleClass="form-control ui-state-disabled"
-                                         style="width: 100%"/>
+                                         style="width: 100%"
+                                         placeholder="Novo"/>
                             
                             <span class="help-block"> 
                                 
@@ -173,48 +174,12 @@
                             <p:inputText id="inptNome"
                                          value="#{usuarioFormBean.usuario.nome}"
                                          required="true"
-                                         requiredMessage="O nome não foi preenchido"/>
+                                         requiredMessage="O nome não foi preenchido"
+                                         placeholder="Insira o nome"/>
                             
                             <span class="help-block"> 
                                 
                                 <p:message for="inptNome" /> 
-                                
-                            </span> 
-                            
-                        </div>
-                        
-                    </div>
-                
-                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
-                        
-                        <div class="ui-sm-12 ui-g-11">
-                            
-                            <p:outputLabel value="Tipo"
-                                           for="inptTipo"/>
-                            
-                        </div>
-                        
-                        <div class="ui-sm-12 ui-g-11" >
-                            
-                            <p:selectOneMenu id="inptTipo"
-                                             value="#{usuarioFormBean.usuario.tipo}"
-                                             required="true"
-                                             requiredMessage="O tipo de usuário não foi selecionado">
-                                
-                                <f:selectItem itemLabel="Administrador"
-                                              itemValue="Administrador" />
-                                
-                                <f:selectItem itemLabel="Professor"
-                                              itemValue="Professor" />
-                                
-                                <f:selectItem itemLabel="Aluno"
-                                              itemValue="Aluno" />
-                                
-                            </p:selectOneMenu>
-                            
-                            <span class="help-block"> 
-                                
-                                <p:message for="inptTipo" /> 
                                 
                             </span> 
                             
@@ -236,7 +201,8 @@
                             <p:inputText id="inptEmail"
                                          value="#{usuarioFormBean.usuario.email}"
                                          required="true"
-                                         requiredMessage="O e-mail não foi preenchido"/>
+                                         requiredMessage="O e-mail não foi preenchido"
+                                         placeholder="Insira o e-mail"/>
                             
                             <span class="help-block"> 
                                 
@@ -262,7 +228,8 @@
                             <p:inputText id="inptUsuario"
                                          value="#{usuarioFormBean.usuario.usuario}"
                                          required="true"
-                                         requiredMessage="O usuário não foi preenchido"/>
+                                         requiredMessage="O usuário não foi preenchido"
+                                         placeholder="Insira o usuário"/>
                             
                             <span class="help-block"> 
                                 
@@ -295,7 +262,8 @@
                                         match="inptConfSenha"
                                         validatorMessage="As duas senhas devem ser iguais"
                                         required="true"
-                                        requiredMessage="A senha não foi preenchida"/>
+                                        requiredMessage="A senha não foi preenchida"
+                                        placeholder="Insira a senha"/>
                             
                             <span class="help-block"> 
                                 
@@ -318,11 +286,56 @@
                         
                         <div class="ui-sm-12 ui-g-11" >
                             
-                            <p:password id="inptConfSenha" />
+                            <p:password id="inptConfSenha"
+                                        required="true"
+                                        requiredMessage="A confirmação de senha não foi preenchida"
+                                        placeholder="Insira a confirmação de senha"/>
                             
                             <span class="help-block"> 
                                 
                                 <p:message for="inptConfSenha" /> 
+                                
+                            </span> 
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Tipo"
+                                           for="inptTipo"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                            
+                            <p:selectOneMenu id="inptTipo"
+                                             value="#{usuarioFormBean.usuario.tipo}"
+                                             required="true"
+                                             requiredMessage="O tipo de usuário não foi selecionado"
+                                             filter="true"
+                                             filterMatchMode="contains">
+                                
+                                <f:selectItem itemLabel="Selecione o tipo"
+                                              itemDisabled="true" />
+                                
+                                <f:selectItem itemLabel="Aluno"
+                                              itemValue="Aluno" />
+                                
+                                <f:selectItem itemLabel="Professor"
+                                              itemValue="Professor" />
+                                
+                                <f:selectItem itemLabel="Administrador"
+                                              itemValue="Administrador" />
+                                
+                            </p:selectOneMenu>
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="inptTipo" /> 
                                 
                             </span> 
                             

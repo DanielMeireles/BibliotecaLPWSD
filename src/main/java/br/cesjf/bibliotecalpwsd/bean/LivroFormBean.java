@@ -9,8 +9,10 @@ import br.cesjf.bibliotecalpwsd.dao.AssuntoDAO;
 import br.cesjf.bibliotecalpwsd.dao.AutorDAO;
 import br.cesjf.bibliotecalpwsd.dao.EditoraDAO;
 import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
+import br.cesjf.bibliotecalpwsd.model.Editora;
 import br.cesjf.bibliotecalpwsd.model.Livro;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -31,7 +33,7 @@ public class LivroFormBean implements Serializable {
     private Livro livro;
     private List assuntos;
     private List autores;
-    private List editoras;
+    private List<Editora> editoras;
     private int id;
 
     //construtor
@@ -79,6 +81,7 @@ public class LivroFormBean implements Serializable {
     }
 
     public List getAssuntos() {
+        Collections.sort(assuntos);
         return assuntos;
     }
 
@@ -87,6 +90,7 @@ public class LivroFormBean implements Serializable {
     }
 
     public List getAutores() {
+        Collections.sort(autores);
         return autores;
     }
 
@@ -95,6 +99,7 @@ public class LivroFormBean implements Serializable {
     }
 
     public List getEditoras() {
+        Collections.sort(editoras);
         return editoras;
     }
 

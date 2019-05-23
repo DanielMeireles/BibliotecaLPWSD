@@ -182,11 +182,16 @@
                             <p:commandButton rendered="#{a.idEmprestimo == null}"
                                              icon="ui-icon-plus"
                                              value="Gerar Empréstimo"
-                                             oncomplete="PF('emp').show();"
-                                             update="formPrincipal:emp"> 
+                                             actionListener="#{reservaListBean.geraEmprestimo}"
+                                             process="@this"
+                                             update="@form"> 
                                 
                                 <f:setPropertyActionListener target="#{a.reserva}"
                                                              value="#{reserva}" />
+                                
+                                <p:confirm header="Confirmation"
+                                           message="Você tem certeza?"
+                                           icon="ui-icon-danger"/>
                                 
                             </p:commandButton>
                             
@@ -239,23 +244,6 @@
                                  icon="fa fa-close"/>
                 
             </p:confirmDialog>
-            
-            <!--Gerar Empréstimo-->
-            <p:dialog id="emp"
-                      header="Gerar Empréstimo"
-                      widgetVar="emp"
-                      modal="false">
-                
-                <h:outputText value="Você tem certeza?" />
-                
-                <p:commandButton value="Gerar"
-                                 actionListener="#{reservaListBean.geraEmprestimo}"
-                                 process="@this"
-                                 immediate="true"
-                                 onclick="remove.hide()"
-                                 update="formPrincipal"/>
-                
-            </p:dialog>
             
         </h:form>
 
