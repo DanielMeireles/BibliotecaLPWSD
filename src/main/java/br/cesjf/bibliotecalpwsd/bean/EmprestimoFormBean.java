@@ -44,11 +44,21 @@ public class EmprestimoFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new EmprestimoDAO().persistir(emprestimo)));
+        String msg = new EmprestimoDAO().persistir(emprestimo);
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
     public void exclude(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new EmprestimoDAO().remover(emprestimo)));
+        String msg = new EmprestimoDAO().remover(emprestimo);
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
 
     //getters and setters

@@ -121,7 +121,10 @@ public class UsuarioDAO implements Serializable {
             return "Usuario salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o usuario!", e.getMessage());
-            return "Não foi possível salvar o usuario!";
+            if(e.getMessage().contains("usuario_UNIQUE")){
+                return "Não foi possível salvar o usuário, pois o usuário deve ser único";
+            }
+            return "Não foi possível salvar o usuário!";
         }
     }
 

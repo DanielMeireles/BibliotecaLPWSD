@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `BibliotecaLPWSD`.`Livro` (
   `idEditora` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_tbLivro_tbEditora1_idx` (`idEditora` ASC) ,
+  UNIQUE INDEX `titulo_UNIQUE` (`titulo` ASC) ,
   CONSTRAINT `fk_tbLivro_tbEditora1`
     FOREIGN KEY (`idEditora`)
     REFERENCES `BibliotecaLPWSD`.`Editora` (`id`)
@@ -95,7 +96,8 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `BibliotecaLPWSD`.`Autor` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `nome_UNIQUE` (`nome` ASC) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

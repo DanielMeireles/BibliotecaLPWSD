@@ -102,7 +102,10 @@ public class EditoraDAO implements Serializable {
             return "Editora salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o editora!", e.getMessage());
-            return "Não foi possível salvar o editora!";
+            if(e.getMessage().contains("nome_UNIQUE")){
+                return "Não foi possível salvar a editora, pois o nome deve ser único";
+            }
+            return "Não foi possível salvar a editora!";
         }
     }
 

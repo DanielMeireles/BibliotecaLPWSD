@@ -49,11 +49,21 @@ public class ExemplarFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ExemplarDAO().persistir(exemplar)));
+        String msg = new ExemplarDAO().persistir(exemplar);
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
     public void exclude(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ExemplarDAO().remover(exemplar)));
+        String msg = new ExemplarDAO().remover(exemplar);
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
 
     //getters and setters

@@ -5,6 +5,7 @@
  */
 package br.cesjf.bibliotecalpwsd.bean;
 
+import br.cesjf.bibliotecalpwsd.dao.AssuntoDAO;
 import br.cesjf.bibliotecalpwsd.dao.AutorDAO;
 import br.cesjf.bibliotecalpwsd.model.Autor;
 import java.io.Serializable;
@@ -44,11 +45,21 @@ public class AutorFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new AutorDAO().persistir(autor)));
+        String msg = new AutorDAO().persistir(autor);
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
     public void exclude(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new AutorDAO().remover(autor)));
+        String msg = new AutorDAO().remover(autor);
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
 
     //getters and setters

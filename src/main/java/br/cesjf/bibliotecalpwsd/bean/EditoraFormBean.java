@@ -5,6 +5,7 @@
  */
 package br.cesjf.bibliotecalpwsd.bean;
 
+import br.cesjf.bibliotecalpwsd.dao.AutorDAO;
 import br.cesjf.bibliotecalpwsd.dao.EditoraDAO;
 import br.cesjf.bibliotecalpwsd.model.Editora;
 import java.io.Serializable;
@@ -44,11 +45,21 @@ public class EditoraFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new EditoraDAO().persistir(editora)));
+        String msg = new EditoraDAO().persistir(editora);
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
     public void exclude(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new EditoraDAO().remover(editora)));
+        String msg = new EditoraDAO().remover(editora);
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
 
     //getters and setters
