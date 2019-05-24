@@ -6,6 +6,7 @@
 package br.cesjf.bibliotecalpwsd.dao;
 
 import br.cesjf.bibliotecalpwsd.model.Assunto;
+import br.cesjf.bibliotecalpwsd.model.Livro;
 import br.cesjf.bibliotecalpwsd.util.PersistenceUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -79,16 +80,28 @@ public class AssuntoDAO implements Serializable {
     
     public String remover(Assunto assunto) {
         try {
+            List<Livro> livros;
             EntityManager em = PersistenceUtil.getEntityManager();
-            em.getTransaction().begin();
-            assunto = em.merge(assunto);
-            em.remove(assunto);
-            em.getTransaction().commit();
-            Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Assunto removido com sucesso!");
-            return "Assunto removido com sucesso!";
+            try{
+                Query query = em.createQuery("SELECT l FROM Livro l WHERE l.assuntoList.id = :id");
+                query.setParameter("id", assunto.getId());
+                livros = query.getResultList();
+            } catch (Exception e) {
+                livros = new ArrayList<>();
+            }
+            if(livros.isEmpty() || livros == null){
+                em.getTransaction().begin();
+                assunto = em.merge(assunto);
+                em.remove(assunto);
+                em.getTransaction().commit();
+                Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Assunto removido com sucesso!");
+                return "Assunto removido com sucesso!";
+            } else {
+                return "Não foi possível remover o assunto, pois está vinculado a um ou mais livros";
+            }
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o assunto!", e.getMessage());
-            return "Não foi possível remover o assunto!";
+            return "Não foi possível remover o assunto, pois está vinculado a um ou mais livros";
         }
     }
 
