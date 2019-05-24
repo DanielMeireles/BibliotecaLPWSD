@@ -42,13 +42,13 @@ public class ReservaListBean extends ProcessReport implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ReservaDAO().persistir(reserva)));
+        msgScreen(new ReservaDAO().persistir(reserva));
         reservas = new ReservaDAO().buscarTodas();
     }
 
     public void exclude(ActionEvent actionEvent) {
         for (Object a: reservasSelecionados){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ReservaDAO().remover((Reserva) a)));
+            msgScreen(new ReservaDAO().remover((Reserva) a));
         }
         reservas = new ReservaDAO().buscarTodas();
     }
@@ -113,6 +113,14 @@ public class ReservaListBean extends ProcessReport implements Serializable {
         reserva.setIdEmprestimo(emp);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ReservaDAO().persistir(reserva)));
         reservas = new ReservaDAO().buscarTodas();
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
 }

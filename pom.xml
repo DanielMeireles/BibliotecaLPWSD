@@ -26,7 +26,6 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-        <!-- CDI -->
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
@@ -38,7 +37,6 @@
             <artifactId>weld-servlet</artifactId>
             <version>2.4.8.Final</version>
         </dependency>
-        <!-- JSF API e RI -->
         <dependency>
             <groupId>javax.faces</groupId>
             <artifactId>javax.faces-api</artifactId>
@@ -51,13 +49,26 @@
             <version>2.2.19</version>
             <scope>runtime</scope>
         </dependency>
-
-        <!-- API do JPA e EJB para o Admin Template (View de OptimisticLockException)
-            TODO: Fork para depender apenas de Servlet/JSF -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>1.0.2.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.2.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.4.2.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>5.4.2.Final</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.ejb</groupId>
@@ -83,23 +94,11 @@
             <groupId>com.github.adminfaces</groupId>
             <artifactId>admin-theme</artifactId>
             <version>${adminfaces.version}</version>
-            <!--<classifier>dev</classifier> uncompressed theme.css (note that you need to exclude admin-theme brought by admin-template dependency)-->
-        </dependency><!-- https://mvnrepository.com/artifact/org.omnifaces/omnifaces -->
+        </dependency>
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
             <version>2.6.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-            <version>2.5.2</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -119,10 +118,8 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.47</version>
+            <version>5.1.23</version>
         </dependency>
-        
-        
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
@@ -143,10 +140,12 @@
             <artifactId>jasperreports-metadata</artifactId>
             <version>6.8.0</version>
         </dependency>
-
-
-
-        
+        <dependency>
+          <groupId>javax</groupId>
+          <artifactId>javaee-web-api</artifactId>
+          <version>7.0</version>
+          <scope>provided</scope>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>

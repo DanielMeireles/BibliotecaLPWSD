@@ -44,21 +44,11 @@ public class EmprestimoFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        String msg = new EmprestimoDAO().persistir(emprestimo);
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
+        msgScreen(new EmprestimoDAO().persistir(emprestimo));
     }
     
     public void exclude(ActionEvent actionEvent) {
-        String msg = new EmprestimoDAO().remover(emprestimo);
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
+        msgScreen(new EmprestimoDAO().remover(emprestimo));
     }
 
     //getters and setters
@@ -85,6 +75,14 @@ public class EmprestimoFormBean implements Serializable {
     
     public boolean isNew() {
         return emprestimo == null || emprestimo.getId() == null || emprestimo.getId() == 0;
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
 
 }

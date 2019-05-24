@@ -40,13 +40,13 @@ public class AutorListBean extends ProcessReport implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new AutorDAO().persistir(autor)));
+        msgScreen(new AutorDAO().persistir(autor));
         autores = new AutorDAO().buscarTodas();
     }
 
     public void exclude(ActionEvent actionEvent) {
         for (Object a: autoresSelecionados){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new AutorDAO().remover((Autor) a)));
+            msgScreen(new AutorDAO().remover((Autor) a));
         }
         autores = new AutorDAO().buscarTodas();
     }
@@ -101,6 +101,14 @@ public class AutorListBean extends ProcessReport implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
 }

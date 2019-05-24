@@ -40,13 +40,13 @@ public class AssuntoListBean extends ProcessReport implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new AssuntoDAO().persistir(assunto)));
+        msgScreen(new AssuntoDAO().persistir(assunto));
         assuntos = new AssuntoDAO().buscarTodas();
     }
 
     public void exclude(ActionEvent actionEvent) {
         for (Object a: assuntosSelecionados){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new AssuntoDAO().remover((Assunto) a)));
+            msgScreen(new AssuntoDAO().remover((Assunto) a));
         }
         assuntos = new AssuntoDAO().buscarTodas();
     }
@@ -101,6 +101,14 @@ public class AssuntoListBean extends ProcessReport implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
 }

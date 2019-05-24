@@ -40,13 +40,13 @@ public class LivroListBean extends ProcessReport implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new LivroDAO().persistir(livro)));
+        msgScreen(new LivroDAO().persistir(livro));
         livros = new LivroDAO().buscarTodas();
     }
 
     public void exclude(ActionEvent actionEvent) {
         for (Object a: livrosSelecionados){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new LivroDAO().remover((Livro) a)));
+            msgScreen(new LivroDAO().remover((Livro) a));
         }
         livros = new LivroDAO().buscarTodas();
     }
@@ -101,6 +101,14 @@ public class LivroListBean extends ProcessReport implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
 }

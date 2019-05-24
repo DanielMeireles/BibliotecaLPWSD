@@ -8,7 +8,6 @@ package br.cesjf.bibliotecalpwsd.bean;
 import br.cesjf.bibliotecalpwsd.dao.AssuntoDAO;
 import br.cesjf.bibliotecalpwsd.dao.AutorDAO;
 import br.cesjf.bibliotecalpwsd.dao.EditoraDAO;
-import br.cesjf.bibliotecalpwsd.dao.ExemplarDAO;
 import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
 import br.cesjf.bibliotecalpwsd.model.Editora;
 import br.cesjf.bibliotecalpwsd.model.Livro;
@@ -57,21 +56,11 @@ public class LivroFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        String msg = new LivroDAO().persistir(livro);
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
+        msgScreen(new LivroDAO().persistir(livro));
     }
     
     public void exclude(ActionEvent actionEvent) {
-        String msg = new LivroDAO().remover(livro);
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
+       msgScreen(new LivroDAO().remover(livro));
     }
 
     //getters and setters
@@ -125,6 +114,14 @@ public class LivroFormBean implements Serializable {
     
     public boolean isNew() {
         return livro == null || livro.getId() == null || livro.getId() == 0;
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
 
 }

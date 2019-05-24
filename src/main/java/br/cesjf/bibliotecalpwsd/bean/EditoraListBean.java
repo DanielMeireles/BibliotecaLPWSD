@@ -40,13 +40,13 @@ public class EditoraListBean extends ProcessReport implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new EditoraDAO().persistir(editora)));
+        msgScreen(new EditoraDAO().persistir(editora));
         editoras = new EditoraDAO().buscarTodas();
     }
 
     public void exclude(ActionEvent actionEvent) {
         for (Object a: editorasSelecionados){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new EditoraDAO().remover((Editora) a)));
+            msgScreen(new EditoraDAO().remover((Editora) a));
         }
         editoras = new EditoraDAO().buscarTodas();
     }
@@ -101,6 +101,14 @@ public class EditoraListBean extends ProcessReport implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
 }

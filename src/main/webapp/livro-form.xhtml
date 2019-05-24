@@ -328,6 +328,8 @@
                                                   filter="true"
                                                   filterMatchMode="startsWith">
                                 
+                                <f:attribute name="collectionType" value="java.util.ArrayList" />
+                                
                                 <f:selectItems value="#{livroFormBean.assuntos}" />
                                 
                             </p:selectCheckboxMenu>
@@ -360,6 +362,8 @@
                                                   multiple="true"
                                                   filter="true"
                                                   filterMatchMode="startsWith">
+                                
+                                <f:attribute name="collectionType" value="java.util.ArrayList" />
                                 
                                 <f:selectItems value="#{livroFormBean.autores}"/>
                                 

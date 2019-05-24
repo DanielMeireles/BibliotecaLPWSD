@@ -47,12 +47,12 @@ public class EmprestimoBean extends ProcessReport implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new EmprestimoDAO().persistir(emprestimo)));
+        msgScreen(new EmprestimoDAO().persistir(emprestimo));
         emprestimos = new EmprestimoDAO().buscarTodas();
     }
 
     public void exclude(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new EmprestimoDAO().remover(emprestimo)));
+        msgScreen(new EmprestimoDAO().remover(emprestimo));
         emprestimos = new EmprestimoDAO().buscarTodas();
     }
     
@@ -132,6 +132,14 @@ public class EmprestimoBean extends ProcessReport implements Serializable {
             } else if(!u.getTipo().equals('C') && emp.size() < 5) {
                 usuariosPermitidos.add(u);
             }
+        }
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
         }
     }
     

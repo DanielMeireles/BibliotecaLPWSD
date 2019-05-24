@@ -44,21 +44,11 @@ public class AssuntoFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        String msg = new AssuntoDAO().persistir(assunto);
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
+        msgScreen(new AssuntoDAO().persistir(assunto));
     }
     
     public void exclude(ActionEvent actionEvent) {
-        String msg = new AssuntoDAO().remover(assunto);
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
+        msgScreen(new AssuntoDAO().remover(assunto));
     }
 
     //getters and setters
@@ -85,6 +75,14 @@ public class AssuntoFormBean implements Serializable {
     
     public boolean isNew() {
         return assunto == null || assunto.getId() == null || assunto.getId() == 0;
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
 
 }

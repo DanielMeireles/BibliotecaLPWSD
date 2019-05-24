@@ -88,7 +88,7 @@ public class LivroDAO implements Serializable {
             return "Livro removido com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o livro!", e.getMessage());
-            return "Não foi possível remover o livro!";
+            return "Não foi possível remover o livro, pois está vinculado a um ou mais exemplares";
         }
     }
 

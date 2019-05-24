@@ -40,13 +40,13 @@ public class ExemplarListBean extends ProcessReport implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ExemplarDAO().persistir(exemplar)));
+        msgScreen(new ExemplarDAO().persistir(exemplar));
         exemplares = new ExemplarDAO().buscarTodas();
     }
 
     public void exclude(ActionEvent actionEvent) {
         for (Object a: exemplaresSelecionados){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ExemplarDAO().remover((Exemplar) a)));
+            msgScreen(new ExemplarDAO().remover((Exemplar) a));
         }
         exemplares = new ExemplarDAO().buscarTodas();
     }
@@ -101,6 +101,14 @@ public class ExemplarListBean extends ProcessReport implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void msgScreen(String msg) {
+        if(msg.contains("Não")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
     }
     
 }
