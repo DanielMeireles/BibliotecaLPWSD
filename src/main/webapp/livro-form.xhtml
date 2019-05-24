@@ -288,8 +288,8 @@
                                              required="true"
                                              requiredMessage="A editora não foi selecionada"
                                              filter="true"
-                                             filterMatchMode="contains"
-                                             >
+                                             filterMatchMode="contains">
+                                
                                 <f:selectItem itemLabel="Selecione a editora"
                                               itemDisabled="true" />
                                 
@@ -336,7 +336,11 @@
                             
                             <p:outputLabel value="Selecione um ou mais assuntos"/>
                             
-                            <p:message for="inptAssunto"/>
+                            <span class="help-block"> 
+                            
+                                <p:message for="inptAssunto"/>
+                            
+                            </span> 
                             
                         </div>
                         
@@ -371,7 +375,11 @@
                             
                             <p:outputLabel value="Selecione um ou mais autores"/>
                             
-                            <p:message for="inptAutores"/>
+                            <span class="help-block"> 
+                            
+                                <p:message for="inptAutores"/>
+                            
+                            </span> 
                             
                         </div>
                         

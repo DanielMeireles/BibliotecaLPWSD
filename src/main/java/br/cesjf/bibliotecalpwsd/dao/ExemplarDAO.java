@@ -85,10 +85,10 @@ public class ExemplarDAO implements Serializable {
             em.remove(exemplar);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Exemplar removido com sucesso!");
-            return "Exemplar removido com sucesso!";
+            return "Exemplar " + exemplar.getId() + " removido com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o exemplar!", e.getMessage());
-            return "Não foi possível remover o exemplar!";
+            return "Não foi possível remover o exemplar " + exemplar.getId() + "!";
         }
     }
 
@@ -99,10 +99,10 @@ public class ExemplarDAO implements Serializable {
             exemplar = em.merge(exemplar);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Exemplar salvo com sucesso!");
-            return "Exemplar salvo com sucesso!";
+            return "Exemplar " + exemplar.getId() + " salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o exemplar!", e.getMessage());
-            return "Não foi possível salvar o exemplar!";
+            return "Não foi possível salvar o exemplar " + exemplar.getId() + "!";
         }
     }
 

@@ -85,10 +85,10 @@ public class AutorDAO implements Serializable {
             em.remove(autor);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Autor removido com sucesso!");
-            return "Autor removido com sucesso!";
+            return "Autor " + autor.getNome() + " removido com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o autor!", e.getMessage());
-            return "Não foi possível remover o autor, pois está vinculado a um ou mais livros";
+            return "Não foi possível remover o autor " + autor.getNome() + ", pois está vinculado a um ou mais livros";
         }
     }
 
@@ -99,13 +99,13 @@ public class AutorDAO implements Serializable {
             autor = em.merge(autor);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Autor salvo com sucesso!");
-            return "Autor salvo com sucesso!";
+            return "Autor " + autor.getNome() + " salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o autor!", e.getMessage());
             if(e.getMessage().contains("ConstraintViolationException")){
-                return "Não foi possível salvar o autor, pois o nome deve ser único";
+                return "Não foi possível salvar o autor " + autor.getNome() + ", pois o nome deve ser único";
             }
-            return "Não foi possível salvar o autor!";
+            return "Não foi possível salvar o autor " + autor.getNome() + "!";
         }
     }
 

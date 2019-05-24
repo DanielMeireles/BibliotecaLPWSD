@@ -104,10 +104,10 @@ public class UsuarioDAO implements Serializable {
             em.remove(usuario);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Usuario removido com sucesso!");
-            return "Usuario removido com sucesso!";
+            return "Usuario " + usuario.getNome() + " removido com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o usuario!", e.getMessage());
-            return "Não foi possível remover o usuario!";
+            return "Não foi possível remover o usuario " + usuario.getNome() + "!";
         }
     }
 
@@ -118,13 +118,13 @@ public class UsuarioDAO implements Serializable {
             usuario = em.merge(usuario);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Usuario salvo com sucesso!");
-            return "Usuario salvo com sucesso!";
+            return "Usuario " + usuario.getNome() + " salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o usuario!", e.getMessage());
             if(e.getMessage().contains("ConstraintViolationException")){
-                return "Não foi possível salvar o usuário, pois o usuário deve ser único";
+                return "Não foi possível salvar o usuário " + usuario.getNome() + ", pois o usuário deve ser único";
             }
-            return "Não foi possível salvar o usuário!";
+            return "Não foi possível salvar o usuário " + usuario.getNome() + "!";
         }
     }
 

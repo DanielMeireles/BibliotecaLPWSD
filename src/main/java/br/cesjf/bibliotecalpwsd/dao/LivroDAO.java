@@ -85,10 +85,10 @@ public class LivroDAO implements Serializable {
             em.remove(livro);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Livro removido com sucesso!");
-            return "Livro removido com sucesso!";
+            return "Livro " + livro.getTitulo() + " removido com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o livro!", e.getMessage());
-            return "Não foi possível remover o livro, pois está vinculado a um ou mais exemplares";
+            return "Não foi possível remover o livro " + livro.getTitulo() + ", pois está vinculado a um ou mais exemplares";
         }
     }
 
@@ -99,13 +99,13 @@ public class LivroDAO implements Serializable {
             livro = em.merge(livro);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Livro salvo com sucesso!");
-            return "Livro salvo com sucesso!";
+            return "Livro " + livro.getTitulo() + " salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o livro!", e.getMessage());
             if(e.getMessage().contains("ConstraintViolationException")){
-                return "Não foi possível salvar o livro, pois o título deve ser único";
+                return "Não foi possível salvar o livro " + livro.getTitulo() + ", pois o título deve ser único";
             }
-            return "Não foi possível salvar o livro!";
+            return "Não foi possível salvar o livro " + livro.getTitulo() + "!";
         }
     }
 

@@ -85,10 +85,10 @@ public class AssuntoDAO implements Serializable {
             em.remove(assunto);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Assunto removido com sucesso!");
-            return "Assunto removido com sucesso!";
+            return "Assunto " + assunto.getAssunto() + " removido com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o assunto!", e.getMessage());
-            return "Não foi possível remover o assunto, pois está vinculado a um ou mais livros";
+            return "Não foi possível remover o assunto " + assunto.getAssunto() + " , pois está vinculado a um ou mais livros";
         }
     }
 
@@ -99,13 +99,13 @@ public class AssuntoDAO implements Serializable {
             assunto = em.merge(assunto);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Assunto salvo com sucesso!");
-            return "Assunto salvo com sucesso!";
+            return "Assunto " + assunto.getAssunto() + " salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o assunto!", e);
             if(e.getMessage().contains("ConstraintViolationException")){
-                return "Não foi possível salvar o assunto, pois o assunto deve ser único";
+                return "Não foi possível salvar o assunto " + assunto.getAssunto() + ", pois o assunto deve ser único";
             }
-            return "Não foi possível salvar o assunto!";
+            return "Não foi possível salvar o assunto" + assunto.getAssunto() + "!";
         }
     }
 

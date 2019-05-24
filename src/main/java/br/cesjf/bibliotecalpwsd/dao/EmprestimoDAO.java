@@ -85,10 +85,10 @@ public class EmprestimoDAO implements Serializable {
             em.remove(emprestimo);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Emprestimo removido com sucesso!");
-            return "Emprestimo removido com sucesso!";
+            return "Emprestimo " + emprestimo.getId() + " removido com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o emprestimo!", e.getMessage());
-            return "Não foi possível remover o emprestimo!";
+            return "Não foi possível remover o emprestimo " + emprestimo.getId() + "!";
         }
     }
 
@@ -99,10 +99,10 @@ public class EmprestimoDAO implements Serializable {
             emprestimo = em.merge(emprestimo);
             em.getTransaction().commit();
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Emprestimo salvo com sucesso!");
-            return "Emprestimo salvo com sucesso!";
+            return "Emprestimo " + emprestimo.getId() + " salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o emprestimo!", e.getMessage());
-            return "Não foi possível salvar o emprestimo!";
+            return "Não foi possível salvar o emprestimo " + emprestimo.getId() + "!";
         }
     }
 
