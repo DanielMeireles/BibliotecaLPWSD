@@ -102,7 +102,7 @@ public class AutorDAO implements Serializable {
             return "Autor salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o autor!", e.getMessage());
-            if(e.getMessage().contains("nome_UNIQUE")){
+            if(e.getMessage().contains("ConstraintViolationException")){
                 return "Não foi possível salvar o autor, pois o nome deve ser único";
             }
             return "Não foi possível salvar o autor!";

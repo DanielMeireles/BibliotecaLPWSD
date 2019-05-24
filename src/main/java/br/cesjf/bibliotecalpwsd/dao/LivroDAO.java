@@ -102,7 +102,7 @@ public class LivroDAO implements Serializable {
             return "Livro salvo com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o livro!", e.getMessage());
-            if(e.getMessage().contains("titulo_UNIQUE")){
+            if(e.getMessage().contains("ConstraintViolationException")){
                 return "Não foi possível salvar o livro, pois o título deve ser único";
             }
             return "Não foi possível salvar o livro!";

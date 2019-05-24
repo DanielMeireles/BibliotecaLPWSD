@@ -101,8 +101,8 @@ public class AssuntoDAO implements Serializable {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Assunto salvo com sucesso!");
             return "Assunto salvo com sucesso!";
         } catch (Exception e) {
-            Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o assunto!", e.getMessage());
-            if(e.getMessage().contains("assunto_UNIQUE")){
+            Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível salvar o assunto!", e);
+            if(e.getMessage().contains("ConstraintViolationException")){
                 return "Não foi possível salvar o assunto, pois o assunto deve ser único";
             }
             return "Não foi possível salvar o assunto!";
