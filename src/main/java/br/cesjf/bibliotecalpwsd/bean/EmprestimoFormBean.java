@@ -147,8 +147,8 @@ public class EmprestimoFormBean implements Serializable {
         List<Exemplar> exemplares = new ExemplarDAO().buscarTodas();
         List<Reserva> reservas = new ReservaDAO().buscarTodas();
         exemplaresPermitidos = new ArrayList<>();
-        Date dataEmprestimo = emprestimo.getDataEmprestimo();
-        if(dataEmprestimo != null){
+        Date dataReserva = emprestimo.getDataEmprestimo();
+        if(dataReserva != null){
             if(livro == null) {
                 exemplaresPermitidos.addAll(exemplares);
             } else {
@@ -158,14 +158,17 @@ public class EmprestimoFormBean implements Serializable {
                     }
                 }
             }
-            for(Exemplar e: exemplaresPermitidos) {
+            List<Exemplar> lista = new ArrayList<>();
+            lista.addAll(exemplaresPermitidos);
+            
+            for(Exemplar e: lista) {
                 for(Emprestimo emp: new EmprestimoDAO().buscarTodas()) {
                     if(emp.getIdExemplar().getId() == e.getId()) {
-                        if(emp.getDataDevolucao() == null && emp.getDataEmprestimo().compareTo(dataEmprestimo) <= 0 && emp.getDataDevolucaoPrevista().compareTo(dataEmprestimo) >= 0) {
+                        if(emp.getDataDevolucao() == null && emp.getDataEmprestimo().compareTo(dataReserva) <= 0 && emp.getDataDevolucaoPrevista().compareTo(dataReserva) >= 0) {
                             exemplaresPermitidos.remove(e);
                             continue;
                         }
-                        if(emp.getDataDevolucao() != null && emp.getDataEmprestimo().compareTo(dataEmprestimo) <= 0 && emp.getDataDevolucao().compareTo(dataEmprestimo) >= 0) {
+                        if(emp.getDataDevolucao() != null && emp.getDataEmprestimo().compareTo(dataReserva) <= 0 && emp.getDataDevolucao().compareTo(dataReserva) >= 0) {
                             exemplaresPermitidos.remove(e);
                             continue;
                         }
@@ -173,13 +176,16 @@ public class EmprestimoFormBean implements Serializable {
                 }
                 for(Reserva r: new ReservaDAO().buscarTodas()) {
                     if(r.getIdExemplar().getId() == e.getId()){
-                        if(r.getDataReserva().compareTo(dataEmprestimo) <= 0 && r.getDataDevolucaoPrevista().compareTo(dataEmprestimo) >= 0) {
+                        if(!r.getCancelada() && r.getDataReserva().compareTo(dataReserva) <= 0 && r.getDataDevolucaoPrevista().compareTo(dataReserva) >= 0) {
                             exemplaresPermitidos.remove(e);
                         }
                     }
                 }
             }
         }
+        /*if(reserva.getIdExemplar() != null) {
+            exemplaresPermitidos.add(reserva.getIdExemplar());
+        }*/
     }
 
 }

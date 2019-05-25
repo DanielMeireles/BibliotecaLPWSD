@@ -145,17 +145,21 @@ public class ReservaFormBean implements Serializable {
         this.livro = livro;
     }
     
-    public synchronized void calcularExemplaresPermitidos(SelectEvent event) {
+    public void calcularExemplaresPermitidos(SelectEvent event) {
         List<Exemplar> exemplares = new ExemplarDAO().buscarTodas();
         List<Reserva> reservas = new ReservaDAO().buscarTodas();
         exemplaresPermitidos = new ArrayList<>();
         Date dataReserva = reserva.getDataReserva();
         if(dataReserva != null){
             if(livro == null) {
-                exemplaresPermitidos.addAll(exemplares);
+                for(Exemplar e: exemplares) {
+                    if(e.getCircular()) {
+                        exemplaresPermitidos.add(e);
+                    }
+                }
             } else {
                 for(Exemplar e: exemplares) {
-                    if(e.getIdLivro().getId() == livro.getId()) {
+                    if(e.getIdLivro().getId() == livro.getId() && e.getCircular()) {
                         exemplaresPermitidos.add(e);
                     }
                 }
