@@ -322,14 +322,7 @@
                                 <f:selectItem itemLabel="Selecione o tipo"
                                               itemDisabled="true" />
                                 
-                                <f:selectItem itemLabel="Aluno"
-                                              itemValue="Aluno" />
-                                
-                                <f:selectItem itemLabel="Professor"
-                                              itemValue="Professor" />
-                                
-                                <f:selectItem itemLabel="Administrador"
-                                              itemValue="Administrador" />
+                                <f:selectItems value="#{usuarioFormBean.tipos}"/>
                                 
                             </p:selectOneMenu>
                             

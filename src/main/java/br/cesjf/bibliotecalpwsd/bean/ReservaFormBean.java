@@ -5,11 +5,14 @@
  */
 package br.cesjf.bibliotecalpwsd.bean;
 
+import br.cesjf.bibliotecalpwsd.dao.EmprestimoDAO;
 import br.cesjf.bibliotecalpwsd.dao.ExemplarDAO;
+import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
 import br.cesjf.bibliotecalpwsd.dao.ReservaDAO;
 import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
 import br.cesjf.bibliotecalpwsd.model.Emprestimo;
 import br.cesjf.bibliotecalpwsd.model.Exemplar;
+import br.cesjf.bibliotecalpwsd.model.Livro;
 import br.cesjf.bibliotecalpwsd.model.Reserva;
 import br.cesjf.bibliotecalpwsd.model.Usuario;
 import java.io.Serializable;
@@ -37,6 +40,8 @@ public class ReservaFormBean implements Serializable {
     private int id;
     private List<Exemplar> exemplaresPermitidos;
     private List<Usuario> usuariosPermitidos;
+    private List<Livro> livros;
+    private Livro livro;
 
     //construtor
     public ReservaFormBean() {
@@ -51,6 +56,7 @@ public class ReservaFormBean implements Serializable {
         } else {
             reserva = new Reserva();
         }
+        livros = new LivroDAO().buscarTodas();
     }
 
     //Métodos dos botões 
@@ -98,9 +104,9 @@ public class ReservaFormBean implements Serializable {
                     emp.add(e);
                 }
             }
-            if(u.getTipo().equals('C') && emp.size() < 3) {
+            if(u.getTipoTexto().equals("Aluno") && emp.size() < 3) {
                 usuariosPermitidos.add(u);
-            } else if(!u.getTipo().equals('C') && emp.size() < 5) {
+            } else if(!u.getTipoTexto().equals("Aluno") && emp.size() < 5) {
                 usuariosPermitidos.add(u);
             }
         }
@@ -123,25 +129,65 @@ public class ReservaFormBean implements Serializable {
         this.usuariosPermitidos = usuariosPermitidos;
     }
     
-    public void calcularExemplaresPermitidos(SelectEvent event) {
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
+    }
+
+    public Livro getLivro() {
+        return livro;
+    }
+
+    public void setLivro(Livro livro) {
+        this.livro = livro;
+    }
+    
+    public synchronized void calcularExemplaresPermitidos(SelectEvent event) {
         List<Exemplar> exemplares = new ExemplarDAO().buscarTodas();
         List<Reserva> reservas = new ReservaDAO().buscarTodas();
         exemplaresPermitidos = new ArrayList<>();
-        exemplaresPermitidos.addAll(exemplares);
         Date dataReserva = reserva.getDataReserva();
-        for(Exemplar e: exemplares) {
-            for(Emprestimo emp: e.getEmprestimoList()) {
-                if(emp.getDataDevolucao() == null && emp.getDataDevolucaoPrevista().after(dataReserva)){
-                    exemplaresPermitidos.remove(e);
+        if(dataReserva != null){
+            if(livro == null) {
+                exemplaresPermitidos.addAll(exemplares);
+            } else {
+                for(Exemplar e: exemplares) {
+                    if(e.getIdLivro().getId() == livro.getId()) {
+                        exemplaresPermitidos.add(e);
+                    }
                 }
             }
-            for(Reserva r: reservas) {
-                if((r.getDataReserva().equals(dataReserva) || r.getDataReserva().after(dataReserva)) &&  (r.getDataDevolucaoPrevista().equals(dataReserva) || r.getDataDevolucaoPrevista().after(dataReserva))) {
-                    exemplaresPermitidos.remove(e);
+            List<Exemplar> lista = new ArrayList<>();
+            lista.addAll(exemplaresPermitidos);
+            
+            for(Exemplar e: lista) {
+                for(Emprestimo emp: new EmprestimoDAO().buscarTodas()) {
+                    if(emp.getIdExemplar().getId() == e.getId()) {
+                        if(emp.getDataDevolucao() == null && emp.getDataEmprestimo().compareTo(dataReserva) <= 0 && emp.getDataDevolucaoPrevista().compareTo(dataReserva) >= 0) {
+                            exemplaresPermitidos.remove(e);
+                            continue;
+                        }
+                        if(emp.getDataDevolucao() != null && emp.getDataEmprestimo().compareTo(dataReserva) <= 0 && emp.getDataDevolucao().compareTo(dataReserva) >= 0) {
+                            exemplaresPermitidos.remove(e);
+                            continue;
+                        }
+                    }
+                }
+                for(Reserva r: new ReservaDAO().buscarTodas()) {
+                    if(r.getIdExemplar().getId() == e.getId()){
+                        if(!r.getCancelada() && r.getDataReserva().compareTo(dataReserva) <= 0 && r.getDataDevolucaoPrevista().compareTo(dataReserva) >= 0) {
+                            exemplaresPermitidos.remove(e);
+                        }
+                    }
                 }
             }
         }
-        exemplaresPermitidos.add(reserva.getIdExemplar());
+        if(reserva.getIdExemplar() != null) {
+            exemplaresPermitidos.add(reserva.getIdExemplar());
+        }
     }
     
     public void msgScreen(String msg) {

@@ -147,48 +147,14 @@
                                          value="#{reservaFormBean.reserva.id}"
                                          readonly="true"
                                          styleClass="form-control ui-state-disabled"
-                                         style="width: 100%"/>
+                                         style="width: 100%"
+                                         placeholder="Novo"/>
                             
                             <span class="help-block"> 
                                 
                                 <p:message for="id" />
                                 
                             </span>
-                            
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
-                        
-                        <div class="ui-sm-12 ui-g-11">
-                            
-                            <p:outputLabel value="Data Reserva"
-                                           for="inptDataReserva"/>
-                            
-                        </div>
-                        
-                        <div class="ui-sm-12 ui-g-11" >
-                            
-                            
-                            <p:calendar id="inptDataReserva"
-                                        mode="inline"
-                                        locale="pt_BR"
-                                        value="#{reservaFormBean.reserva.dataReserva}"
-                                        timeZone="America/Sao_Paulo"
-                                        pattern="dd/MM/yyyy"
-                                        mask="true" >
-                                
-                                <p:ajax event="dateSelect"
-                                        listener="#{reservaFormBean.calcularExemplaresPermitidos}" />
-                                
-                            </p:calendar>
-                            
-                            <span class="help-block"> 
-                                
-                                <p:message for="inptDataReserva" /> 
-                                
-                            </span> 
                             
                         </div>
                         
@@ -209,7 +175,12 @@
                                              value="#{reservaFormBean.reserva.idUsuario}"
                                              converter="usuarioConverter"
                                              required="true"
-                                             requiredMessage="o usuário não foi selecionado">
+                                             requiredMessage="O usuário não foi selecionado"
+                                             filter="true"
+                                             filterMatchMode="contains">
+                                
+                                <f:selectItem itemLabel="Selecione o usuário"
+                                              itemDisabled="true" />
 
                                 <f:selectItems value="#{reservaFormBean.usuariosPermitidos}"/>
 
@@ -218,6 +189,122 @@
                             <span class="help-block"> 
 
                                 <p:message for="inptUsuario" /> 
+
+                            </span> 
+
+                        </div>
+
+                    </div>
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Data Reserva"
+                                           for="inptDataReserva"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                            
+                            
+                            <p:calendar id="inptDataReserva"
+                                        mindate="today"
+                                        locale="pt_BR"
+                                        value="#{reservaFormBean.reserva.dataReserva}"
+                                        timeZone="America/Sao_Paulo"
+                                        pattern="dd/MM/yyyy"
+                                        mask="true"
+                                        required="true"
+                                        requiredMessage="A data de reserva não foi selecionada">
+                                
+                                <p:ajax event="dateSelect"
+                                        listener="#{reservaFormBean.calcularExemplaresPermitidos(event)}"
+                                        update="inptExemplar"/>
+                                
+                                <p:ajax event="change"
+                                        listener="#{reservaFormBean.calcularExemplaresPermitidos(event)}"
+                                        update="inptExemplar"/>
+                                
+                            </p:calendar>
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="inptDataReserva" /> 
+                                
+                            </span> 
+                            
+                        </div>
+                        
+                    </div>
+                
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+
+                        <div class="ui-sm-12 ui-g-11">
+
+                            <p:outputLabel value="Livro"
+                                           for="inptLivro"/>
+
+                        </div>
+
+                        <div class="ui-sm-12 ui-g-11" >
+
+                            <p:selectOneMenu id="inptLivro"
+                                             value="#{reservaFormBean.livro}"
+                                             converter="livroConverter"
+                                             filter="true"
+                                             filterMatchMode="contains">
+
+                                <f:selectItem itemLabel="Selecione o livro"
+                                              itemDisabled="true" />
+
+                                <f:selectItems value="#{reservaFormBean.livros}"/>
+                                
+                                <p:ajax event="change"
+                                        listener="#{reservaFormBean.calcularExemplaresPermitidos(event)}"
+                                        update="inptExemplar"/>
+
+                            </p:selectOneMenu>
+
+                            <span class="help-block"> 
+
+                                <p:message for="inptLivro" /> 
+
+                            </span> 
+
+                        </div>
+
+                    </div>
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+
+                        <div class="ui-sm-12 ui-g-11">
+
+                            <p:outputLabel value="Exemplar"
+                                           for="inptExemplar"/>
+
+                        </div>
+
+                        <div class="ui-sm-12 ui-g-11" >
+
+                            <p:selectOneMenu id="inptExemplar"
+                                             value="#{reservaFormBean.reserva.idExemplar}"
+                                             converter="exemplarConverter"
+                                             required="true"
+                                             requiredMessage="O exemplar não foi selecionado"
+                                             filter="true"
+                                             filterMatchMode="contains">
+                                
+                                <f:selectItem itemLabel="Selecione o exemplar"
+                                              itemDisabled="true" />
+
+                                <f:selectItems value="#{reservaFormBean.exemplaresPermitidos}"/>
+
+                            </p:selectOneMenu>
+
+                            <span class="help-block"> 
+
+                                <p:message for="inptExemplar" /> 
 
                             </span> 
 

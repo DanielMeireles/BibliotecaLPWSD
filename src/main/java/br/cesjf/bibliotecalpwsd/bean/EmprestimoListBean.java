@@ -30,7 +30,7 @@ public class EmprestimoListBean extends ProcessReport implements Serializable {
     private List emprestimos;
     private List emprestimosSelecionados;
     private List emprestimosFiltrados;
-    private int id;
+    private Integer id;
 
     //construtor
     public EmprestimoListBean() {
@@ -95,11 +95,11 @@ public class EmprestimoListBean extends ProcessReport implements Serializable {
         this.emprestimosFiltrados = emprestimosFiltrados;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     

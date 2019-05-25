@@ -30,7 +30,7 @@ public class ExemplarListBean extends ProcessReport implements Serializable {
     private List exemplares;
     private List exemplaresSelecionados;
     private List exemplaresFiltrados;
-    private int id;
+    private Integer id;
 
     //construtor
     public ExemplarListBean() {
@@ -95,11 +95,11 @@ public class ExemplarListBean extends ProcessReport implements Serializable {
         this.exemplaresFiltrados = exemplaresFiltrados;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     

@@ -30,7 +30,7 @@ public class EditoraListBean extends ProcessReport implements Serializable {
     private List editoras;
     private List editorasSelecionados;
     private List editorasFiltrados;
-    private int id;
+    private Integer id;
 
     //construtor
     public EditoraListBean() {
@@ -95,11 +95,11 @@ public class EditoraListBean extends ProcessReport implements Serializable {
         this.editorasFiltrados = editorasFiltrados;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     

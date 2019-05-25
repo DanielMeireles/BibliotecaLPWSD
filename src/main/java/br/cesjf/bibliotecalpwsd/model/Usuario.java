@@ -48,7 +48,7 @@ public class Usuario implements Serializable {
     private String nome;
     @Basic(optional = false)
     @Column(name = "tipo")
-    private Character tipo;
+    private String tipo;
     @Basic(optional = false)
     @Column(name = "email")
     private String email;
@@ -64,15 +64,13 @@ public class Usuario implements Serializable {
     private List<Reserva> reservaList;
 
     public Usuario() {
-        this.tipo = 'C';
     }
 
     public Usuario(Integer id) {
         this.id = id;
-        this.tipo = 'C';
     }
 
-    public Usuario(Integer id, String nome, Character tipo, String email, String usuario, String senha) {
+    public Usuario(Integer id, String nome, String tipo, String email, String usuario, String senha) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
@@ -98,22 +96,25 @@ public class Usuario implements Serializable {
     }
 
     public String getTipo() {
-        if(tipo.equals('A')) {
-            return "Administrador";
-        } else if(tipo.equals('B')) {
-            return "Professor";
-        }
-        return "Aluno";
+        return tipo;
+        
     }
 
     public void setTipo(String tipo) {
-        if(tipo.equals("Administrador")) {
-            this.tipo = 'A';
-        } else if(tipo.equals("Professor")) {
-            this.tipo = 'B';
-        } else {
-            this.tipo = 'C';
+        this.tipo = tipo;
+    }
+    
+    public String getTipoTexto() {
+        if(tipo.equals("1")) {
+            return "Aluno";
+        } else if(tipo.equals("2")) {
+            return "Professor";
+        } else if(tipo.equals("3")) {
+            return "Funcionário";
+        } else if(tipo.equals("4")) {
+            return "Administrador";
         }
+        return tipo;
     }
 
     public String getEmail() {

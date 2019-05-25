@@ -8,6 +8,8 @@ package br.cesjf.bibliotecalpwsd.bean;
 import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
 import br.cesjf.bibliotecalpwsd.model.Usuario;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -26,9 +28,15 @@ public class UsuarioFormBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private Usuario usuario;
     private int id;
+    Map<String, String> tipos;
 
     //construtor
     public UsuarioFormBean() {
+        tipos = new HashMap<String, String>();
+        tipos.put("Aluno", "1");
+        tipos.put("Professor", "2");
+        tipos.put("Funcionário", "3");
+        tipos.put("Administrador", "4");
     }
     
     public void init() {
@@ -83,6 +91,14 @@ public class UsuarioFormBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
         }
+    }
+
+    public Map<String, String> getTipos() {
+        return tipos;
+    }
+
+    public void setTipos(Map<String, String> tipos) {
+        this.tipos = tipos;
     }
 
 }

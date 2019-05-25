@@ -30,7 +30,7 @@ public class AssuntoListBean extends ProcessReport implements Serializable {
     private List assuntos;
     private List assuntosSelecionados;
     private List assuntosFiltrados;
-    private int id;
+    private Integer id;
 
     //construtor
     public AssuntoListBean() {
@@ -95,11 +95,11 @@ public class AssuntoListBean extends ProcessReport implements Serializable {
         this.assuntosFiltrados = assuntosFiltrados;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     

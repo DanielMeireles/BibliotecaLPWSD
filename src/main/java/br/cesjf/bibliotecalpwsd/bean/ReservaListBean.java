@@ -11,6 +11,7 @@ import br.cesjf.bibliotecalpwsd.model.Reserva;
 import br.cesjf.bibliotecalpwsd.util.ProcessReport;
 import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -29,15 +30,35 @@ public class ReservaListBean extends ProcessReport implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private Reserva reserva;
-    private List reservas;
+    private List<Reserva> reservas;
     private List reservasSelecionados;
     private List reservasFiltrados;
-    private int id;
+    private Integer id;
 
     //construtor
     public ReservaListBean() {
         reservas = new ReservaDAO().buscarTodas();
         reserva = new Reserva();
+        Calendar c = Calendar.getInstance();
+        for(Reserva r: reservas) {
+            if(!r.getCancelada()) {
+                if(r.getIdEmprestimo() == null) {
+                    c.setTime(r.getDataReserva());
+                    c.add(Calendar.DAY_OF_MONTH, 10);
+                    if(c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+                        c.add(Calendar.DAY_OF_MONTH, 2);
+                    } else if(c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+                        c.add(Calendar.DAY_OF_MONTH, 1);
+                    }
+                    if(c.getTime().compareTo(new Date()) < 0) {
+                        r.setCancelada(Boolean.TRUE);
+                        r.setObsCancelamento("Sistema");
+                        new ReservaDAO().persistir(r);
+                    }
+                }
+            }
+        }
+        reservas = new ReservaDAO().buscarTodas();
     }
 
     //Métodos dos botões 
@@ -97,12 +118,19 @@ public class ReservaListBean extends ProcessReport implements Serializable {
         this.reservasFiltrados = reservasFiltrados;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+    
+    public Boolean getData(Date reserva) {
+        if(reserva.compareTo(new Date()) <= 0) {
+            return true;
+        }
+        return false;
     }
     
     public void geraEmprestimo(ActionEvent actionEvent) {
@@ -113,6 +141,14 @@ public class ReservaListBean extends ProcessReport implements Serializable {
         reserva.setIdEmprestimo(emp);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ReservaDAO().persistir(reserva)));
         reservas = new ReservaDAO().buscarTodas();
+    }
+    
+    public void efetuaCancelamento() {
+        reserva.setCancelada(Boolean.TRUE);
+        reserva.setObsCancelamento("Usuário");
+        new ReservaDAO().persistir(reserva);
+        reservas = new ReservaDAO().buscarTodas();
+        msgScreen("Reserva cancelada com sucesso!");
     }
     
     public void msgScreen(String msg) {

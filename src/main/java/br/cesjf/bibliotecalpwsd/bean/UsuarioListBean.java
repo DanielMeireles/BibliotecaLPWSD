@@ -30,7 +30,7 @@ public class UsuarioListBean extends ProcessReport implements Serializable {
     private List usuarios;
     private List usuariosSelecionados;
     private List usuariosFiltrados;
-    private int id;
+    private Integer id;
 
     //construtor
     public UsuarioListBean() {
@@ -95,11 +95,11 @@ public class UsuarioListBean extends ProcessReport implements Serializable {
         this.usuariosFiltrados = usuariosFiltrados;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     

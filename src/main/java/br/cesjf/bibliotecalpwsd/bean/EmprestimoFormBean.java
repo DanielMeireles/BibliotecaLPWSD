@@ -6,14 +6,25 @@
 package br.cesjf.bibliotecalpwsd.bean;
 
 import br.cesjf.bibliotecalpwsd.dao.EmprestimoDAO;
+import br.cesjf.bibliotecalpwsd.dao.ExemplarDAO;
+import br.cesjf.bibliotecalpwsd.dao.ReservaDAO;
+import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
 import br.cesjf.bibliotecalpwsd.model.Emprestimo;
+import br.cesjf.bibliotecalpwsd.model.Exemplar;
+import br.cesjf.bibliotecalpwsd.model.Livro;
+import br.cesjf.bibliotecalpwsd.model.Reserva;
+import br.cesjf.bibliotecalpwsd.model.Usuario;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
 import org.omnifaces.util.Faces;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -25,6 +36,9 @@ public class EmprestimoFormBean implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private Emprestimo emprestimo;
+    private List<Exemplar> exemplaresPermitidos;
+    private List<Usuario> usuariosPermitidos;
+    private Livro livro;
     private int id;
 
     //construtor
@@ -67,6 +81,32 @@ public class EmprestimoFormBean implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    public List<Exemplar> getExemplaresPermitidos() {
+        return exemplaresPermitidos;
+    }
+
+    public void setExemplaresPermitidos(List<Exemplar> exemplaresPermitidos) {
+        this.exemplaresPermitidos = exemplaresPermitidos;
+    }
+
+    public List<Usuario> getUsuariosPermitidos() {
+        return usuariosPermitidos;
+    }
+
+    public void setUsuariosPermitidos(List<Usuario> usuariosPermitidos) {
+        this.usuariosPermitidos = usuariosPermitidos;
+    }
+
+    public Livro getLivro() {
+        return livro;
+    }
+
+    public void setLivro(Livro livro) {
+        this.livro = livro;
+    }
+    
+    
     
     public void clear() {
         emprestimo = new Emprestimo();
@@ -82,6 +122,63 @@ public class EmprestimoFormBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
+        }
+    }
+    
+    private void usuariosPermitidos() {
+        List<Usuario> usuarios = new UsuarioDAO().buscarTodas();
+        usuariosPermitidos = new ArrayList<>();
+        for(Usuario u: usuarios) {
+            List<Emprestimo> emp = new ArrayList<>();
+            for(Emprestimo e: u.getEmprestimoList()) {
+                if(e.getDataDevolucao() == null) {
+                    emp.add(e);
+                }
+            }
+            if(u.getTipo().equals('C') && emp.size() < 3) {
+                usuariosPermitidos.add(u);
+            } else if(!u.getTipo().equals('C') && emp.size() < 5) {
+                usuariosPermitidos.add(u);
+            }
+        }
+    }
+    
+    public void calcularExemplaresPermitidos(SelectEvent event) {
+        List<Exemplar> exemplares = new ExemplarDAO().buscarTodas();
+        List<Reserva> reservas = new ReservaDAO().buscarTodas();
+        exemplaresPermitidos = new ArrayList<>();
+        Date dataEmprestimo = emprestimo.getDataEmprestimo();
+        if(dataEmprestimo != null){
+            if(livro == null) {
+                exemplaresPermitidos.addAll(exemplares);
+            } else {
+                for(Exemplar e: exemplares) {
+                    if(e.getIdLivro().getId() == livro.getId()) {
+                        exemplaresPermitidos.add(e);
+                    }
+                }
+            }
+            for(Exemplar e: exemplaresPermitidos) {
+                for(Emprestimo emp: new EmprestimoDAO().buscarTodas()) {
+                    if(emp.getIdExemplar().getId() == e.getId()) {
+                        if(emp.getDataDevolucao() == null && emp.getDataEmprestimo().compareTo(dataEmprestimo) <= 0 && emp.getDataDevolucaoPrevista().compareTo(dataEmprestimo) >= 0) {
+                            exemplaresPermitidos.remove(e);
+                            continue;
+                        }
+                        if(emp.getDataDevolucao() != null && emp.getDataEmprestimo().compareTo(dataEmprestimo) <= 0 && emp.getDataDevolucao().compareTo(dataEmprestimo) >= 0) {
+                            exemplaresPermitidos.remove(e);
+                            continue;
+                        }
+                    }
+                }
+                for(Reserva r: new ReservaDAO().buscarTodas()) {
+                    if(r.getIdExemplar().getId() == e.getId()){
+                        if(r.getDataReserva().compareTo(dataEmprestimo) <= 0 && r.getDataDevolucaoPrevista().compareTo(dataEmprestimo) >= 0) {
+                            exemplaresPermitidos.remove(e);
+                        }
+                    }
+                }
+            }
         }
     }
 

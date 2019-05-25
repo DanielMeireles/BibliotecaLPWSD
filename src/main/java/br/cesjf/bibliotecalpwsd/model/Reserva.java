@@ -137,17 +137,15 @@ public class Reserva implements Serializable {
         this.obsCancelamento = obsCancelamento;
     }
     
-    
-    
     public Date getDataDevolucaoPrevista() {
         Calendar c = Calendar.getInstance();
         if(dataReserva != null){
             
             c.setTime(dataReserva);
             
-            if(idExemplar.getCircular() && idUsuario.getTipo().equals('C')){
+            if(idExemplar.getCircular() && idUsuario.getTipoTexto().equals("Aluno")){
                 c.add(Calendar.DAY_OF_MONTH, 10);
-            } else if(idExemplar.getCircular() && !idUsuario.getTipo().equals('C')){
+            } else if(idExemplar.getCircular() && !idUsuario.getTipoTexto().equals("Aluno")){
                 c.add(Calendar.DAY_OF_MONTH, 15);
             } else if(!idExemplar.getCircular()) {
                 c.add(Calendar.DAY_OF_MONTH, 1);

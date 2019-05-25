@@ -107,7 +107,7 @@ public class UsuarioDAO implements Serializable {
             return "Usuario " + usuario.getNome() + " removido com sucesso!";
         } catch (Exception e) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foi possível remover o usuario!", e.getMessage());
-            return "Não foi possível remover o usuario " + usuario.getNome() + "!";
+            return "Não foi possível remover o usuario " + usuario.getNome() + ", pois ele possui reservas ou empréstimos vinculados";
         }
     }
 

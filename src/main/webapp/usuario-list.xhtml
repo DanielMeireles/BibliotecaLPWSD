@@ -117,8 +117,8 @@
                             
                             <p:spacer height="5"/>
                             
-                            <p:commandButton id="brFind"
-                                             value="Find"
+                            <p:commandButton id="brBuscar"
+                                             value="Buscar"
                                              action="#{usuarioListBean.buscarPorId(usuarioListBean.id)}"
                                              process="@form"
                                              update="@form"
@@ -161,10 +161,10 @@
                         </p:column>
                         
                         <p:column headerText="Tipo"
-                                  sortBy="#{a.tipo}"
-                                  filterBy="#{a.tipo}">
+                                  sortBy="#{a.tipoTexto}"
+                                  filterBy="#{a.tipoTexto}">
                             
-                            <h:outputText value="#{a.tipo}" />
+                            <h:outputText value="#{a.tipoTexto}" />
                         
                         </p:column>
                         

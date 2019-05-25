@@ -30,7 +30,7 @@ public class LivroListBean extends ProcessReport implements Serializable {
     private List livros;
     private List livrosSelecionados;
     private List livrosFiltrados;
-    private int id;
+    private Integer id;
 
     //construtor
     public LivroListBean() {
@@ -95,11 +95,11 @@ public class LivroListBean extends ProcessReport implements Serializable {
         this.livrosFiltrados = livrosFiltrados;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     

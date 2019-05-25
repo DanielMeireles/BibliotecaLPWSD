@@ -40,7 +40,7 @@
 
                         <p:spacer width="5"/>
 
-                        <p:commandButton value="Apagar Selecionado"
+                        <p:commandButton value="Apagar Selecionada"
                                          icon="fa fa-trash"
                                          styleClass="btn-danger"
                                          action="#{reservaListBean.exclude(actionEvent)}"
@@ -61,7 +61,7 @@
                                    icon="fa fa-plus"
                                    styleClass="hidden-md hidden-lg btn-primary">
 
-                        <p:menuitem value="Apagar Selecionado"
+                        <p:menuitem value="Apagar Selecionada"
                                     action="#{reservaListBean.exclude(actionEvent)}"
                                     process="@this"
                                     update="@form"
@@ -117,8 +117,8 @@
                             
                             <p:spacer height="5"/>
                             
-                            <p:commandButton id="brFind"
-                                             value="Find"
+                            <p:commandButton id="brBuscar"
+                                             value="Buscar"
                                              action="#{reservaListBean.buscarPorId(reservaListBean.id)}"
                                              process="@form"
                                              update="@form"
@@ -131,19 +131,13 @@
                                   width="5%"
                                   styleClass="align-center"
                                   exportable="false"/>
-                        
+
                         <p:column headerText="Id"
                                   sortBy="#{a.id}"
                                   filterBy="#{a.id}" >
                             
-                            <p:link value="#{a.id}"
-                                    outcome="/reserva-form" >
+                            <h:outputText value="#{a.id}"/>
                                 
-                                <f:param name="id"
-                                         value="#{a.id}"/>
-                                
-                            </p:link>
-
                         </p:column>
                         
                         <p:column headerText="Data Reserva"
@@ -151,6 +145,16 @@
                                   filterBy="#{a.dataReserva}">
                             
                             <h:outputText value="#{a.dataReserva}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                            
+                        </p:column>
+                        
+                        <p:column headerText="Data Devolução Prevista"
+                                  sortBy="#{a.dataDevolucaoPrevista}"
+                                  filterBy="#{a.dataDevolucaoPrevista}">
+                            
+                            <h:outputText value="#{a.dataDevolucaoPrevista}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                             
@@ -179,15 +183,42 @@
                             <h:outputText value="#{a.idEmprestimo}"/>
                             
                             <!--Botão Gera Empréstimo-->
-                            <p:commandButton rendered="#{a.idEmprestimo == null}"
+                            <p:commandButton rendered="#{a.idEmprestimo == null and a.obsCancelamento == null and reservaListBean.getData(a.dataReserva)}"
                                              icon="ui-icon-plus"
+                                             styleClass="btn-danger"
                                              value="Gerar Empréstimo"
-                                             actionListener="#{reservaListBean.geraEmprestimo}"
+                                             action="#{reservaListBean.geraEmprestimo(actionEvent)}"
                                              process="@this"
                                              update="@form"> 
                                 
-                                <f:setPropertyActionListener target="#{a.reserva}"
-                                                             value="#{reserva}" />
+                                <f:setPropertyActionListener target="#{reservaListBean.reserva}"
+                                                             value="#{a}" />
+                                
+                                <p:confirm header="Confirmation"
+                                           message="Você tem certeza?"
+                                           icon="ui-icon-danger"/>
+                                
+                            </p:commandButton>
+                            
+                        </p:column>
+                        
+                        <p:column headerText="Cancelamento"
+                                  sortBy="#{a.obsCancelamento}"
+                                  filterBy="#{a.obsCancelamento}">
+                            
+                            <h:outputText value="#{a.obsCancelamento}"/>
+                            
+                            <!--Botão Efetua Cancelamento-->
+                            <p:commandButton rendered="#{a.obsCancelamento == null and a.idEmprestimo == null}"
+                                             icon="ui-icon-plus"
+                                             styleClass="btn-danger"
+                                             value="Efetuar Cancelamento"
+                                             action="#{reservaListBean.efetuaCancelamento}"
+                                             process="@this"
+                                             update="@form"> 
+                                
+                                <f:setPropertyActionListener target="#{reservaListBean.reserva}"
+                                                             value="#{a}" />
                                 
                                 <p:confirm header="Confirmation"
                                            message="Você tem certeza?"
