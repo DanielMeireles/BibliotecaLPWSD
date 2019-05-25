@@ -84,7 +84,6 @@ public class ExemplarFormBean implements Serializable {
     
     public void clear() {
         exemplar = new Exemplar();
-        id = 0;
     }
     
     public boolean isNew() {

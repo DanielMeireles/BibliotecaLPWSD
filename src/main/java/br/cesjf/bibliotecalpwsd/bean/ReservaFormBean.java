@@ -87,7 +87,6 @@ public class ReservaFormBean implements Serializable {
     
     public void clear() {
         reserva = new Reserva();
-        id = 0;
     }
     
     public boolean isNew() {

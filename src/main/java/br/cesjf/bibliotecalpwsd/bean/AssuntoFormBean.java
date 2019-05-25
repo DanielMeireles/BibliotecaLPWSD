@@ -70,7 +70,6 @@ public class AssuntoFormBean implements Serializable {
     
     public void clear() {
         assunto = new Assunto();
-        id = 0;
     }
     
     public boolean isNew() {

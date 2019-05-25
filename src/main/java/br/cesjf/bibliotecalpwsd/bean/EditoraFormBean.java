@@ -70,7 +70,6 @@ public class EditoraFormBean implements Serializable {
     
     public void clear() {
         editora = new Editora();
-        id = 0;
     }
     
     public boolean isNew() {

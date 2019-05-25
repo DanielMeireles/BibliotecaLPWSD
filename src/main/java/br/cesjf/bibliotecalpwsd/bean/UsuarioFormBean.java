@@ -78,7 +78,6 @@ public class UsuarioFormBean implements Serializable {
     
     public void clear() {
         usuario = new Usuario();
-        id = 0;
     }
     
     public boolean isNew() {

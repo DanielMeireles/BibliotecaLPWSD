@@ -11,11 +11,11 @@
         <f:metadata>
             
             <f:viewParam name="id"
-                         value="#{reservaFormBean.id}"
+                         value="#{emprestimoFormBean.id}"
                          converter="javax.faces.Long"/>
             
             <f:event type="preRenderView"
-                     listener="#{reservaFormBean.init}"/>
+                     listener="#{emprestimoFormBean.init}"/>
             
         </f:metadata>
         
@@ -25,7 +25,7 @@
     
     <ui:define name="title">
         
-        <h:outputText value="Reserva"/>
+        <h:outputText value="Emprestimo"/>
         
     </ui:define>
     
@@ -42,31 +42,31 @@
                      class="hidden-sm hidden-xs">
                     
                     <p:commandButton value="Salvar"
-                                     action="#{reservaFormBean.record(actionEvent)}"
-                                     oncomplete="#{reservaFormBean.clear()}"
+                                     action="#{emprestimoFormBean.record(actionEvent)}"
+                                     oncomplete="#{emprestimoFormBean.clear()}"
                                      update="@form"
                                      icon="fa fa-check"
                                      styleClass="btn-primary"/>
                     
                     <p:spacer width="5"
-                              rendered="#{reservaFormBean.isNew()}"/>
+                              rendered="#{emprestimoFormBean.isNew()}"/>
                     
                     <p:commandButton value="Limpar"
-                                     action="#{reservaFormBean.clear}"
+                                     action="#{emprestimoFormBean.clear}"
                                      process="@this"
                                      icon="fa fa-refresh"
                                      styleClass="btn-success"
                                      update="@form"
-                                     rendered="#{reservaFormBean.isNew()}"
+                                     rendered="#{emprestimoFormBean.isNew()}"
                                      resetValues="true"/>
                     
                     <p:spacer width="5"
-                              rendered="#{not reservaFormBean.isNew()}"/>
+                              rendered="#{not emprestimoFormBean.isNew()}"/>
 
                     <p:commandButton value="Apagar"
-                                     action="#{reservaFormBean.exclude(actionEvent)}"
+                                     action="#{emprestimoFormBean.exclude(actionEvent)}"
                                      process="@this"
-                                     rendered="#{not reservaFormBean.isNew()}"
+                                     rendered="#{not emprestimoFormBean.isNew()}"
                                      icon="fa fa-trash"
                                      styleClass="btn-danger">
                         
@@ -83,31 +83,31 @@
                     
                     <p:commandButton value="Voltar"
                                      immediate="true"
-                                     action="reserva-list?faces-redirect=true"
+                                     action="emprestimo-list?faces-redirect=true"
                                      process="@this"
                                      icon="fa fa-reply"/>
                     
                 </div>
                 
                 <p:splitButton value="Salvar"
-                               action="#{reservaFormBean.record(actionEvent)}"
-                               oncomplete="#{reservaFormBean.clear()}"
+                               action="#{emprestimoFormBean.record(actionEvent)}"
+                               oncomplete="#{emprestimoFormBean.clear()}"
                                update="@form"
                                icon="fa fa-check"
                                styleClass="hidden-md hidden-lg btn-primary">
                     
                     <p:menuitem value="Limpar"
-                                action="#{reservaFormBean.clear}"
+                                action="#{emprestimoFormBean.clear}"
                                 process="@this"
                                 update="@form"
-                                rendered="#{reservaFormBean.isNew()}"
+                                rendered="#{emprestimoFormBean.isNew()}"
                                 resetValues="true"
                                 icon="fa fa-refresh"/>
                     
                     <p:menuitem value="Apagar"
-                                action="#{reservaFormBean.exclude(actionEvent)}"
+                                action="#{emprestimoFormBean.exclude(actionEvent)}"
                                 process="@this"
-                                rendered="#{not reservaFormBean.isNew()}"
+                                rendered="#{not emprestimoFormBean.isNew()}"
                                 icon="fa fa-trash">
                         
                         <f:setPropertyActionListener value="true"
@@ -122,7 +122,7 @@
                     <p:separator/>
                     
                     <p:menuitem value="Voltar"
-                                action="reserva-list?faces-redirect=true"
+                                action="emprestimo-list?faces-redirect=true"
                                 process="@this"
                                 immediate="true"
                                 icon="fa fa-reply"/>
@@ -146,7 +146,7 @@
                         <div class="ui-sm-12 ui-g-11" >
                             
                             <p:inputText id="id"
-                                         value="#{reservaFormBean.reserva.id}"
+                                         value="#{emprestimoFormBean.emprestimo.id}"
                                          readonly="true"
                                          styleClass="form-control ui-state-disabled"
                                          style="width: 100%"
@@ -174,7 +174,7 @@
                         <div class="ui-sm-12 ui-g-11" >
 
                             <p:selectOneMenu id="inptUsuario"
-                                             value="#{reservaFormBean.reserva.idUsuario}"
+                                             value="#{emprestimoFormBean.emprestimo.idUsuario}"
                                              converter="usuarioConverter"
                                              required="true"
                                              requiredMessage="O usuário não foi selecionado"
@@ -184,7 +184,7 @@
                                 <f:selectItem itemLabel="Selecione o usuário"
                                               itemDisabled="true" />
 
-                                <f:selectItems value="#{reservaFormBean.usuariosPermitidos}"/>
+                                <f:selectItems value="#{emprestimoFormBean.usuariosPermitidos}"/>
 
                             </p:selectOneMenu>
 
@@ -202,37 +202,37 @@
                         
                         <div class="ui-sm-12 ui-g-11">
                             
-                            <p:outputLabel value="Data Reserva"
-                                           for="inptDataReserva"/>
+                            <p:outputLabel value="Data Emprestimo"
+                                           for="inptDataEmprestimo"/>
                             
                         </div>
                         
                         <div class="ui-sm-12 ui-g-11" >
                             
                             
-                            <p:calendar id="inptDataReserva"
+                            <p:calendar id="inptDataEmprestimo"
                                         mindate="today"
                                         locale="pt_BR"
-                                        value="#{reservaFormBean.reserva.dataReserva}"
+                                        value="#{emprestimoFormBean.emprestimo.dataEmprestimo}"
                                         timeZone="America/Sao_Paulo"
                                         pattern="dd/MM/yyyy"
                                         mask="true"
                                         required="true"
-                                        requiredMessage="A data de reserva não foi selecionada">
+                                        requiredMessage="A data de emprestimo não foi selecionada">
                                 
                                 <p:ajax event="dateSelect"
-                                        listener="#{reservaFormBean.calcularExemplaresPermitidos(event)}"
+                                        listener="#{emprestimoFormBean.calcularExemplaresPermitidos(event)}"
                                         update="inptExemplar"/>
                                 
                                 <p:ajax event="change"
-                                        listener="#{reservaFormBean.calcularExemplaresPermitidos(event)}"
+                                        listener="#{emprestimoFormBean.calcularExemplaresPermitidos(event)}"
                                         update="inptExemplar"/>
                                 
                             </p:calendar>
                             
                             <span class="help-block"> 
                                 
-                                <p:message for="inptDataReserva" /> 
+                                <p:message for="inptDataEmprestimo" /> 
                                 
                             </span> 
                             
@@ -252,7 +252,7 @@
                         <div class="ui-sm-12 ui-g-11" >
 
                             <p:selectOneMenu id="inptLivro"
-                                             value="#{reservaFormBean.livro}"
+                                             value="#{emprestimoFormBean.livro}"
                                              converter="livroConverter"
                                              filter="true"
                                              filterMatchMode="contains">
@@ -260,10 +260,10 @@
                                 <f:selectItem itemLabel="Selecione o livro"
                                               itemDisabled="true" />
 
-                                <f:selectItems value="#{reservaFormBean.livros}"/>
+                                <f:selectItems value="#{emprestimoFormBean.livros}"/>
                                 
                                 <p:ajax event="change"
-                                        listener="#{reservaFormBean.calcularExemplaresPermitidos(event)}"
+                                        listener="#{emprestimoFormBean.calcularExemplaresPermitidos(event)}"
                                         update="inptExemplar"/>
 
                             </p:selectOneMenu>
@@ -290,7 +290,7 @@
                         <div class="ui-sm-12 ui-g-11" >
 
                             <p:selectOneMenu id="inptExemplar"
-                                             value="#{reservaFormBean.reserva.idExemplar}"
+                                             value="#{emprestimoFormBean.emprestimo.idExemplar}"
                                              converter="exemplarConverter"
                                              required="true"
                                              requiredMessage="O exemplar não foi selecionado"
@@ -300,7 +300,7 @@
                                 <f:selectItem itemLabel="Selecione o exemplar"
                                               itemDisabled="true" />
 
-                                <f:selectItems value="#{reservaFormBean.exemplaresPermitidos}"/>
+                                <f:selectItems value="#{emprestimoFormBean.exemplaresPermitidos}"/>
 
                             </p:selectOneMenu>
 
@@ -323,24 +323,24 @@
                     <hr/>
                     
                     <p:splitButton value="Salvar"
-                                   action="#{reservaFormBean.record(actionEvent)}"
-                                   oncomplete="#{reservaFormBean.clear()}"
+                                   action="#{emprestimoFormBean.record(actionEvent)}"
+                                   oncomplete="#{emprestimoFormBean.clear()}"
                                    update="@form"
                                    icon="fa fa-check"
                                    styleClass="hidden-md hidden-lg btn-primary">
                         
                         <p:menuitem value="Limpar"
-                                    action="#{reservaFormBean.clear}"
+                                    action="#{emprestimoFormBean.clear}"
                                     process="@this"
                                     update="@form"
-                                    rendered="#{reservaFormBean.isNew()}"
+                                    rendered="#{emprestimoFormBean.isNew()}"
                                     resetValues="true"
                                     icon="fa fa-refresh"/>
                         
                         <p:menuitem value="Apagar"
-                                    action="#{reservaFormBean.exclude(actionEvent)}"
+                                    action="#{emprestimoFormBean.exclude(actionEvent)}"
                                     process="@this"
-                                    rendered="#{not reservaFormBean.isNew()}"
+                                    rendered="#{not emprestimoFormBean.isNew()}"
                                     icon="fa fa-trash">
                             
                             <f:setPropertyActionListener value="true"
@@ -355,7 +355,7 @@
                         <p:separator/>
                         
                         <p:menuitem value="Voltar"
-                                    action="reserva-list?faces-redirect=true"
+                                    action="emprestimo-list?faces-redirect=true"
                                     process="@this"
                                     immediate="true"
                                     icon="fa fa-reply"/>

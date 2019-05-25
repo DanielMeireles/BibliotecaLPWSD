@@ -10,6 +10,7 @@ import br.cesjf.bibliotecalpwsd.model.Emprestimo;
 import br.cesjf.bibliotecalpwsd.util.ProcessReport;
 import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -109,6 +110,12 @@ public class EmprestimoListBean extends ProcessReport implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
         }
+    }
+    
+    public void efetuaDevolucao() {
+        emprestimo.setDataDevolucao(new Date());
+        new EmprestimoDAO().persistir(emprestimo);
+        msgScreen("Devolução efetuada com sucesso!");
     }
     
 }

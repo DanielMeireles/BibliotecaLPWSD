@@ -109,7 +109,6 @@ public class LivroFormBean implements Serializable {
     
     public void clear() {
         livro = new Livro();
-        id = 0;
     }
     
     public boolean isNew() {

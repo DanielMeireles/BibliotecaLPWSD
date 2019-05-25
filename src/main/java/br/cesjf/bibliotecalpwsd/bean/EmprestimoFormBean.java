@@ -7,6 +7,7 @@ package br.cesjf.bibliotecalpwsd.bean;
 
 import br.cesjf.bibliotecalpwsd.dao.EmprestimoDAO;
 import br.cesjf.bibliotecalpwsd.dao.ExemplarDAO;
+import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
 import br.cesjf.bibliotecalpwsd.dao.ReservaDAO;
 import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
 import br.cesjf.bibliotecalpwsd.model.Emprestimo;
@@ -39,6 +40,7 @@ public class EmprestimoFormBean implements Serializable {
     private List<Exemplar> exemplaresPermitidos;
     private List<Usuario> usuariosPermitidos;
     private Livro livro;
+    private List<Livro> livros;
     private int id;
 
     //construtor
@@ -54,6 +56,7 @@ public class EmprestimoFormBean implements Serializable {
         } else {
             emprestimo = new Emprestimo();
         }
+        livros = new LivroDAO().buscarTodas();
     }
 
     //Métodos dos botões 
@@ -91,6 +94,7 @@ public class EmprestimoFormBean implements Serializable {
     }
 
     public List<Usuario> getUsuariosPermitidos() {
+        usuariosPermitidos();
         return usuariosPermitidos;
     }
 
@@ -106,11 +110,16 @@ public class EmprestimoFormBean implements Serializable {
         this.livro = livro;
     }
     
-    
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
+    }
     
     public void clear() {
         emprestimo = new Emprestimo();
-        id = 0;
     }
     
     public boolean isNew() {
@@ -135,9 +144,9 @@ public class EmprestimoFormBean implements Serializable {
                     emp.add(e);
                 }
             }
-            if(u.getTipo().equals('C') && emp.size() < 3) {
+            if(u.getTipoTexto().equals("Aluno") && emp.size() < 3) {
                 usuariosPermitidos.add(u);
-            } else if(!u.getTipo().equals('C') && emp.size() < 5) {
+            } else if(!u.getTipoTexto().equals("Aluno") && emp.size() < 5) {
                 usuariosPermitidos.add(u);
             }
         }
@@ -183,9 +192,9 @@ public class EmprestimoFormBean implements Serializable {
                 }
             }
         }
-        /*if(reserva.getIdExemplar() != null) {
-            exemplaresPermitidos.add(reserva.getIdExemplar());
-        }*/
+        if(emprestimo.getIdExemplar() != null) {
+            exemplaresPermitidos.add(emprestimo.getIdExemplar());
+        }
     }
 
 }

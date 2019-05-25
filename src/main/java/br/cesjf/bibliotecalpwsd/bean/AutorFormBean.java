@@ -70,7 +70,6 @@ public class AutorFormBean implements Serializable {
     
     public void clear() {
         autor = new Autor();
-        id = 0;
     }
     
     public boolean isNew() {

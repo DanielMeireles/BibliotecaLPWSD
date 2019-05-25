@@ -58,17 +58,14 @@ public class Emprestimo implements Serializable {
     private Usuario idUsuario;
 
     public Emprestimo() {
-        dataEmprestimo = new Date();
     }
 
     public Emprestimo(Integer id) {
         this.id = id;
-        dataEmprestimo = new Date();
     }
 
     public Emprestimo(Integer id, Date dataEmprestimo) {
         this.id = id;
-        this.dataEmprestimo = dataEmprestimo;
     }
 
     public Integer getId() {
