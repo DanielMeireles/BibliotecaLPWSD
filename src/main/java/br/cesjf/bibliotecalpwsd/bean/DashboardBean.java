@@ -5,15 +5,21 @@
  */
 package br.cesjf.bibliotecalpwsd.bean;
 
+import br.cesjf.bibliotecalpwsd.dao.AssuntoDAO;
 import br.cesjf.bibliotecalpwsd.dao.EmprestimoDAO;
 import br.cesjf.bibliotecalpwsd.dao.ReservaDAO;
+import br.cesjf.bibliotecalpwsd.model.Assunto;
 import br.cesjf.bibliotecalpwsd.model.Emprestimo;
 import br.cesjf.bibliotecalpwsd.model.Reserva;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -41,17 +47,21 @@ public class DashboardBean implements Serializable {
     private BarChartModel livrosReservados;
     private List<Emprestimo> emprestimos;
     private BarChartModel livrosEmprestados;
+    private List<Assunto> assuntos;
+    private BarChartModel livrosReservadosCategoria;
 
     //construtor
     public DashboardBean() {
         reservas = new ReservaDAO().buscarTodas();
         emprestimos = new EmprestimoDAO().buscarTodas();
+        assuntos = new AssuntoDAO().buscarTodas();
     }
     
     @PostConstruct
     public void init() {
         criarLivrosReservados();
         criarLivrosEmprestados();
+        criarReservadosCategoria();
     }
     
     public void criarLivrosReservados() {
@@ -251,6 +261,114 @@ public class DashboardBean implements Serializable {
  
         livrosEmprestados.setOptions(options);
     }
+    
+    public void criarReservadosCategoria() {
+        livrosReservadosCategoria = new BarChartModel();
+        ChartData data = new ChartData();
+         
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        
+        barDataSet.setLabel("Quantidade de Livros Reservados por Categoria ");
+        
+        Calendar data1 = Calendar.getInstance();
+        data1.setTime(new Date());
+        data1.set(Calendar.DAY_OF_MONTH, 1);
+        data1.set(Calendar.MONTH, data1.get(Calendar.MONTH)-3);
+        
+        Calendar data2 = Calendar.getInstance();
+        data2.setTime(new Date());
+        data2.set(Calendar.DAY_OF_MONTH, 1);
+        data2.set(Calendar.MONTH, data2.get(Calendar.MONTH)-2);
+        
+        Calendar data3 = Calendar.getInstance();
+        data3.setTime(new Date());
+        data3.set(Calendar.DAY_OF_MONTH, 1);
+        data3.set(Calendar.MONTH, data3.get(Calendar.MONTH)-1);
+        
+        Calendar data4 = Calendar.getInstance();
+        data4.setTime(new Date());
+        data4.set(Calendar.DAY_OF_MONTH, 1);
+        
+        Map<String, Integer> aux = new HashMap<String, Integer>();
+        
+        for(Assunto a: assuntos) {
+            aux.put(a.getAssunto(), 0);
+        }
+        aux = aux.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(oldValue, newValue) -> oldValue, LinkedHashMap::new));
+        
+        int mes1 = 0;
+        int mes2 = 0;
+        int mes3 = 0;
+        
+        for(Reserva r: reservas){
+            Calendar reserva = Calendar.getInstance();
+            reserva.setTime(r.getDataReserva());
+            if((reserva.equals(data1) || reserva.after(data1)) && reserva.before(data4)) {
+                for(Assunto a: r.getIdExemplar().getIdLivro().getAssuntoList()) {
+                    aux.computeIfPresent(a.getAssunto(), (k, v) -> v + 1);
+                }
+            }
+        }
+         
+        List<Number> values = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry: aux.entrySet()) {
+            values.add(entry.getValue());
+        }
+        barDataSet.setData(values);
+        
+        int auxValue = 0;
+        List<String> bgColor = new ArrayList<>();
+        List<String> borderColor = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry: aux.entrySet()) {
+            auxValue++;
+            if(auxValue % 2 == 0) {
+                bgColor.add("rgba(255, 99, 132, 0.2)");
+                borderColor.add("rgb(255, 99, 132)");
+            } else {
+                bgColor.add("rgba(255, 159, 64, 0.2)");
+                borderColor.add("rgb(255, 159, 64)");
+            }
+        }
+        barDataSet.setBackgroundColor(bgColor);
+        barDataSet.setBorderColor(borderColor);
+        barDataSet.setBorderWidth(1);
+         
+        data.addChartDataSet(barDataSet);
+         
+        List<String> labels = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry: aux.entrySet()) {
+            labels.add(entry.getKey());
+        }
+        data.setLabels(labels);
+        livrosReservadosCategoria.setData(data);
+         
+        //Options
+        BarChartOptions options = new BarChartOptions();
+        CartesianScales cScales = new CartesianScales();
+        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+        CartesianLinearTicks ticks = new CartesianLinearTicks();
+        ticks.setBeginAtZero(true);
+        linearAxes.setTicks(ticks);
+        cScales.addYAxesData(linearAxes);
+        options.setScales(cScales);
+         
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Gráfico de Livros Reservados por Categoria nos 3 Últimos Meses");
+        options.setTitle(title);
+ 
+        Legend legend = new Legend();
+        legend.setDisplay(true);
+        legend.setPosition("top");
+        LegendLabel legendLabels = new LegendLabel();
+        legendLabels.setFontStyle("bold");
+        legendLabels.setFontColor("#2980B9");
+        legendLabels.setFontSize(24);
+        legend.setLabels(legendLabels);
+        options.setLegend(legend);
+ 
+        livrosReservadosCategoria.setOptions(options);
+    }
 
     public List<Reserva> getReservas() {
         return reservas;
@@ -282,6 +400,22 @@ public class DashboardBean implements Serializable {
 
     public void setLivrosEmprestados(BarChartModel livrosEmprestados) {
         this.livrosEmprestados = livrosEmprestados;
+    }
+
+    public List<Assunto> getAssuntos() {
+        return assuntos;
+    }
+
+    public void setAssuntos(List<Assunto> assuntos) {
+        this.assuntos = assuntos;
+    }
+
+    public BarChartModel getLivrosReservadosCategoria() {
+        return livrosReservadosCategoria;
+    }
+
+    public void setLivrosReservadosCategoria(BarChartModel livrosReservadosCategoria) {
+        this.livrosReservadosCategoria = livrosReservadosCategoria;
     }
     
     public String mes(int m) {
