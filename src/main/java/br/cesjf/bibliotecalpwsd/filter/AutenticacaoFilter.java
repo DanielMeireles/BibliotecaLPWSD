@@ -27,7 +27,7 @@ public class AutenticacaoFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         
-        /*HttpServletRequest httpReq = (HttpServletRequest) request;
+        HttpServletRequest httpReq = (HttpServletRequest) request;
         HttpSession session = httpReq.getSession(true);
         String req = httpReq.getRequestURI();
         
@@ -39,7 +39,7 @@ public class AutenticacaoFilter implements Filter {
             RequestDispatcher rd = httpReq.getRequestDispatcher("login.xhtml");
             rd.forward(request, response);
             return;
-        }*/
+        }
         
         chain.doFilter(request, response);
         

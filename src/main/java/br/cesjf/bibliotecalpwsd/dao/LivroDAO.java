@@ -48,6 +48,18 @@ public class LivroDAO implements Serializable {
         }
     }
     
+    public List<Livro> buscar(String titulo) {
+        try {
+            EntityManager em = PersistenceUtil.getEntityManager();
+            Query query = em.createQuery("SELECT l FROM Livro l WHERE l.titulo LIKE :titulo");
+            query.setParameter("titulo", "%"+titulo+"%");
+            return query.getResultList();
+        } catch (Exception e) {
+            Logger.getLogger (PersistenceUtil.class.getName()).log(Level.WARNING, "Não foram encontrados livros!", e.getMessage());
+            return null;
+        }
+    }
+    
     public Livro buscar(Livro l){
         try {
             EntityManager em = PersistenceUtil.getEntityManager();
