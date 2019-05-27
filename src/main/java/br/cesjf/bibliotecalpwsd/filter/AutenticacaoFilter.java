@@ -30,6 +30,10 @@ public class AutenticacaoFilter implements Filter {
         /*HttpServletRequest httpReq = (HttpServletRequest) request;
         HttpSession session = httpReq.getSession(true);
         String req = httpReq.getRequestURI();
+        
+        if(req.contains("/javax.faces.resource/") || req.contains("login.xhtml")){
+            chain.doFilter(request, response);
+        }
 
         if (session.getAttribute("usuario") == null){
             RequestDispatcher rd = httpReq.getRequestDispatcher("login.xhtml");

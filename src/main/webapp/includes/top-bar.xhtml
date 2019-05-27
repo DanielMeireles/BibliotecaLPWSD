@@ -38,21 +38,12 @@
                     
                     <h:form prependId="false">
                         
-                        <div class="pull-left">
-                            
-                            <p:commandLink styleClass="btn btn-danger"
-                                           value="Alterar Senha"/>
-                            
-                        </div>
-                        
                         <div class="pull-right">
                             
                             <h:outputText>Sair</h:outputText>
-
-                                
                             
                             <p:commandLink id="logout"
-                                           action="#{logoutMB.doLogout}"
+                                           action="#{loginBean.logout}"
                                            title="Sair">
                                 
                                 <i class="fa fa-sign-out fa-2x"></i>
