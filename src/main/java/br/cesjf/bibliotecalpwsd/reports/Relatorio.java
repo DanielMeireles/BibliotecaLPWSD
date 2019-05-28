@@ -6,7 +6,6 @@
 package br.cesjf.bibliotecalpwsd.reports;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -43,7 +42,7 @@ public class Relatorio {
     }
    
     public void getRelatorio(String relatorio){
-        stream = this.getClass().getResourceAsStream("reports/Relatorio_01.jasper");
+        stream = this.getClass().getResourceAsStream("/"+relatorio+".jasper");
         Map<String, Object> params = new HashMap<String, Object>();
         baos = new ByteArrayOutputStream();
         
@@ -57,7 +56,7 @@ public class Relatorio {
             response.reset();
             response.setContentType("application/pdf");
             response.setContentLength(baos.size());
-            response.setHeader("Content-disposition", "inline; filename=relatorio.pdf");
+            response.setHeader("Content-disposition", "inline; filename="+relatorio+".pdf");
             response.getOutputStream().write(baos.toByteArray());
             response.getOutputStream().flush();
             response.getOutputStream().close();
