@@ -48,6 +48,10 @@ public class Reserva implements Serializable {
     @Column(name = "dataReserva")
     @Temporal(TemporalType.DATE)
     private Date dataReserva;
+    @Basic(optional = false)
+    @Column(name = "dataDevolucaoPrevista")
+    @Temporal(TemporalType.DATE)
+    private Date dataDevolucaoPrevista;
     @Column(name = "cancelada")
     private Boolean cancelada;
     @Basic(optional = true)
@@ -136,8 +140,16 @@ public class Reserva implements Serializable {
     public void setObsCancelamento(String obsCancelamento) {
         this.obsCancelamento = obsCancelamento;
     }
-    
+
     public Date getDataDevolucaoPrevista() {
+        return dataDevolucaoPrevista;
+    }
+
+    public void setDataDevolucaoPrevista(Date dataDevolucaoPrevista) {
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+    }
+    
+    public void calculaDevolucaoPrevista() {
         Calendar c = Calendar.getInstance();
         if(dataReserva != null){
             
@@ -159,7 +171,7 @@ public class Reserva implements Serializable {
         }else {
             c.setTime(new Date());
         }
-        return c.getTime();
+        dataDevolucaoPrevista = c.getTime();
     }
 
     @Override

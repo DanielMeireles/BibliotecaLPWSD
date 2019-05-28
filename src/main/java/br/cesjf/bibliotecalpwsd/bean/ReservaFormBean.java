@@ -61,6 +61,7 @@ public class ReservaFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
+        reserva.calculaDevolucaoPrevista();
         msgScreen(new ReservaDAO().persistir(reserva));
     }
     

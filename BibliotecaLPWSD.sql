@@ -54,6 +54,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `BibliotecaLPWSD`.`Emprestimo` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `dataEmprestimo` DATE NOT NULL,
+  `dataDevolucaoPrevista` DATE NOT NULL,
   `dataDevolucao` DATE NULL DEFAULT NULL,
   `idExemplar` INT(11) NOT NULL,
   `idUsuario` INT(11) NOT NULL,
@@ -142,6 +143,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `BibliotecaLPWSD`.`Reserva` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `dataReserva` DATE NOT NULL,
+  `dataDevolucaoPrevista` DATE NOT NULL,
   `cancelada` TINYINT(1) NULL DEFAULT NULL,
   `obsCancelamento` VARCHAR(45) NULL DEFAULT NULL,
   `idExemplar` INT(11) NOT NULL,

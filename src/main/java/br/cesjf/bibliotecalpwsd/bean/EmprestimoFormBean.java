@@ -61,6 +61,7 @@ public class EmprestimoFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
+        emprestimo.calculaDevolucaoPrevista();
         msgScreen(new EmprestimoDAO().persistir(emprestimo));
     }
     

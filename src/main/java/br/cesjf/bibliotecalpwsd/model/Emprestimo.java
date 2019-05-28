@@ -47,6 +47,10 @@ public class Emprestimo implements Serializable {
     @Column(name = "dataEmprestimo")
     @Temporal(TemporalType.DATE)
     private Date dataEmprestimo;
+    @Basic(optional = false)
+    @Column(name = "dataDevolucaoPrevista")
+    @Temporal(TemporalType.DATE)
+    private Date dataDevolucaoPrevista;
     @Column(name = "dataDevolucao")
     @Temporal(TemporalType.DATE)
     private Date dataDevolucao;
@@ -107,8 +111,16 @@ public class Emprestimo implements Serializable {
     public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
     }
-    
+
     public Date getDataDevolucaoPrevista() {
+        return dataDevolucaoPrevista;
+    }
+
+    public void setDataDevolucaoPrevista(Date dataDevolucaoPrevista) {
+        this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+    }
+    
+    public void calculaDevolucaoPrevista() {
         Calendar c = Calendar.getInstance();
         if(dataEmprestimo != null){
             
@@ -130,7 +142,7 @@ public class Emprestimo implements Serializable {
         } else {
             c.setTime(new Date());
         }
-        return c.getTime();
+        dataDevolucaoPrevista = c.getTime();
     }
 
     @Override
