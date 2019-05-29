@@ -49,8 +49,47 @@
             <div class="box box-primary">
                 
                 <div class="box-header with-border">
-
-                    <p:commandButton id="Relatorio_01" ajax="false" value="Relatório de Livros" action="#{relatorioBean.gerarRelatorio01()}" onclick="this.form.target = '_blank'" /> 
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Relatório"
+                                           for="inptRelatorio"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                            
+                            <p:selectOneMenu id="inptRelatorio"
+                                             value="#{relatorioBean.relatorio}"
+                                             required="true"
+                                             requiredMessage="O tipo de relatório não foi selecionado"
+                                             filter="true"
+                                             filterMatchMode="contains">
+                                
+                                <f:selectItem itemLabel="Selecione o tipo"
+                                              itemDisabled="true" />
+                                
+                                <f:selectItems value="#{relatorioBean.tipos}"/>
+                                
+                            </p:selectOneMenu>
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="inptRelatorio" /> 
+                                
+                            </span> 
+                            
+                            <p:commandButton id="Relatorio_01"
+                                             ajax="false"
+                                             value="Gerar Relatório"
+                                             action="#{relatorioBean.gerarRelatorio()}"
+                                             onclick="this.form.target = '_blank'" /> 
+                            
+                        </div>
+                    
+                    </div>
                     
                 </div>
                 

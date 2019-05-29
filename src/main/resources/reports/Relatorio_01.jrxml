@@ -8,7 +8,7 @@
       ,COUNT(e.id) AS Exemplares
   FROM `BibliotecaLPWSD`.`Livro` l
      , `BibliotecaLPWSD`.`Exemplar` e
- WHERE e.id = l.id
+ WHERE e.idLivro = l.id
  GROUP BY l.titulo
 ORDER BY l.titulo ASC]]>
 	</queryString>

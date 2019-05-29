@@ -185,6 +185,9 @@
             <resource>
                 <directory>src/main/resources/reports</directory>
             </resource>
+            <resource>
+                <directory>src/main/webapp/resources</directory>
+            </resource>
         </resources>
     </build>
 </project>
