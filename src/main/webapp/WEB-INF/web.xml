@@ -58,17 +58,9 @@
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
-    <filter>
-        <filter-name>AutenticacaoFilter</filter-name>
-        <filter-class>br.cesjf.bibliotecalpwsd.filter.AutenticacaoFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AutenticacaoFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
     <mime-mapping>
         <extension>xhtml</extension>
-        <mime-type>application/xhtml+xml</mime-type>
+        <mime-type>application/xml</mime-type>
     </mime-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
