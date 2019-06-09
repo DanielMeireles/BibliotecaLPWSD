@@ -11,7 +11,12 @@ import br.cesjf.bibliotecalpwsd.dao.EditoraDAO;
 import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
 import br.cesjf.bibliotecalpwsd.model.Editora;
 import br.cesjf.bibliotecalpwsd.model.Livro;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -20,6 +25,7 @@ import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
 import org.omnifaces.util.Faces;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -35,12 +41,15 @@ public class LivroFormBean implements Serializable {
     private List autores;
     private List<Editora> editoras;
     private int id;
+    private UploadedFile uploadedFile;
+    private String diretorio;
 
     //construtor
     public LivroFormBean() {
         assuntos = new AssuntoDAO().buscarTodas();
         autores = new AutorDAO().buscarTodas();
         editoras = new EditoraDAO().buscarTodas();
+        diretorio = "C:\\Arquivos";
     }
     
     public void init() {
@@ -56,6 +65,7 @@ public class LivroFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
+        upload();
         msgScreen(new LivroDAO().persistir(livro));
     }
     
@@ -106,6 +116,15 @@ public class LivroFormBean implements Serializable {
     public void setEditoras(List editoras) {
         this.editoras = editoras;
     }
+
+    public UploadedFile getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setUploadedFile(UploadedFile uploadedFile) {
+        this.uploadedFile = uploadedFile;
+        upload();
+    }
     
     public void clear() {
         livro = new Livro();
@@ -122,5 +141,43 @@ public class LivroFormBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
         }
     }
+    
+    public void upload() {
+        
+        if(uploadedFile != null) {
+            
+            File dir = new File(diretorio);
 
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            try {
+                String name = new Timestamp(System.currentTimeMillis()).toString();
+                name = name.replace("-", "").replace(".", "").replace(":", "").replace(" ", "");
+                name = name + uploadedFile.getFileName();
+                File file = new File(dir, name);
+                OutputStream out = new FileOutputStream(file);
+                out.write(uploadedFile.getContents());
+                out.close();
+                msgScreen("O arquivo " + uploadedFile.getFileName() + " foi salvo!");
+                livro.setCapa(name);
+                uploadedFile = null;
+            } catch(IOException e) {
+               msgScreen("Não foi possível salvar o arquivo " + uploadedFile.getFileName() + "!" + e);
+            }
+        }
+    }
+    
+    
+    public void deleteCapa() {
+        
+        File file = new File(diretorio + "\\" + livro.getCapa());
+        file.delete();
+        msgScreen("Arquivo apagado com sucesso");
+        livro.setCapa(null);
+        new LivroDAO().persistir(livro);
+        
+    }
+    
 }

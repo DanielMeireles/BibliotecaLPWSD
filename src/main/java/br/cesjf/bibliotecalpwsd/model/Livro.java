@@ -58,6 +58,10 @@ public class Livro implements Serializable, Comparable<Livro> {
     @Basic(optional = false)
     @Column(name = "ano")
     private Integer ano;
+    @Column(name = "capa")
+    private String capa;
+    @Column(name = "arquivo")
+    private String arquivo;
     @ManyToMany
     @JoinTable(name = "LivroAssunto",
         joinColumns = @JoinColumn(name = "idLivro"),
@@ -130,6 +134,24 @@ public class Livro implements Serializable, Comparable<Livro> {
     public void setAno(Integer ano) {
         this.ano = ano;
     }
+
+    public String getCapa() {
+        return capa;
+    }
+
+    public void setCapa(String capa) {
+        this.capa = capa;
+    }
+
+    public String getArquivo() {
+        return arquivo;
+    }
+
+    public void setArquivo(String arquivo) {
+        this.arquivo = arquivo;
+    }
+    
+    
     
     public String getAssuntos() {
         String texto = "";

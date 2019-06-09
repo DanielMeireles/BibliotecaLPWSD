@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS `BibliotecaLPWSD`.`Livro` (
   `isbn` VARCHAR(9) NOT NULL,
   `edicao` INT(11) NOT NULL,
   `ano` INT(5) NOT NULL,
+  `capa` VARCHAR(45) NULL DEFAULT NULL,
+  `arquivo` VARCHAR(45) NULL DEFAULT NULL,
   `idEditora` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_tbLivro_tbEditora1_idx` (`idEditora` ASC) ,

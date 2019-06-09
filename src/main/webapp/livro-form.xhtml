@@ -32,7 +32,8 @@
     <ui:define name="body">
         
         <h:form id="form"
-                prependId="false">
+                prependId="false"
+                enctype="multipart/form-data">
             
             <p:focus context="@form"/>
             
@@ -43,6 +44,7 @@
                     
                     <p:commandButton value="Salvar"
                                      action="#{livroFormBean.record(actionEvent)}"
+                                     ajax="false"
                                      update="@form"
                                      icon="fa fa-check"
                                      styleClass="btn-primary"/>
@@ -90,6 +92,7 @@
                 
                 <p:splitButton value="Salvar"
                                action="#{livroFormBean.record(actionEvent)}"
+                               ajax="false"
                                update="@form"
                                icon="fa fa-check"
                                styleClass="hidden-md hidden-lg btn-primary">
@@ -384,6 +387,55 @@
                         </div>
                         
                     </div>
+                        
+                    <div class="ui-g-6 ui-sm-12">
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Capa"/>
+                            
+                        </div>
+                        
+                        <div class="ui-material">
+                            
+                            <p:fileUpload id="inptCapa"
+                                          value="#{livroFormBean.uploadedFile}"
+                                          mode="simple" 
+                                          skinSimple="true"
+                                          dragDropSupport="true"
+                                          label="Selecione"
+                                          multiple="false"
+                                          rendered="#{livroFormBean.livro.capa == null}"/>
+                            
+                            <h:outputText value="#{livroFormBean.livro.capa}"
+                                          rendered="#{livroFormBean.livro.capa != null}"/>
+                            
+                            <p:commandButton value="Apagar"
+                                             action="#{livroFormBean.deleteCapa()}"
+                                             process="@this"
+                                             icon="fa fa-trash"
+                                             styleClass="btn-danger"
+                                             rendered="#{livroFormBean.livro.capa != null}"
+                                             ajax="true"
+                                             update="@form">
+
+                            <f:setPropertyActionListener value="true"
+                                                         target="#{facesContext.externalContext.flash.keepMessages}"/>
+
+                            <p:confirm header="Confirmação"
+                                       message="Você tem certeza?"
+                                       icon="ui-icon-danger"/>
+
+                            </p:commandButton>
+                            
+                            <span class="help-block"> 
+                            
+                                <p:message for="inptCapa"/>
+                            
+                            </span>
+                            
+                        </div>
+                        
+                    </div>
                     
                 </div>
                 
@@ -395,6 +447,7 @@
                     
                     <p:splitButton value="Salvar"
                                    action="#{livroFormBean.record(actionEvent)}"
+                                   ajax="false"
                                    update="@form"
                                    icon="fa fa-check"
                                    styleClass="hidden-md hidden-lg btn-primary">
