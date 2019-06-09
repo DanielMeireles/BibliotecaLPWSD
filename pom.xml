@@ -178,6 +178,9 @@
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
+            <resource>
+                <directory>src/main/resources/reports</directory>
+            </resource>
         </resources>
     </build>
 </project>

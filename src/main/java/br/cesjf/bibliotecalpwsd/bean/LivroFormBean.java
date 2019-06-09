@@ -42,14 +42,14 @@ public class LivroFormBean implements Serializable {
     private List<Editora> editoras;
     private int id;
     private UploadedFile uploadedFile;
-    private String diretorio;
+    private final String diretorio;
 
     //construtor
     public LivroFormBean() {
         assuntos = new AssuntoDAO().buscarTodas();
         autores = new AutorDAO().buscarTodas();
         editoras = new EditoraDAO().buscarTodas();
-        diretorio = "C:\\Arquivos";
+        diretorio = "C:\\Users\\Daniel Meireles\\Documents\\NetBeansProjects\\BibliotecaLPWSD\\target\\BibliotecaLPWSD\\resources\\arquivos";
     }
     
     public void init() {
@@ -70,6 +70,8 @@ public class LivroFormBean implements Serializable {
     }
     
     public void exclude(ActionEvent actionEvent) {
+       delete(1);
+       delete(2);
        msgScreen(new LivroDAO().remover(livro));
     }
 
@@ -116,6 +118,10 @@ public class LivroFormBean implements Serializable {
     public void setEditoras(List editoras) {
         this.editoras = editoras;
     }
+    
+    public String getCapa() {
+        return diretorio + "\\" + livro.getArquivo();
+    }
 
     public UploadedFile getUploadedFile() {
         return uploadedFile;
@@ -161,7 +167,11 @@ public class LivroFormBean implements Serializable {
                 out.write(uploadedFile.getContents());
                 out.close();
                 msgScreen("O arquivo " + uploadedFile.getFileName() + " foi salvo!");
-                livro.setCapa(name);
+                if(uploadedFile.getFileName().toUpperCase().contains(".PDF")){
+                    livro.setArquivo(name);
+                }else{
+                    livro.setCapa(name);
+                }
                 uploadedFile = null;
             } catch(IOException e) {
                msgScreen("Não foi possível salvar o arquivo " + uploadedFile.getFileName() + "!" + e);
@@ -169,13 +179,25 @@ public class LivroFormBean implements Serializable {
         }
     }
     
-    
-    public void deleteCapa() {
+    public void delete(int i) {
         
-        File file = new File(diretorio + "\\" + livro.getCapa());
-        file.delete();
+        File file;
+        if(i == 1 && livro.getCapa() != null) {
+            file = new File(diretorio + "\\" + livro.getCapa());
+            file.delete();
+        } else if(i == 2 && livro.getArquivo() != null) {
+            file = new File(diretorio + "\\" + livro.getArquivo());
+            file.delete();
+        }
+        
         msgScreen("Arquivo apagado com sucesso");
-        livro.setCapa(null);
+        
+        if(i == 1) {
+            livro.setCapa(null);
+        } else {
+            livro.setArquivo(null);
+        }
+        
         new LivroDAO().persistir(livro);
         
     }

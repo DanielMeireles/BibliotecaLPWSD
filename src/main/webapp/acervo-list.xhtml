@@ -117,7 +117,15 @@
                                 <h:panelGrid columns="2"
                                              style="width:100%">
                                     
-                                    <p:graphicImage value="/resources/images/cesjf.png"/> 
+                                    <p:link href="/resources/arquivos/#{(a.arquivo != null) ? a.arquivo : a.capa}"
+                                            target="_blank">
+                                        
+                                        <p:graphicImage value="/resources/arquivos/#{a.capa}"
+                                                        rendered="#{a.capa != null}"
+                                                        height="180"
+                                                        width="126"/> 
+                                        
+                                    </p:link>
 
                                     <p:outputPanel>
                                     

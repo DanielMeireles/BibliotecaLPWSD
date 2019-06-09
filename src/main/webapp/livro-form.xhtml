@@ -404,13 +404,16 @@
                                           dragDropSupport="true"
                                           label="Selecione"
                                           multiple="false"
+                                          allowTypes="/(\.|\/)(gif|jpeg|jpg|png|GIF|JPEG|JPG|PNG)$/"
+                                          invalidFileMessage="O arquivo selecionado não é uma imagem"
                                           rendered="#{livroFormBean.livro.capa == null}"/>
                             
-                            <h:outputText value="#{livroFormBean.livro.capa}"
-                                          rendered="#{livroFormBean.livro.capa != null}"/>
+                            <p:graphicImage value="/resources/arquivos/#{livroFormBean.livro.capa}"
+                                            rendered="#{livroFormBean.livro.capa != null}"
+                                            height="150"/> 
                             
                             <p:commandButton value="Apagar"
-                                             action="#{livroFormBean.deleteCapa()}"
+                                             action="#{livroFormBean.delete(1)}"
                                              process="@this"
                                              icon="fa fa-trash"
                                              styleClass="btn-danger"
@@ -436,6 +439,60 @@
                         </div>
                         
                     </div>
+                    
+                    <div class="ui-g-6 ui-sm-12">
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Arquivo"/>
+                            
+                        </div>
+                        
+                        <div class="ui-material">
+                            
+                            <p:fileUpload id="inptArquivo"
+                                          value="#{livroFormBean.uploadedFile}"
+                                          mode="simple" 
+                                          skinSimple="true"
+                                          dragDropSupport="true"
+                                          label="Selecione"
+                                          multiple="false"
+                                          accept="application/pdf"
+                                          invalidFileMessage="O arquivo selecionado não é um pdf"
+                                          rendered="#{livroFormBean.livro.arquivo == null}"/>
+                            
+                            <h:outputText value="#{livroFormBean.livro.arquivo}"
+                                          rendered="#{livroFormBean.livro.arquivo != null}"/>
+                            
+                            <p:commandButton value="Apagar"
+                                             action="#{livroFormBean.delete(2)}"
+                                             process="@this"
+                                             icon="fa fa-trash"
+                                             styleClass="btn-danger"
+                                             rendered="#{livroFormBean.livro.arquivo != null}"
+                                             ajax="true"
+                                             update="@form">
+
+                            <f:setPropertyActionListener value="true"
+                                                         target="#{facesContext.externalContext.flash.keepMessages}"/>
+
+                            <p:confirm header="Confirmação"
+                                       message="Você tem certeza?"
+                                       icon="ui-icon-danger"/>
+
+                            </p:commandButton>
+                            
+                            <span class="help-block"> 
+                            
+                                <p:message for="inptArquivo"/>
+                            
+                            </span>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    
                     
                 </div>
                 
