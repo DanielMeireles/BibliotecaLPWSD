@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -74,7 +75,7 @@ public class Livro implements Serializable, Comparable<Livro> {
         inverseJoinColumns = @JoinColumn(name = "idAutor")
     )
     private List<Autor> autorList;
-    @OneToMany(mappedBy = "idLivro")
+    @OneToMany(mappedBy = "idLivro", fetch = FetchType.EAGER)
     private List<Exemplar> exemplarList;
     @ManyToOne(optional = false)
     @JoinColumn(name = "idEditora", referencedColumnName = "id")
@@ -202,6 +203,26 @@ public class Livro implements Serializable, Comparable<Livro> {
 
     public void setIdEditora(Editora idEditora) {
         this.idEditora = idEditora;
+    }
+    
+    public int getQtdeExemplarCircular() {
+        int i = 0;
+        for(Exemplar e: exemplarList) {
+            if(e.getCircular()) {
+                i++;
+            }
+        }
+        return i;
+    }
+    
+    public int getQtdeExemplarNaoCircular() {
+        int i = 0;
+        for(Exemplar e: exemplarList) {
+            if(!e.getCircular()) {
+                i++;
+            }
+        }
+        return i;
     }
 
     @Override

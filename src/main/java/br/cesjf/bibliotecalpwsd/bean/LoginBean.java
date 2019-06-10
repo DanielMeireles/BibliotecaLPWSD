@@ -10,7 +10,6 @@ import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
 import br.cesjf.bibliotecalpwsd.model.Usuario;
 import com.github.adminfaces.template.session.AdminSession;
 import org.omnifaces.util.Faces;
-
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Specializes;
 import javax.inject.Named;
@@ -34,6 +33,7 @@ public class LoginBean extends AdminSession implements Serializable {
     private String nome;
     private String usuario;
     private String senha;
+    private String tipo;
     
     @Inject
     private AdminConfig adminConfig;
@@ -73,8 +73,9 @@ public class LoginBean extends AdminSession implements Serializable {
             Usuario u = UsuarioDAO.getInstance().buscar(usuario);
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             session.setAttribute("usuario", u);
-            session.setAttribute("nome", u.getNome());
+            session.setAttribute("nome", u.getUsuario());
             nome = u.getNome();
+            tipo = u.getTipo();
             setIsLoggedIn(true);
             Faces.getExternalContext().getFlash().setKeepMessages(true);
             Faces.redirect(adminConfig.getIndexPage());
@@ -89,10 +90,53 @@ public class LoginBean extends AdminSession implements Serializable {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
         nome = null;
+        tipo = null;
         setIsLoggedIn(false);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Logout efetuado com sucesso!", ""));
         Faces.getExternalContext().getFlash().setKeepMessages(true);
         Faces.redirect(adminConfig.getLoginPage());
+    }
+    
+    public boolean menu(String menu) {
+        //1 - Aluno, 2 - Professor, 3 - Funcionário, 4 - Bibliotecário e 5 - Administrador
+        switch(menu){
+            case "Usuários":
+                return tipo.equals("3")
+                        || tipo.equals("4")
+                        || tipo.equals("5");
+            case "Exemplares":
+                return tipo.equals("4")
+                        || tipo.equals("5");
+            case "Assuntos":
+                return tipo.equals("4")
+                        || tipo.equals("5");
+            case "Livros":
+                return tipo.equals("4")
+                        || tipo.equals("5");
+            case "Autores":
+                return tipo.equals("4")
+                        || tipo.equals("5");
+            case "Editoras":
+                return tipo.equals("4")
+                        || tipo.equals("5");
+            case "Cadastros":
+                return tipo.equals("3")
+                        || tipo.equals("4")
+                        || tipo.equals("5");
+            case "Relatórios":
+                return tipo.equals("5");
+            case "Empréstimos":
+                return tipo.equals("4")
+                        || tipo.equals("5");
+            case "Dashboard":
+                return tipo.equals("4")
+                        || tipo.equals("5");
+            case "Reservas":
+                return tipo.equals("4")
+                        || tipo.equals("5");
+            default:
+                return false;
+        }
     }
     
 }
