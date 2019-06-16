@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
@@ -49,7 +50,9 @@ public class LivroFormBean implements Serializable {
         assuntos = new AssuntoDAO().buscarTodas();
         autores = new AutorDAO().buscarTodas();
         editoras = new EditoraDAO().buscarTodas();
-        diretorio = "C:\\Users\\Daniel Meireles\\Documents\\NetBeansProjects\\BibliotecaLPWSD\\target\\BibliotecaLPWSD\\resources\\arquivos";
+        
+        ExternalContext e = FacesContext.getCurrentInstance().getExternalContext();
+        diretorio = e.getRealPath("resources\\arquivos");
     }
     
     public void init() {

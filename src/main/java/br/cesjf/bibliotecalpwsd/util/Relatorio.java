@@ -74,7 +74,7 @@ public class Relatorio {
     public Connection getConexao(){        
         try {            
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/BibliotecaLPWSD", "root", "root");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/BibliotecaLPWSD?autoReconnect=true&useSSL=false", "root", "root");
             return con;
             
         } catch (SQLException ex) {

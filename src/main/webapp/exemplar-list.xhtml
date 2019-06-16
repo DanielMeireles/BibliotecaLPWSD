@@ -134,7 +134,8 @@
                         
                         <p:column headerText="Id"
                                   sortBy="#{a.id}"
-                                  filterBy="#{a.id}" >
+                                  filterBy="#{a.id}"
+                                  width="40">
                             
                             <p:link value="#{a.id}"
                                     outcome="/exemplar-form" >
@@ -162,7 +163,8 @@
                         
                         <p:column headerText="Circular"
                                   sortBy="#{a.circularTexto}"
-                                  filterBy="#{a.circularTexto}">
+                                  filterBy="#{a.circularTexto}"
+                                  width="100">
                             
                             <h:outputText value="#{a.circularTexto}" />
                             

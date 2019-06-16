@@ -36,7 +36,9 @@
 
                     </p:commandLink>
                     
-                    <p:barChart model="#{dashboardBean.livrosReservados}" style="width: 100%; height: 500px;" widgetVar="01"/>
+                    <p:barChart model="#{dashboardBean.livrosReservados}"
+                                style="width: 100%; height: 500px;"
+                                widgetVar="01"/>
                     
                 </div>
                 
@@ -115,7 +117,7 @@
         function export01() {
            var docDefinition = {
               content: [
-                    'Bar Chart',
+                    'Livros Reservados',
                     {
                        image: $(PF('01').exportAsImage()).attr('src'),
                        width: 520
@@ -130,7 +132,7 @@
            var docDefinition = {
               content: [
                     
-                    'Bar Chart',
+                    'Livros Emprestados',
                     {
                        image: $(PF('02').exportAsImage()).attr('src'),
                        width: 520
@@ -144,7 +146,7 @@
         function export03() {
            var docDefinition = {
               content: [
-                    'Bar Chart',
+                    'Livros Reservados por Categoria',
                     {
                        image: $(PF('03').exportAsImage()).attr('src'),
                        width: 520
@@ -159,7 +161,7 @@
            var docDefinition = {
               content: [
                     
-                    'Bar Chart',
+                    'Livros Emprestados Categoria',
                     {
                        image: $(PF('04').exportAsImage()).attr('src'),
                        width: 520
@@ -173,7 +175,7 @@
         function export05() {
            var docDefinition = {
               content: [
-                    'Bar Chart',
+                    'Livros Reservados Emprestados',
                     {
                        image: $(PF('05').exportAsImage()).attr('src'),
                        width: 520

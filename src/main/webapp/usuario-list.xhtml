@@ -134,7 +134,8 @@
                         
                         <p:column headerText="Id"
                                   sortBy="#{a.id}"
-                                  filterBy="#{a.id}" >
+                                  filterBy="#{a.id}"
+                                  width="40">
                             
                             <p:link value="#{a.id}"
                                     outcome="/usuario-form" >
@@ -162,7 +163,8 @@
                         
                         <p:column headerText="Tipo"
                                   sortBy="#{a.tipoTexto}"
-                                  filterBy="#{a.tipoTexto}">
+                                  filterBy="#{a.tipoTexto}"
+                                  width="120">
                             
                             <h:outputText value="#{a.tipoTexto}" />
                         
@@ -178,7 +180,8 @@
                         
                         <p:column headerText="Usuário"
                                   sortBy="#{a.usuario}"
-                                  filterBy="#{a.usuario}">
+                                  filterBy="#{a.usuario}"
+                                  width="80">
                             
                             <h:outputText value="#{a.usuario}" />
                         

@@ -134,7 +134,8 @@
                         
                         <p:column headerText="Id"
                                   sortBy="#{a.id}"
-                                  filterBy="#{a.id}" >
+                                  filterBy="#{a.id}"
+                                  width="40">
                             
                             <p:link value="#{a.id}"
                                     outcome="/livro-form" >
@@ -170,7 +171,8 @@
 
                         <p:column headerText="Edição"
                                   sortBy="#{a.edicao}"
-                                  filterBy="#{a.edicao}">
+                                  filterBy="#{a.edicao}"
+                                  width="70">
                             
                             <h:outputText value="#{a.edicao}" />
                             
@@ -178,7 +180,8 @@
 
                         <p:column headerText="Ano"
                                   sortBy="#{a.ano}"
-                                  filterBy="#{a.ano}">
+                                  filterBy="#{a.ano}"
+                                  width="60">
                             
                             <h:outputText value="#{a.ano}" />
                             
