@@ -42,6 +42,8 @@ public class ReservaFormBean implements Serializable {
     private List<Usuario> usuariosPermitidos;
     private List<Livro> livros;
     private Livro livro;
+    private List<Usuario> usuarios;
+    private boolean verificador;
 
     //construtor
     public ReservaFormBean() {
@@ -57,6 +59,8 @@ public class ReservaFormBean implements Serializable {
             reserva = new Reserva();
         }
         livros = new LivroDAO().buscarTodas();
+        usuarios = new UsuarioDAO().buscarTodas();
+        verificador = true;
     }
 
     //Métodos dos botões 
@@ -94,8 +98,11 @@ public class ReservaFormBean implements Serializable {
         return reserva == null || reserva.getId() == null || reserva.getId() == 0;
     }
     
+    public boolean isVerificador() {
+        return verificador;
+    }
+    
     private void usuariosPermitidos() {
-        List<Usuario> usuarios = new UsuarioDAO().buscarTodas();
         usuariosPermitidos = new ArrayList<>();
         for(Usuario u: usuarios) {
             List<Emprestimo> emp = new ArrayList<>();
@@ -109,6 +116,16 @@ public class ReservaFormBean implements Serializable {
             } else if(!u.getTipoTexto().equals("Aluno") && emp.size() < 5) {
                 usuariosPermitidos.add(u);
             }
+        }
+    }
+    
+    public void verificaUsuario(SelectEvent event) {
+        usuariosPermitidos();
+        if(!usuariosPermitidos.contains(reserva.getIdUsuario())) {
+            msgScreen("Não permitido. Usuário com alguma pendência.");
+            verificador = false;
+        } else {
+            verificador = true;
         }
     }
     
@@ -143,6 +160,14 @@ public class ReservaFormBean implements Serializable {
 
     public void setLivro(Livro livro) {
         this.livro = livro;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
     
     public void calcularExemplaresPermitidos(SelectEvent event) {

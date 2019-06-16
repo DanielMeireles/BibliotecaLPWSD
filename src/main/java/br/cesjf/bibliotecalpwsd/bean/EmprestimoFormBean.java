@@ -39,9 +39,11 @@ public class EmprestimoFormBean implements Serializable {
     private Emprestimo emprestimo;
     private List<Exemplar> exemplaresPermitidos;
     private List<Usuario> usuariosPermitidos;
+    private List<Usuario> usuarios;
     private Livro livro;
     private List<Livro> livros;
     private int id;
+    private boolean verificador;
 
     //construtor
     public EmprestimoFormBean() {
@@ -57,6 +59,8 @@ public class EmprestimoFormBean implements Serializable {
             emprestimo = new Emprestimo();
         }
         livros = new LivroDAO().buscarTodas();
+        usuarios = new UsuarioDAO().buscarTodas();
+        verificador = true;
     }
 
     //Métodos dos botões 
@@ -118,6 +122,18 @@ public class EmprestimoFormBean implements Serializable {
     public void setLivros(List<Livro> livros) {
         this.livros = livros;
     }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+    
+    public boolean isVerificador() {
+        return verificador;
+    }
     
     public void clear() {
         emprestimo = new Emprestimo();
@@ -136,7 +152,6 @@ public class EmprestimoFormBean implements Serializable {
     }
     
     private void usuariosPermitidos() {
-        List<Usuario> usuarios = new UsuarioDAO().buscarTodas();
         usuariosPermitidos = new ArrayList<>();
         for(Usuario u: usuarios) {
             List<Emprestimo> emp = new ArrayList<>();
@@ -150,6 +165,16 @@ public class EmprestimoFormBean implements Serializable {
             } else if(!u.getTipoTexto().equals("Aluno") && emp.size() < 5) {
                 usuariosPermitidos.add(u);
             }
+        }
+    }
+    
+    public void verificaUsuario(SelectEvent event) {
+        usuariosPermitidos();
+        if(!usuariosPermitidos.contains(emprestimo.getIdUsuario())) {
+            msgScreen("Não permitido. Usuário com alguma pendência.");
+            verificador = false;
+        } else {
+            verificador = true;
         }
     }
     

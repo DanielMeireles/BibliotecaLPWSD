@@ -46,7 +46,8 @@
                                      oncomplete="#{emprestimoFormBean.clear()}"
                                      update="@form"
                                      icon="fa fa-check"
-                                     styleClass="btn-primary"/>
+                                     styleClass="btn-primary"
+                                     rendered="#{emprestimoFormBean.verificador}"/>
                     
                     <p:spacer width="5"
                               rendered="#{emprestimoFormBean.isNew()}"/>
@@ -94,7 +95,8 @@
                                oncomplete="#{emprestimoFormBean.clear()}"
                                update="@form"
                                icon="fa fa-check"
-                               styleClass="hidden-md hidden-lg btn-primary">
+                               styleClass="hidden-md hidden-lg btn-primary"
+                               rendered="#{emprestimoFormBean.verificador}">
                     
                     <p:menuitem value="Limpar"
                                 action="#{emprestimoFormBean.clear}"
@@ -184,7 +186,11 @@
                                 <f:selectItem itemLabel="Selecione o usuário"
                                               itemDisabled="true" />
 
-                                <f:selectItems value="#{emprestimoFormBean.usuariosPermitidos}"/>
+                                <f:selectItems value="#{emprestimoFormBean.usuarios}"/>
+                                
+                                <p:ajax event="change"
+                                        listener="#{emprestimoFormBean.verificaUsuario(event)}"
+                                        update="@form"/>
 
                             </p:selectOneMenu>
 
