@@ -93,6 +93,51 @@
             </div>
             
         </h:form>
+        
+        <h:form id="formGerencial">
+            
+            <div class="box box-primary">
+                
+                <div class="box-header with-border">
+                    
+                    <div class="ui-sm-12 ui-g-6 ui-g-nopad"> 
+                        
+                        <div class="ui-sm-12 ui-g-11">
+                            
+                            <p:outputLabel value="Relatório Gerencial"
+                                           for="range"/>
+                            
+                        </div>
+                        
+                        <div class="ui-sm-12 ui-g-11" >
+                        
+                            <p:datePicker id="range"
+                                          selectionMode="range"
+                                          value="#{relatorioBean.range}"
+                                          readonlyInput="true"
+                                          placeholder="Selecione a data inicial e final"/>
+                            
+                            <span class="help-block"> 
+                                
+                                <p:message for="range" /> 
+                                
+                            </span> 
+                            
+                            <p:commandButton id="Relatorio_01"
+                                             ajax="false"
+                                             value="Gerar Relatório"
+                                             action="#{relatorioBean.gerarRelatorioGerencial()}"
+                                             onclick="this.form.target = '_blank'" /> 
+                    
+                        </div>
+                            
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </h:form>
 
     </ui:define>
 

@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -41,9 +42,14 @@ public class Relatorio {
         this.response = (HttpServletResponse) context.getExternalContext().getResponse();
     }
    
-    public void getRelatorio(String relatorio){
+    public void getRelatorio(String relatorio, Date dataInicial, Date dataFinal){
+        
         stream = this.getClass().getResourceAsStream("/"+relatorio+".jasper");
         Map<String, Object> params = new HashMap<String, Object>();
+        if(dataInicial == null) {
+            params.put("p_inicio", dataInicial);
+            params.put("p_fim", dataFinal);
+        }
         baos = new ByteArrayOutputStream();
         
         try {
