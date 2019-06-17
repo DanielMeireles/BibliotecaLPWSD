@@ -115,7 +115,8 @@
                                           selectionMode="range"
                                           value="#{relatorioBean.range}"
                                           readonlyInput="true"
-                                          placeholder="Selecione a data inicial e final"/>
+                                          placeholder="Selecione a data inicial e final"
+                                          locale="pt_BR"/>
                             
                             <span class="help-block"> 
                                 
@@ -138,6 +139,8 @@
             </div>
             
         </h:form>
+        
+        <h:outputScript name="js/calendar.js" />
 
     </ui:define>
 
