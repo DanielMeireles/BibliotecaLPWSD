@@ -20,12 +20,14 @@
         }
 
     </style>
-    
+        
     <ul class="nav navbar-nav">
         
         <li class="dropdown user user-menu">
             
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#"
+               class="dropdown-toggle"
+               data-toggle="dropdown">
                 
                 <pe:gravatar id="userImage"
                              value="nonexisting"/>
@@ -34,17 +36,23 @@
             
             <ul class="dropdown-menu">
                 
+                <li class="user-header">
+                    
+                    <p>
+                        #{loginBean.nome}
+                    </p>
+                    
+                </li>
+                
                 <li class="user-footer">
                     
                     <h:form prependId="false">
                         
                         <div class="pull-right">
                             
-                            <h:outputText>Sair</h:outputText>
-                            
                             <p:commandLink id="logout"
                                            action="#{loginBean.logout}"
-                                           title="Sair">
+                                           title="Logoff">
                                 
                                 <i class="fa fa-sign-out fa-2x"></i>
                                 
@@ -67,10 +75,10 @@
                class="#{adminConfig.controlSidebar.showOnMobile ? '':'hidden-sm hidden-xs'}"
                data-toggle="control-sidebar">
                 
-                <i class="fa fa-gears"/>
-                
-            </a>
+                <i class="fa fa-gears"></i>
             
+            </a>
+        
         </li>
 
     </ul>
