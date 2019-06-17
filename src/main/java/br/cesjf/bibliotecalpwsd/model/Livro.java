@@ -10,7 +10,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -75,7 +74,7 @@ public class Livro implements Serializable, Comparable<Livro> {
         inverseJoinColumns = @JoinColumn(name = "idAutor")
     )
     private List<Autor> autorList;
-    @OneToMany(mappedBy = "idLivro", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "idLivro")
     private List<Exemplar> exemplarList;
     @ManyToOne(optional = false)
     @JoinColumn(name = "idEditora", referencedColumnName = "id")
