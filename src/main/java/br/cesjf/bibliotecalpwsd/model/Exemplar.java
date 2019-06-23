@@ -130,7 +130,7 @@ public class Exemplar implements Serializable {
 
     @Override
     public String toString() {
-        return "Livro: " + idLivro.getTitulo() + " - Exemplar: " + id;
+        return "Exemplar: " + id + " - Circular: " + getCircularTexto();
     }
     
 }

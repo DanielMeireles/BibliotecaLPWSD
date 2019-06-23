@@ -46,7 +46,7 @@ public class Relatorio {
         
         stream = this.getClass().getResourceAsStream("/"+relatorio+".jasper");
         Map<String, Object> params = new HashMap<String, Object>();
-        if(dataInicial == null) {
+        if(dataInicial != null) {
             params.put("p_inicio", dataInicial);
             params.put("p_fim", dataFinal);
         }

@@ -43,7 +43,6 @@ public class ReservaFormBean implements Serializable {
     private List<Livro> livros;
     private Livro livro;
     private List<Usuario> usuarios;
-    private boolean verificador;
 
     //construtor
     public ReservaFormBean() {
@@ -60,7 +59,6 @@ public class ReservaFormBean implements Serializable {
         }
         livros = new LivroDAO().buscarTodas();
         usuarios = new UsuarioDAO().buscarTodas();
-        verificador = true;
     }
 
     //Métodos dos botões 
@@ -98,10 +96,6 @@ public class ReservaFormBean implements Serializable {
         return reserva == null || reserva.getId() == null || reserva.getId() == 0;
     }
     
-    public boolean isVerificador() {
-        return verificador;
-    }
-    
     private void usuariosPermitidos() {
         usuariosPermitidos = new ArrayList<>();
         for(Usuario u: usuarios) {
@@ -123,9 +117,6 @@ public class ReservaFormBean implements Serializable {
         usuariosPermitidos();
         if(!usuariosPermitidos.contains(reserva.getIdUsuario())) {
             msgScreen("Não permitido. Usuário com alguma pendência.");
-            verificador = false;
-        } else {
-            verificador = true;
         }
     }
     

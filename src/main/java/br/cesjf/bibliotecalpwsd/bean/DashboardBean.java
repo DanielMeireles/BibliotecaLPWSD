@@ -12,6 +12,7 @@ import br.cesjf.bibliotecalpwsd.model.Assunto;
 import br.cesjf.bibliotecalpwsd.model.Emprestimo;
 import br.cesjf.bibliotecalpwsd.model.Reserva;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -81,20 +82,38 @@ public class DashboardBean implements Serializable {
         data1.setTime(new Date());
         data1.set(Calendar.DAY_OF_MONTH, 1);
         data1.set(Calendar.MONTH, data1.get(Calendar.MONTH)-3);
+        data1.set(Calendar.HOUR, 0);
+        data1.set(Calendar.MINUTE, 0);
+        data1.set(Calendar.SECOND, 0);
+        data1.set(Calendar.MILLISECOND, 0);
         
         Calendar data2 = Calendar.getInstance();
         data2.setTime(new Date());
         data2.set(Calendar.DAY_OF_MONTH, 1);
         data2.set(Calendar.MONTH, data2.get(Calendar.MONTH)-2);
+        data2.set(Calendar.HOUR, 0);
+        data2.set(Calendar.MINUTE, 0);
+        data2.set(Calendar.SECOND, 0);
+        data2.set(Calendar.MILLISECOND, 0);
         
         Calendar data3 = Calendar.getInstance();
         data3.setTime(new Date());
         data3.set(Calendar.DAY_OF_MONTH, 1);
         data3.set(Calendar.MONTH, data3.get(Calendar.MONTH)-1);
+        data3.set(Calendar.HOUR, 0);
+        data3.set(Calendar.MINUTE, 0);
+        data3.set(Calendar.SECOND, 0);
+        data3.set(Calendar.MILLISECOND, 0);
         
         Calendar data4 = Calendar.getInstance();
         data4.setTime(new Date());
         data4.set(Calendar.DAY_OF_MONTH, 1);
+        data4.set(Calendar.HOUR, 0);
+        data4.set(Calendar.MINUTE, 0);
+        data4.set(Calendar.SECOND, 0);
+        data4.set(Calendar.MILLISECOND, 0);
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat();
         
         int mes1 = 0;
         int mes2 = 0;
@@ -180,20 +199,36 @@ public class DashboardBean implements Serializable {
         data1.setTime(new Date());
         data1.set(Calendar.DAY_OF_MONTH, 1);
         data1.set(Calendar.MONTH, data1.get(Calendar.MONTH)-3);
+        data1.set(Calendar.HOUR, 0);
+        data1.set(Calendar.MINUTE, 0);
+        data1.set(Calendar.SECOND, 0);
+        data1.set(Calendar.MILLISECOND, 0);
         
         Calendar data2 = Calendar.getInstance();
         data2.setTime(new Date());
         data2.set(Calendar.DAY_OF_MONTH, 1);
         data2.set(Calendar.MONTH, data2.get(Calendar.MONTH)-2);
+        data2.set(Calendar.HOUR, 0);
+        data2.set(Calendar.MINUTE, 0);
+        data2.set(Calendar.SECOND, 0);
+        data2.set(Calendar.MILLISECOND, 0);
         
         Calendar data3 = Calendar.getInstance();
         data3.setTime(new Date());
         data3.set(Calendar.DAY_OF_MONTH, 1);
         data3.set(Calendar.MONTH, data3.get(Calendar.MONTH)-1);
+        data3.set(Calendar.HOUR, 0);
+        data3.set(Calendar.MINUTE, 0);
+        data3.set(Calendar.SECOND, 0);
+        data3.set(Calendar.MILLISECOND, 0);
         
         Calendar data4 = Calendar.getInstance();
         data4.setTime(new Date());
         data4.set(Calendar.DAY_OF_MONTH, 1);
+        data4.set(Calendar.HOUR, 0);
+        data4.set(Calendar.MINUTE, 0);
+        data4.set(Calendar.SECOND, 0);
+        data4.set(Calendar.MILLISECOND, 0);
         
         int mes1 = 0;
         int mes2 = 0;
@@ -279,20 +314,36 @@ public class DashboardBean implements Serializable {
         data1.setTime(new Date());
         data1.set(Calendar.DAY_OF_MONTH, 1);
         data1.set(Calendar.MONTH, data1.get(Calendar.MONTH)-3);
+        data1.set(Calendar.HOUR, 0);
+        data1.set(Calendar.MINUTE, 0);
+        data1.set(Calendar.SECOND, 0);
+        data1.set(Calendar.MILLISECOND, 0);
         
         Calendar data2 = Calendar.getInstance();
         data2.setTime(new Date());
         data2.set(Calendar.DAY_OF_MONTH, 1);
         data2.set(Calendar.MONTH, data2.get(Calendar.MONTH)-2);
+        data2.set(Calendar.HOUR, 0);
+        data2.set(Calendar.MINUTE, 0);
+        data2.set(Calendar.SECOND, 0);
+        data2.set(Calendar.MILLISECOND, 0);
         
         Calendar data3 = Calendar.getInstance();
         data3.setTime(new Date());
         data3.set(Calendar.DAY_OF_MONTH, 1);
         data3.set(Calendar.MONTH, data3.get(Calendar.MONTH)-1);
+        data3.set(Calendar.HOUR, 0);
+        data3.set(Calendar.MINUTE, 0);
+        data3.set(Calendar.SECOND, 0);
+        data3.set(Calendar.MILLISECOND, 0);
         
         Calendar data4 = Calendar.getInstance();
         data4.setTime(new Date());
         data4.set(Calendar.DAY_OF_MONTH, 1);
+        data4.set(Calendar.HOUR, 0);
+        data4.set(Calendar.MINUTE, 0);
+        data4.set(Calendar.SECOND, 0);
+        data4.set(Calendar.MILLISECOND, 0);
         
         Map<String, Integer> aux = new HashMap<String, Integer>();
         
@@ -387,20 +438,36 @@ public class DashboardBean implements Serializable {
         data1.setTime(new Date());
         data1.set(Calendar.DAY_OF_MONTH, 1);
         data1.set(Calendar.MONTH, data1.get(Calendar.MONTH)-3);
+        data1.set(Calendar.HOUR, 0);
+        data1.set(Calendar.MINUTE, 0);
+        data1.set(Calendar.SECOND, 0);
+        data1.set(Calendar.MILLISECOND, 0);
         
         Calendar data2 = Calendar.getInstance();
         data2.setTime(new Date());
         data2.set(Calendar.DAY_OF_MONTH, 1);
         data2.set(Calendar.MONTH, data2.get(Calendar.MONTH)-2);
+        data2.set(Calendar.HOUR, 0);
+        data2.set(Calendar.MINUTE, 0);
+        data2.set(Calendar.SECOND, 0);
+        data2.set(Calendar.MILLISECOND, 0);
         
         Calendar data3 = Calendar.getInstance();
         data3.setTime(new Date());
         data3.set(Calendar.DAY_OF_MONTH, 1);
         data3.set(Calendar.MONTH, data3.get(Calendar.MONTH)-1);
+        data3.set(Calendar.HOUR, 0);
+        data3.set(Calendar.MINUTE, 0);
+        data3.set(Calendar.SECOND, 0);
+        data3.set(Calendar.MILLISECOND, 0);
         
         Calendar data4 = Calendar.getInstance();
         data4.setTime(new Date());
         data4.set(Calendar.DAY_OF_MONTH, 1);
+        data4.set(Calendar.HOUR, 0);
+        data4.set(Calendar.MINUTE, 0);
+        data4.set(Calendar.SECOND, 0);
+        data4.set(Calendar.MILLISECOND, 0);
         
         Map<String, Integer> aux = new HashMap<String, Integer>();
         
@@ -495,20 +562,36 @@ public class DashboardBean implements Serializable {
         data1.setTime(new Date());
         data1.set(Calendar.DAY_OF_MONTH, 1);
         data1.set(Calendar.MONTH, data1.get(Calendar.MONTH)-3);
+        data1.set(Calendar.HOUR, 0);
+        data1.set(Calendar.MINUTE, 0);
+        data1.set(Calendar.SECOND, 0);
+        data1.set(Calendar.MILLISECOND, 0);
         
         Calendar data2 = Calendar.getInstance();
         data2.setTime(new Date());
         data2.set(Calendar.DAY_OF_MONTH, 1);
         data2.set(Calendar.MONTH, data2.get(Calendar.MONTH)-2);
+        data2.set(Calendar.HOUR, 0);
+        data2.set(Calendar.MINUTE, 0);
+        data2.set(Calendar.SECOND, 0);
+        data2.set(Calendar.MILLISECOND, 0);
         
         Calendar data3 = Calendar.getInstance();
         data3.setTime(new Date());
         data3.set(Calendar.DAY_OF_MONTH, 1);
         data3.set(Calendar.MONTH, data3.get(Calendar.MONTH)-1);
+        data3.set(Calendar.HOUR, 0);
+        data3.set(Calendar.MINUTE, 0);
+        data3.set(Calendar.SECOND, 0);
+        data3.set(Calendar.MILLISECOND, 0);
         
         Calendar data4 = Calendar.getInstance();
         data4.setTime(new Date());
         data4.set(Calendar.DAY_OF_MONTH, 1);
+        data4.set(Calendar.HOUR, 0);
+        data4.set(Calendar.MINUTE, 0);
+        data4.set(Calendar.SECOND, 0);
+        data4.set(Calendar.MILLISECOND, 0);
         
         int emp = 0;
         int res = 0;

@@ -43,7 +43,6 @@ public class EmprestimoFormBean implements Serializable {
     private Livro livro;
     private List<Livro> livros;
     private int id;
-    private boolean verificador;
 
     //construtor
     public EmprestimoFormBean() {
@@ -60,7 +59,6 @@ public class EmprestimoFormBean implements Serializable {
         }
         livros = new LivroDAO().buscarTodas();
         usuarios = new UsuarioDAO().buscarTodas();
-        verificador = true;
     }
 
     //Métodos dos botões 
@@ -131,10 +129,6 @@ public class EmprestimoFormBean implements Serializable {
         this.usuarios = usuarios;
     }
     
-    public boolean isVerificador() {
-        return verificador;
-    }
-    
     public void clear() {
         emprestimo = new Emprestimo();
     }
@@ -172,9 +166,6 @@ public class EmprestimoFormBean implements Serializable {
         usuariosPermitidos();
         if(!usuariosPermitidos.contains(emprestimo.getIdUsuario())) {
             msgScreen("Não permitido. Usuário com alguma pendência.");
-            verificador = false;
-        } else {
-            verificador = true;
         }
     }
     
