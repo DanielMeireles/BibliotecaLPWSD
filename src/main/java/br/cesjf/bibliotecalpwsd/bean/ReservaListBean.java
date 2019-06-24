@@ -138,6 +138,7 @@ public class ReservaListBean extends ProcessReport implements Serializable {
         emp.setIdExemplar(reserva.getIdExemplar());
         emp.setIdUsuario(reserva.getIdUsuario());
         emp.setDataEmprestimo(new Date());
+        emp.calculaDevolucaoPrevista();
         reserva.setIdEmprestimo(emp);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ReservaDAO().persistir(reserva)));
         reservas = new ReservaDAO().buscarTodas();
