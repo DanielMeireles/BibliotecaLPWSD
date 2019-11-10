@@ -5,6 +5,7 @@
  */
 package br.cesjf.bibliotecalpwsd.model;
 
+import br.cesjf.bibliotecalpwsd.enums.UserType;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class Reserva implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "dataReserva")
     @Temporal(TemporalType.DATE)
@@ -69,27 +70,91 @@ public class Reserva implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(name = "idUsuario", referencedColumnName = "id")
     private Usuario idUsuario;
-
+    
     public Reserva() {
         this.cancelada = false;
     }
+    
+    public Reserva(Builder builder) {
+        this.id = builder.id;
+        this.dataReserva = builder.dataReserva;
+        this.dataDevolucaoPrevista = builder.dataDevolucaoPrevista;
+        this.cancelada = builder.cancelada;
+        this.obsCancelamento = builder.obsCancelamento;
+        this.idEmprestimo = builder.idEmprestimo;
+        this.idExemplar = builder.idExemplar;
+        this.idUsuario = builder.idUsuario;
+    }
+    
+    public static class Builder {
+        
+        private Long id;
+        private Date dataReserva;
+        private Date dataDevolucaoPrevista;
+        private Boolean cancelada;
+        private String obsCancelamento;
+        private Emprestimo idEmprestimo;
+        private Exemplar idExemplar;
+        private Usuario idUsuario;
+        
+        public static Builder newInstance() { 
+            return new Builder(); 
+        } 
+        
+        private Builder() {
+            
+        }
 
-    public Reserva(Integer id) {
-        this.id = id;
-        this.cancelada = false;
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setDataReserva(Date dataReserva) {
+            this.dataReserva = dataReserva;
+            return this;
+        }
+
+        public Builder setDataDevolucaoPrevista(Date dataDevolucaoPrevista) {
+            this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+            return this;
+        }
+
+        public Builder setCancelada(Boolean cancelada) {
+            this.cancelada = cancelada;
+            return this;
+        }
+
+        public Builder setObsCancelamento(String obsCancelamento) {
+            this.obsCancelamento = obsCancelamento;
+            return this;
+        }
+
+        public Builder setIdEmprestimo(Emprestimo idEmprestimo) {
+            this.idEmprestimo = idEmprestimo;
+            return this;
+        }
+
+        public Builder setIdExemplar(Exemplar idExemplar) {
+            this.idExemplar = idExemplar;
+            return this;
+        }
+
+        public Builder setIdUsuario(Usuario idUsuario) {
+            this.idUsuario = idUsuario;
+            return this;
+        }
+        
+        public Reserva build() {
+            return new Reserva(this);
+        }
     }
 
-    public Reserva(Integer id, Date dataReserva) {
-        this.id = id;
-        this.dataReserva = dataReserva;
-        this.cancelada = false;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -155,9 +220,9 @@ public class Reserva implements Serializable {
             
             c.setTime(dataReserva);
             
-            if(idExemplar.getCircular() && idUsuario.getTipoTexto().equals("Aluno")){
+            if(idExemplar.getCircular() && idUsuario.getTipo().equals(UserType.ALUNO)){
                 c.add(Calendar.DAY_OF_MONTH, 10);
-            } else if(idExemplar.getCircular() && !idUsuario.getTipoTexto().equals("Aluno")){
+            } else if(idExemplar.getCircular() && !idUsuario.getTipo().equals(UserType.ALUNO)){
                 c.add(Calendar.DAY_OF_MONTH, 15);
             } else if(!idExemplar.getCircular()) {
                 c.add(Calendar.DAY_OF_MONTH, 1);
@@ -196,7 +261,7 @@ public class Reserva implements Serializable {
 
     @Override
     public String toString() {
-        return Integer.toString(id);
+        return Long.toString(id);
     }
     
 }
