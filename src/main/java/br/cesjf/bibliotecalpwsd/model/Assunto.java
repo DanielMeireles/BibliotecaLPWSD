@@ -38,7 +38,7 @@ public class Assunto implements Serializable, Comparable<Assunto> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "assunto")
     private String assunto;
@@ -47,21 +47,57 @@ public class Assunto implements Serializable, Comparable<Assunto> {
 
     public Assunto() {
     }
-
-    public Assunto(Integer id) {
-        this.id = id;
+    
+    public Assunto(Builder builder) {
+        this.id = builder.id;
+        this.assunto = builder.assunto;
+        this.livroList = builder.livroList;
+    }
+    
+    public static class Builder {
+        
+        private Long id;
+        private String assunto;
+        private List<Livro> livroList;
+        
+        public static Builder newInstance() { 
+            return new Builder(); 
+        } 
+        
+        private Builder() {
+            
+        }
+        
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+        
+        public Builder setAssunto(String assunto) {
+            this.assunto = assunto;
+            return this;
+        }
+        
+        public Builder setLivroList(List<Livro> livroList) {
+            this.livroList = livroList;
+            return this;
+        }
+        
+        public Assunto build() {
+            return new Assunto(this);
+        }
+        
     }
 
-    public Assunto(Integer id, String assunto) {
-        this.id = id;
-        this.assunto = assunto;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,7 +108,7 @@ public class Assunto implements Serializable, Comparable<Assunto> {
     public void setAssunto(String assunto) {
         this.assunto = assunto;
     }
-
+    
     @XmlTransient
     public List<Livro> getLivroList() {
         return livroList;
