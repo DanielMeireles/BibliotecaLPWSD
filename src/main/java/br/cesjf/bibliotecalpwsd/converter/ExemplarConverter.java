@@ -24,7 +24,7 @@ public class ExemplarConverter implements Converter, Serializable {
     @Override
     public Object getAsObject(FacesContext arg0, UIComponent arg1, String id) {
         if (id != null && !id.isEmpty()) {
-            return (Exemplar) new ExemplarDAO().buscar(Integer.valueOf(id));
+            return ExemplarDAO.getInstance().find(Long.valueOf(id));
         }
         return id;
     }
