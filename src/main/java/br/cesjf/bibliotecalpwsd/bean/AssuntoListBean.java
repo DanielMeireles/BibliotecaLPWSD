@@ -11,8 +11,6 @@ import br.cesjf.bibliotecalpwsd.util.ProcessReport;
 import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -28,38 +26,42 @@ public class AssuntoListBean extends ProcessReport implements Serializable {
     private static final long serialVersionUID = 1L;
     private Assunto assunto;
     private List assuntos;
-    private List assuntosSelecionados;
+    private List<Assunto> assuntosSelecionados;
     private List assuntosFiltrados;
-    private Integer id;
+    private Long id;
 
     //construtor
     public AssuntoListBean() {
-        assuntos = new AssuntoDAO().buscarTodas();
-        assunto = new Assunto();
+        assuntos = AssuntoDAO.getInstance().getList();
+        assunto = Assunto.Builder
+                         .newInstance()
+                         .build();
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        msgScreen(new AssuntoDAO().persistir(assunto));
-        assuntos = new AssuntoDAO().buscarTodas();
+        AssuntoDAO.getInstance().persist(assunto);
+        assuntos = AssuntoDAO.getInstance().getList();
     }
 
     public void exclude(ActionEvent actionEvent) {
-        for (Object a: assuntosSelecionados){
-            msgScreen(new AssuntoDAO().remover((Assunto) a));
+        for (Assunto a: assuntosSelecionados){
+            AssuntoDAO.getInstance().remove(a.getId());
         }
-        assuntos = new AssuntoDAO().buscarTodas();
+        assuntos = AssuntoDAO.getInstance().getList();
     }
     
     public void novo(ActionEvent actionEvent) {
-        assunto = new Assunto();
+        assunto = Assunto.Builder
+                         .newInstance()
+                         .build();
     }
     
-    public void buscarPorId(Integer id) {
+    public void buscarPorId(Long id) {
         if (id == null) {
             throw new BusinessException("Insira um ID");
         }
-        assuntosSelecionados.add(new AssuntoDAO().buscar(id));
+        assuntosSelecionados.add(AssuntoDAO.getInstance().find(id));
     }
 
     //getters and setters
@@ -95,20 +97,12 @@ public class AssuntoListBean extends ProcessReport implements Serializable {
         this.assuntosFiltrados = assuntosFiltrados;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
     }
     
 }
