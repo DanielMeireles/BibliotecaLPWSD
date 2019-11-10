@@ -45,7 +45,7 @@ public class Livro implements Serializable, Comparable<Livro> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "titulo")
     private String titulo;
@@ -79,27 +79,112 @@ public class Livro implements Serializable, Comparable<Livro> {
     @ManyToOne(optional = false)
     @JoinColumn(name = "idEditora", referencedColumnName = "id")
     private Editora idEditora;
-
+    
     public Livro() {
     }
+    
+    public Livro(Builder builder) {
+        this.id = builder.id;
+        this.titulo = builder.titulo;
+        this.isbn = builder.isbn;
+        this.edicao = builder.edicao;
+        this.ano = builder.ano;
+        this.capa = builder.capa;
+        this.arquivo = builder.arquivo;
+        this.assuntoList = builder.assuntoList;
+        this.autorList = builder.autorList;
+        this.exemplarList = builder.exemplarList;
+        this.idEditora = builder.idEditora;
+    }
+    
+    public static class Builder {
+        
+        private Long id;
+        private String titulo;
+        private String isbn;
+        private Integer edicao;
+        private Integer ano;
+        private String capa;
+        private String arquivo;
+        private List<Assunto> assuntoList;
+        private List<Autor> autorList;
+        private List<Exemplar> exemplarList;
+        private Editora idEditora;
+        
+        public static Builder newInstance() { 
+            return new Builder(); 
+        } 
+        
+        private Builder() {
+            
+        }
 
-    public Livro(Integer id) {
-        this.id = id;
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setTitulo(String titulo) {
+            this.titulo = titulo;
+            return this;
+        }
+
+        public Builder setIsbn(String isbn) {
+            this.isbn = isbn;
+            return this;
+        }
+
+        public Builder setEdicao(Integer edicao) {
+            this.edicao = edicao;
+            return this;
+        }
+
+        public Builder setAno(Integer ano) {
+            this.ano = ano;
+            return this;
+        }
+
+        public Builder setCapa(String capa) {
+            this.capa = capa;
+            return this;
+        }
+
+        public Builder setArquivo(String arquivo) {
+            this.arquivo = arquivo;
+            return this;
+        }
+
+        public Builder setAssuntoList(List<Assunto> assuntoList) {
+            this.assuntoList = assuntoList;
+            return this;
+        }
+
+        public Builder setAutorList(List<Autor> autorList) {
+            this.autorList = autorList;
+            return this;
+        }
+
+        public Builder setExemplarList(List<Exemplar> exemplarList) {
+            this.exemplarList = exemplarList;
+            return this;
+        }
+
+        public Builder setIdEditora(Editora idEditora) {
+            this.idEditora = idEditora;
+            return this;
+        }
+        
+        public Livro build() {
+            return new Livro(this);
+        }
+        
     }
 
-    public Livro(Integer id, String titulo, String isbn, int edicao, Integer ano) {
-        this.id = id;
-        this.titulo = titulo;
-        this.isbn = isbn;
-        this.edicao = edicao;
-        this.ano = ano;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
