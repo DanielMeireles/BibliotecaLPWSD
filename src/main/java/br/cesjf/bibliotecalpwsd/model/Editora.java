@@ -38,30 +38,62 @@ public class Editora implements Serializable, Comparable<Editora> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "nome")
     private String nome;
     @OneToMany(mappedBy = "idEditora")
     private List<Livro> livroList;
-
+    
     public Editora() {
     }
+    
+    public Editora(Builder builder) {
+        this.id = builder.id;
+        this.nome = builder.nome;
+        this.livroList = builder.livroList;
+    }
+    
+    public static class Builder {
+        
+        private Long id;
+        private String nome;
+        private List<Livro> livroList;
+        
+        public static Builder newInstance() { 
+            return new Builder(); 
+        } 
+        
+        private Builder() {
+            
+        }
 
-    public Editora(Integer id) {
-        this.id = id;
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setNome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder setLivroList(List<Livro> livroList) {
+            this.livroList = livroList;
+            return this;
+        }
+        
+        public Editora build() {
+            return new Editora(this);
+        }
+        
     }
 
-    public Editora(Integer id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
