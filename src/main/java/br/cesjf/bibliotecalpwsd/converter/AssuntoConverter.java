@@ -24,7 +24,7 @@ public class AssuntoConverter implements Converter, Serializable {
     @Override
     public Object getAsObject(FacesContext arg0, UIComponent arg1, String id) {
         if (id != null && !id.isEmpty()) {
-            return (Assunto) new AssuntoDAO().buscar(Integer.valueOf(id));
+            return AssuntoDAO.getInstance().find(Long.valueOf(id));
         }
         return id;
     }
