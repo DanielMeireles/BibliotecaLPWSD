@@ -24,7 +24,7 @@ public class ReservaConverter implements Converter, Serializable {
     @Override
     public Object getAsObject(FacesContext arg0, UIComponent arg1, String id) {
         if (id != null && !id.isEmpty()) {
-            return (Reserva) new ReservaDAO().buscar(Integer.valueOf(id));
+            return ReservaDAO.getInstance().find(Long.valueOf(id));
         }
         return id;
     }
