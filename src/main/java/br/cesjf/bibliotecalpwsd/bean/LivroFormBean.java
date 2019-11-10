@@ -9,8 +9,10 @@ import br.cesjf.bibliotecalpwsd.dao.AssuntoDAO;
 import br.cesjf.bibliotecalpwsd.dao.AutorDAO;
 import br.cesjf.bibliotecalpwsd.dao.EditoraDAO;
 import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
+import br.cesjf.bibliotecalpwsd.enums.MessageType;
 import br.cesjf.bibliotecalpwsd.model.Editora;
 import br.cesjf.bibliotecalpwsd.model.Livro;
+import br.cesjf.bibliotecalpwsd.util.Message;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,7 +21,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -41,15 +42,15 @@ public class LivroFormBean implements Serializable {
     private List assuntos;
     private List autores;
     private List<Editora> editoras;
-    private int id;
+    private Long id;
     private UploadedFile uploadedFile;
     private final String diretorio;
 
     //construtor
     public LivroFormBean() {
-        assuntos = new AssuntoDAO().buscarTodas();
-        autores = new AutorDAO().buscarTodas();
-        editoras = new EditoraDAO().buscarTodas();
+        assuntos = AssuntoDAO.getInstance().getList();
+        autores = AutorDAO.getInstance().getList();
+        editoras = EditoraDAO.getInstance().getList();
         
         ExternalContext e = FacesContext.getCurrentInstance().getExternalContext();
         diretorio = e.getRealPath("resources\\arquivos");
@@ -59,8 +60,8 @@ public class LivroFormBean implements Serializable {
         if(Faces.isAjaxRequest()){
            return;
         }
-        if (id > 0) {
-            livro = new LivroDAO().buscar(id);
+        if (id != null) {
+            livro = LivroDAO.getInstance().find(id);
         } else {
             livro = new Livro();
         }
@@ -69,13 +70,13 @@ public class LivroFormBean implements Serializable {
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
         upload();
-        msgScreen(new LivroDAO().persistir(livro));
+        LivroDAO.getInstance().persist(livro);
     }
     
     public void exclude(ActionEvent actionEvent) {
        delete(1);
        delete(2);
-       msgScreen(new LivroDAO().remover(livro));
+       LivroDAO.getInstance().remove(livro.getId());
     }
 
     //getters and setters
@@ -87,11 +88,11 @@ public class LivroFormBean implements Serializable {
         this.livro = livro;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -143,14 +144,6 @@ public class LivroFormBean implements Serializable {
         return livro == null || livro.getId() == null || livro.getId() == 0;
     }
     
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
-    }
-    
     public void upload() {
         
         if(uploadedFile != null) {
@@ -169,7 +162,7 @@ public class LivroFormBean implements Serializable {
                 OutputStream out = new FileOutputStream(file);
                 out.write(uploadedFile.getContents());
                 out.close();
-                msgScreen("O arquivo " + uploadedFile.getFileName() + " foi salvo!");
+                Message.logAndScreenMessage(MessageType.INFO, "O arquivo " + uploadedFile.getFileName() + " foi salvo!");
                 if(uploadedFile.getFileName().toUpperCase().contains(".PDF")){
                     livro.setArquivo(name);
                 }else{
@@ -177,7 +170,7 @@ public class LivroFormBean implements Serializable {
                 }
                 uploadedFile = null;
             } catch(IOException e) {
-               msgScreen("Não foi possível salvar o arquivo " + uploadedFile.getFileName() + "!" + e);
+                Message.logAndScreenMessage(MessageType.INFO, "Não foi possível salvar o arquivo " + uploadedFile.getFileName() + "!");
             }
         }
     }
@@ -193,7 +186,7 @@ public class LivroFormBean implements Serializable {
             file.delete();
         }
         
-        msgScreen("Arquivo apagado com sucesso");
+        Message.logAndScreenMessage(MessageType.INFO, "Arquivo apagado com sucesso");
         
         if(i == 1) {
             livro.setCapa(null);
@@ -201,7 +194,7 @@ public class LivroFormBean implements Serializable {
             livro.setArquivo(null);
         }
         
-        new LivroDAO().persistir(livro);
+        LivroDAO.getInstance().persist(livro);
         
     }
     
