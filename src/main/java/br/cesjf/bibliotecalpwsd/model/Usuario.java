@@ -5,6 +5,7 @@
  */
 package br.cesjf.bibliotecalpwsd.model;
 
+import br.cesjf.bibliotecalpwsd.enums.UserType;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -34,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuario.findByTipo", query = "SELECT u FROM Usuario u WHERE u.tipo = :tipo")
     , @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email")
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")
-    , @NamedQuery(name = "Usuario.findBySenha", query = "SELECT u FROM Usuario u WHERE u.senha = :senha")})
+    , @NamedQuery(name = "Usuario.findBySenha", query = "SELECT u FROM Usuario u WHERE u.senha = :senha")
+    , @NamedQuery(name = "Usuario.login", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario AND u.senha = :senha")})
 public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,7 +44,7 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "nome")
     private String nome;
@@ -62,28 +64,91 @@ public class Usuario implements Serializable {
     private List<Emprestimo> emprestimoList;
     @OneToMany(mappedBy = "idUsuario")
     private List<Reserva> reservaList;
-
+    
     public Usuario() {
     }
+    
+    public Usuario(Builder builder) {
+        this.id = builder.id;
+        this.nome = builder.nome;
+        this.tipo = builder.tipo;
+        this.email = builder.email;
+        this.usuario = builder.usuario;
+        this.senha = builder.senha;
+        this.emprestimoList = builder.emprestimoList;
+        this.reservaList = builder.reservaList;
+    }
+    
+    public static class Builder {
+        
+        private Long id;
+        private String nome;
+        private String tipo;
+        private String email;
+        private String usuario;
+        private String senha;
+        private List<Emprestimo> emprestimoList;
+        private List<Reserva> reservaList;
+        
+        public static Builder newInstance() { 
+            return new Builder(); 
+        } 
+        
+        private Builder() {
+            
+        }
 
-    public Usuario(Integer id) {
-        this.id = id;
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setNome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder setTipo(String tipo) {
+            this.tipo = tipo;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setUsuario(String usuario) {
+            this.usuario = usuario;
+            return this;
+        }
+
+        public Builder setSenha(String senha) {
+            this.senha = senha;
+            return this;
+        }
+
+        public Builder setEmprestimoList(List<Emprestimo> emprestimoList) {
+            this.emprestimoList = emprestimoList;
+            return this;
+        }
+
+        public Builder setReservaList(List<Reserva> reservaList) {
+            this.reservaList = reservaList;
+            return this;
+        }
+        
+        public Usuario build() {
+            return new Usuario(this);
+        }
+        
     }
 
-    public Usuario(Integer id, String nome, String tipo, String email, String usuario, String senha) {
-        this.id = id;
-        this.nome = nome;
-        this.tipo = tipo;
-        this.email = email;
-        this.usuario = usuario;
-        this.senha = senha;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -95,29 +160,24 @@ public class Usuario implements Serializable {
         this.nome = nome;
     }
 
-    public String getTipo() {
-        return tipo;
-        
-    }
-
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
     
-    public String getTipoTexto() {
-        //1 - Aluno, 2 - Professor, 3 - Funcionário, 4 - Bibliotecário e 5 - Administrador
-        if(tipo.equals("1")) {
-            return "Aluno";
-        } else if(tipo.equals("2")) {
-            return "Professor";
-        } else if(tipo.equals("3")) {
-            return "Funcionário";
-        } else if(tipo.equals("4")) {
-            return "Bibliotecário";
-        } else if(tipo.equals("5")) {
-            return "Administrador";
+    public void setTipo(UserType tipo) {
+        this.tipo = tipo.name();
+    }
+    
+    public UserType getTipo() {
+        if(tipo == null) {
+            return null;
+        } else {
+            return UserType.valueOf(tipo);
         }
-        return tipo;
+    }
+    
+    public String getTipoTexto() {
+        return UserType.valueOf(tipo).getUserType();
     }
 
     public String getEmail() {
