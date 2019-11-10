@@ -5,7 +5,7 @@
  */
 package br.cesjf.bibliotecalpwsd.bean;
 
-import br.cesjf.bibliotecalpwsd.util.Relatorio;
+import br.cesjf.bibliotecalpwsd.util.Report;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,13 +57,13 @@ public class RelatorioBean implements Serializable {
     }
     
     public void gerarRelatorio() {
-        Relatorio relatorio = new Relatorio();
-        relatorio.getRelatorio(this.relatorio, null, null);
+        Report report = new Report();
+        report.getReport(this.relatorio, null, null);
     }
     
     public void gerarRelatorioGerencial() {
-        Relatorio relatorio = new Relatorio();
-        relatorio.getRelatorio("RelatorioGerencial", range.get(0), range.get(1));
+        Report report = new Report();
+        report.getReport("RelatorioGerencial", range.get(0), range.get(1));
     }
 
     public List<Date> getRange() {
