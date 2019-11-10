@@ -6,16 +6,16 @@
 package br.cesjf.bibliotecalpwsd.bean;
 
 import br.cesjf.bibliotecalpwsd.dao.ReservaDAO;
+import br.cesjf.bibliotecalpwsd.enums.MessageType;
 import br.cesjf.bibliotecalpwsd.model.Emprestimo;
 import br.cesjf.bibliotecalpwsd.model.Reserva;
+import br.cesjf.bibliotecalpwsd.util.Message;
 import br.cesjf.bibliotecalpwsd.util.ProcessReport;
 import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -31,14 +31,16 @@ public class ReservaListBean extends ProcessReport implements Serializable {
     private static final long serialVersionUID = 1L;
     private Reserva reserva;
     private List<Reserva> reservas;
-    private List reservasSelecionados;
+    private List<Reserva> reservasSelecionados;
     private List reservasFiltrados;
-    private Integer id;
+    private Long id;
 
     //construtor
     public ReservaListBean() {
-        reservas = new ReservaDAO().buscarTodas();
-        reserva = new Reserva();
+        reservas = ReservaDAO.getInstance().getList();
+        reserva = Reserva.Builder
+                         .newInstance()
+                         .build();
         Calendar c = Calendar.getInstance();
         for(Reserva r: reservas) {
             if(!r.getCancelada()) {
@@ -53,36 +55,38 @@ public class ReservaListBean extends ProcessReport implements Serializable {
                     if(c.getTime().compareTo(new Date()) < 0) {
                         r.setCancelada(Boolean.TRUE);
                         r.setObsCancelamento("Sistema");
-                        new ReservaDAO().persistir(r);
+                        ReservaDAO.getInstance().persist(r);
                     }
                 }
             }
         }
-        reservas = new ReservaDAO().buscarTodas();
+        reservas = ReservaDAO.getInstance().getList();
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        msgScreen(new ReservaDAO().persistir(reserva));
-        reservas = new ReservaDAO().buscarTodas();
+        ReservaDAO.getInstance().persist(reserva);
+        reservas = ReservaDAO.getInstance().getList();
     }
 
     public void exclude(ActionEvent actionEvent) {
-        for (Object a: reservasSelecionados){
-            msgScreen(new ReservaDAO().remover((Reserva) a));
+        for (Reserva r: reservasSelecionados){
+            ReservaDAO.getInstance().remove(r.getId());
         }
-        reservas = new ReservaDAO().buscarTodas();
+        reservas = ReservaDAO.getInstance().getList();
     }
     
     public void novo(ActionEvent actionEvent) {
-        reserva = new Reserva();
+        reserva = Reserva.Builder
+                         .newInstance()
+                         .build();
     }
     
-    public void buscarPorId(Integer id) {
+    public void buscarPorId(Long id) {
         if (id == null) {
             throw new BusinessException("Insira um ID");
         }
-        reservasSelecionados.add(new ReservaDAO().buscar(id));
+        reservasSelecionados.add(ReservaDAO.getInstance().find(id));
     }
 
     //getters and setters
@@ -118,11 +122,11 @@ public class ReservaListBean extends ProcessReport implements Serializable {
         this.reservasFiltrados = reservasFiltrados;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
@@ -134,30 +138,24 @@ public class ReservaListBean extends ProcessReport implements Serializable {
     }
     
     public void geraEmprestimo(ActionEvent actionEvent) {
-        Emprestimo emp = new Emprestimo();
+        Emprestimo emp = Emprestimo.Builder
+                                   .newInstance()
+                                   .build();
         emp.setIdExemplar(reserva.getIdExemplar());
         emp.setIdUsuario(reserva.getIdUsuario());
         emp.setDataEmprestimo(new Date());
         emp.calculaDevolucaoPrevista();
         reserva.setIdEmprestimo(emp);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", new ReservaDAO().persistir(reserva)));
-        reservas = new ReservaDAO().buscarTodas();
+        ReservaDAO.getInstance().persist(reserva);
+        reservas = ReservaDAO.getInstance().getList();
     }
     
     public void efetuaCancelamento() {
         reserva.setCancelada(Boolean.TRUE);
         reserva.setObsCancelamento("Usuário");
-        new ReservaDAO().persistir(reserva);
-        reservas = new ReservaDAO().buscarTodas();
-        msgScreen("Reserva cancelada com sucesso!");
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
+        ReservaDAO.getInstance().persist(reserva);
+        reservas = ReservaDAO.getInstance().getList();
+        Message.screenMessage(MessageType.INFO, "Reserva cancelada com sucesso!");
     }
     
 }
