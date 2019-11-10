@@ -24,7 +24,7 @@ public class AutorConverter implements Converter, Serializable {
     @Override
     public Object getAsObject(FacesContext arg0, UIComponent arg1, String id) {
         if (id != null && !id.isEmpty()) {
-            return (Autor) new AutorDAO().buscar(Integer.valueOf(id));
+            return AutorDAO.getInstance().find(Long.valueOf(id));
         }
         return id;
     }
