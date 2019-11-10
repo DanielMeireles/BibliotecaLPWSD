@@ -10,17 +10,18 @@ import br.cesjf.bibliotecalpwsd.dao.ExemplarDAO;
 import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
 import br.cesjf.bibliotecalpwsd.dao.ReservaDAO;
 import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
+import br.cesjf.bibliotecalpwsd.enums.MessageType;
+import br.cesjf.bibliotecalpwsd.enums.UserType;
 import br.cesjf.bibliotecalpwsd.model.Emprestimo;
 import br.cesjf.bibliotecalpwsd.model.Exemplar;
 import br.cesjf.bibliotecalpwsd.model.Livro;
 import br.cesjf.bibliotecalpwsd.model.Reserva;
 import br.cesjf.bibliotecalpwsd.model.Usuario;
+import br.cesjf.bibliotecalpwsd.util.Message;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -42,7 +43,7 @@ public class EmprestimoFormBean implements Serializable {
     private List<Usuario> usuarios;
     private Livro livro;
     private List<Livro> livros;
-    private int id;
+    private Long id;
 
     //construtor
     public EmprestimoFormBean() {
@@ -52,23 +53,25 @@ public class EmprestimoFormBean implements Serializable {
         if(Faces.isAjaxRequest()){
            return;
         }
-        if (id > 0) {
-            emprestimo = new EmprestimoDAO().buscar(id);
+        if (id != null) {
+            emprestimo = EmprestimoDAO.getInstance().find(id);
         } else {
-            emprestimo = new Emprestimo();
+            emprestimo = Emprestimo.Builder
+                                   .newInstance()
+                                   .build();
         }
-        livros = new LivroDAO().buscarTodas();
-        usuarios = new UsuarioDAO().buscarTodas();
+        livros = LivroDAO.getInstance().getList();
+        usuarios = UsuarioDAO.getInstance().getList();
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
         emprestimo.calculaDevolucaoPrevista();
-        msgScreen(new EmprestimoDAO().persistir(emprestimo));
+        EmprestimoDAO.getInstance().persist(emprestimo);
     }
     
     public void exclude(ActionEvent actionEvent) {
-        msgScreen(new EmprestimoDAO().remover(emprestimo));
+        EmprestimoDAO.getInstance().remove(emprestimo.getId());
     }
 
     //getters and setters
@@ -80,11 +83,11 @@ public class EmprestimoFormBean implements Serializable {
         this.emprestimo = emprestimo;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -130,19 +133,13 @@ public class EmprestimoFormBean implements Serializable {
     }
     
     public void clear() {
-        emprestimo = new Emprestimo();
+        emprestimo = Emprestimo.Builder
+                               .newInstance()
+                               .build();
     }
     
     public boolean isNew() {
         return emprestimo == null || emprestimo.getId() == null || emprestimo.getId() == 0;
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
     }
     
     private void usuariosPermitidos() {
@@ -154,9 +151,9 @@ public class EmprestimoFormBean implements Serializable {
                     emp.add(e);
                 }
             }
-            if(u.getTipoTexto().equals("Aluno") && emp.size() < 3) {
+            if(u.getTipo().equals(UserType.ALUNO) && emp.size() < 3) {
                 usuariosPermitidos.add(u);
-            } else if(!u.getTipoTexto().equals("Aluno") && emp.size() < 5) {
+            } else if(!u.getTipo().equals(UserType.ALUNO) && emp.size() < 5) {
                 usuariosPermitidos.add(u);
             }
         }
@@ -165,13 +162,13 @@ public class EmprestimoFormBean implements Serializable {
     public void verificaUsuario(SelectEvent event) {
         usuariosPermitidos();
         if(!usuariosPermitidos.contains(emprestimo.getIdUsuario())) {
-            msgScreen("Não permitido. Usuário com alguma pendência.");
+            Message.screenMessage(MessageType.WARNING, "Não permitido. Usuário com alguma pendência.");
         }
     }
     
     public void calcularExemplaresPermitidos(SelectEvent event) {
-        List<Exemplar> exemplares = new ExemplarDAO().buscarTodas();
-        List<Reserva> reservas = new ReservaDAO().buscarTodas();
+        List<Exemplar> exemplares = ExemplarDAO.getInstance().getList();
+        List<Reserva> reservas = ReservaDAO.getInstance().getList();
         exemplaresPermitidos = new ArrayList<>();
         Date dataReserva = emprestimo.getDataEmprestimo();
         if(dataReserva != null){
@@ -188,7 +185,7 @@ public class EmprestimoFormBean implements Serializable {
             lista.addAll(exemplaresPermitidos);
             
             for(Exemplar e: lista) {
-                for(Emprestimo emp: new EmprestimoDAO().buscarTodas()) {
+                for(Emprestimo emp: EmprestimoDAO.getInstance().getList()) {
                     if(emp.getIdExemplar().getId() == e.getId()) {
                         if(emp.getDataDevolucao() == null && emp.getDataEmprestimo().compareTo(dataReserva) <= 0 && emp.getDataDevolucaoPrevista().compareTo(dataReserva) >= 0) {
                             exemplaresPermitidos.remove(e);
@@ -200,7 +197,7 @@ public class EmprestimoFormBean implements Serializable {
                         }
                     }
                 }
-                for(Reserva r: new ReservaDAO().buscarTodas()) {
+                for(Reserva r: ReservaDAO.getInstance().getList()) {
                     if(r.getIdExemplar().getId() == e.getId()){
                         if(!r.getCancelada() && r.getDataReserva().compareTo(dataReserva) <= 0 && r.getDataDevolucaoPrevista().compareTo(dataReserva) >= 0) {
                             exemplaresPermitidos.remove(e);
