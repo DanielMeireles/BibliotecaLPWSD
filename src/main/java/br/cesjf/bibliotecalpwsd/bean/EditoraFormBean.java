@@ -8,8 +8,6 @@ package br.cesjf.bibliotecalpwsd.bean;
 import br.cesjf.bibliotecalpwsd.dao.EditoraDAO;
 import br.cesjf.bibliotecalpwsd.model.Editora;
 import java.io.Serializable;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -25,7 +23,7 @@ public class EditoraFormBean implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private Editora editora;
-    private int id;
+    private Long id;
 
     //construtor
     public EditoraFormBean() {
@@ -35,20 +33,22 @@ public class EditoraFormBean implements Serializable {
         if(Faces.isAjaxRequest()){
            return;
         }
-        if (id > 0) {
-            editora = new EditoraDAO().buscar(id);
+        if (id != null) {
+            editora = EditoraDAO.getInstance().find(id);
         } else {
-            editora = new Editora();
+            editora = Editora.Builder
+                             .newInstance()
+                             .build();
         }
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        msgScreen(new EditoraDAO().persistir(editora));
+        EditoraDAO.getInstance().persist(editora);
     }
     
     public void exclude(ActionEvent actionEvent) {
-        msgScreen(new EditoraDAO().remover(editora));
+        EditoraDAO.getInstance().remove(editora.getId());
     }
 
     //getters and setters
@@ -60,28 +60,22 @@ public class EditoraFormBean implements Serializable {
         this.editora = editora;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
     public void clear() {
-        editora = new Editora();
+        editora = Editora.Builder
+                         .newInstance()
+                         .build();
     }
     
     public boolean isNew() {
         return editora == null || editora.getId() == null || editora.getId() == 0;
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
     }
 
 }
