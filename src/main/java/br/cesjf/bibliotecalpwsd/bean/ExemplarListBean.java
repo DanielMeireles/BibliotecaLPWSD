@@ -11,8 +11,6 @@ import br.cesjf.bibliotecalpwsd.util.ProcessReport;
 import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -28,38 +26,42 @@ public class ExemplarListBean extends ProcessReport implements Serializable {
     private static final long serialVersionUID = 1L;
     private Exemplar exemplar;
     private List exemplares;
-    private List exemplaresSelecionados;
+    private List<Exemplar> exemplaresSelecionados;
     private List exemplaresFiltrados;
-    private Integer id;
+    private Long id;
 
     //construtor
     public ExemplarListBean() {
-        exemplares = new ExemplarDAO().buscarTodas();
-        exemplar = new Exemplar();
+        exemplares = ExemplarDAO.getInstance().getList();
+        exemplar = Exemplar.Builder
+                           .newInstance()
+                           .build();
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        msgScreen(new ExemplarDAO().persistir(exemplar));
-        exemplares = new ExemplarDAO().buscarTodas();
+        ExemplarDAO.getInstance().persist(exemplar);
+        exemplares = ExemplarDAO.getInstance().getList();
     }
 
     public void exclude(ActionEvent actionEvent) {
-        for (Object a: exemplaresSelecionados){
-            msgScreen(new ExemplarDAO().remover((Exemplar) a));
+        for (Exemplar e: exemplaresSelecionados){
+            ExemplarDAO.getInstance().remove(e.getId());
         }
-        exemplares = new ExemplarDAO().buscarTodas();
+        exemplares = ExemplarDAO.getInstance().getList();
     }
     
     public void novo(ActionEvent actionEvent) {
-        exemplar = new Exemplar();
+        exemplar = Exemplar.Builder
+                           .newInstance()
+                           .build();
     }
     
-    public void buscarPorId(Integer id) {
+    public void buscarPorId(Long id) {
         if (id == null) {
             throw new BusinessException("Insira um ID");
         }
-        exemplaresSelecionados.add(new ExemplarDAO().buscar(id));
+        exemplaresSelecionados.add(ExemplarDAO.getInstance().find(id));
     }
 
     //getters and setters
@@ -95,20 +97,12 @@ public class ExemplarListBean extends ProcessReport implements Serializable {
         this.exemplaresFiltrados = exemplaresFiltrados;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
     }
     
 }
