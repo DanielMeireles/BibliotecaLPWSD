@@ -24,7 +24,7 @@ public class EditoraConverter implements Converter, Serializable {
     @Override
     public Object getAsObject(FacesContext arg0, UIComponent arg1, String id) {
         if (id != null && !id.isEmpty()) {
-            return (Editora) new EditoraDAO().buscar(Integer.valueOf(id));
+            return EditoraDAO.getInstance().find(Long.valueOf(id));
         }
         return id;
     }
