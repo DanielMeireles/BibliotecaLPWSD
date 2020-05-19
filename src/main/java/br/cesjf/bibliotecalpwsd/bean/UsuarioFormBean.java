@@ -6,12 +6,11 @@
 package br.cesjf.bibliotecalpwsd.bean;
 
 import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
+import br.cesjf.bibliotecalpwsd.enums.UserType;
 import br.cesjf.bibliotecalpwsd.model.Usuario;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -27,38 +26,37 @@ public class UsuarioFormBean implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private Usuario usuario;
-    private int id;
-    Map<String, String> tipos;
+    private Long id;
+    Map<String, UserType> tipos;
 
     //construtor
     public UsuarioFormBean() {
-        //1 - Aluno, 2 - Professor, 3 - Funcionário, 4 - Bibliotecário e 5 - Administrador
-        tipos = new HashMap<String, String>();
-        tipos.put("Aluno", "1");
-        tipos.put("Professor", "2");
-        tipos.put("Funcionário", "3");
-        tipos.put("Bibliotecário", "4");
-        tipos.put("Administrador", "5");
+        tipos = new HashMap<String, UserType>();
+        for (UserType userType: UserType.values()) {
+            tipos.put(userType.getUserType(), userType);
+        }
     }
     
     public void init() {
         if(Faces.isAjaxRequest()){
            return;
         }
-        if (id > 0) {
-            usuario = new UsuarioDAO().buscar(id);
+        if (id != null) {
+            usuario = UsuarioDAO.getInstance().find(id);
         } else {
-            usuario = new Usuario();
+            usuario = Usuario.Builder
+                             .newInstance()
+                             .build();
         }
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        msgScreen(new UsuarioDAO().persistir(usuario));
+        UsuarioDAO.getInstance().persist(usuario);
     }
     
     public void exclude(ActionEvent actionEvent) {
-        msgScreen(new UsuarioDAO().remover(usuario));
+        UsuarioDAO.getInstance().remove(usuario.getId());
     }
 
     //getters and setters
@@ -70,35 +68,29 @@ public class UsuarioFormBean implements Serializable {
         this.usuario = usuario;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
     public void clear() {
-        usuario = new Usuario();
+        usuario = Usuario.Builder
+                         .newInstance()
+                         .build();
     }
     
     public boolean isNew() {
         return usuario == null || usuario.getId() == null || usuario.getId() == 0;
     }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
-    }
 
-    public Map<String, String> getTipos() {
+    public Map<String, UserType> getTipos() {
         return tipos;
     }
 
-    public void setTipos(Map<String, String> tipos) {
+    public void setTipos(Map<String, UserType> tipos) {
         this.tipos = tipos;
     }
 

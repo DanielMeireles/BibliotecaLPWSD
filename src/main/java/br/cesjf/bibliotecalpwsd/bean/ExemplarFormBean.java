@@ -11,8 +11,6 @@ import br.cesjf.bibliotecalpwsd.model.Exemplar;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -28,20 +26,20 @@ public class ExemplarFormBean implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private Exemplar exemplar;
-    private int id;
+    private Long id;
     private List livros;
 
     //construtor
     public ExemplarFormBean() {
-        livros = new LivroDAO().buscarTodas();
+        livros = LivroDAO.getInstance().getList();
     }
     
     public void init() {
         if(Faces.isAjaxRequest()){
            return;
         }
-        if (id > 0) {
-            exemplar = new ExemplarDAO().buscar(id);
+        if (id != null) {
+            exemplar = ExemplarDAO.getInstance().find(id);
         } else {
             exemplar = new Exemplar();
         }
@@ -49,11 +47,11 @@ public class ExemplarFormBean implements Serializable {
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        msgScreen(new ExemplarDAO().persistir(exemplar));
+        ExemplarDAO.getInstance().persist(exemplar);
     }
     
     public void exclude(ActionEvent actionEvent) {
-        msgScreen(new ExemplarDAO().remover(exemplar));
+        ExemplarDAO.getInstance().remove(exemplar.getId());
     }
 
     //getters and setters
@@ -65,11 +63,11 @@ public class ExemplarFormBean implements Serializable {
         this.exemplar = exemplar;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -88,14 +86,6 @@ public class ExemplarFormBean implements Serializable {
     
     public boolean isNew() {
         return exemplar == null || exemplar.getId() == null || exemplar.getId() == 0;
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
     }
 
 }

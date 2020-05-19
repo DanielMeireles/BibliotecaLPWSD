@@ -24,7 +24,7 @@ public class UsuarioConverter implements Converter, Serializable {
     @Override
     public Object getAsObject(FacesContext arg0, UIComponent arg1, String id) {
         if (id != null && !id.isEmpty()) {
-            return (Usuario) new UsuarioDAO().buscar(Integer.valueOf(id));
+            return UsuarioDAO.getInstance().find(Long.valueOf(id));
         }
         return id;
     }

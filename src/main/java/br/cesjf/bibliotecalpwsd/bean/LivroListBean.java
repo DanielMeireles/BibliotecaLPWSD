@@ -11,8 +11,6 @@ import br.cesjf.bibliotecalpwsd.util.ProcessReport;
 import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -28,38 +26,42 @@ public class LivroListBean extends ProcessReport implements Serializable {
     private static final long serialVersionUID = 1L;
     private Livro livro;
     private List livros;
-    private List livrosSelecionados;
+    private List<Livro> livrosSelecionados;
     private List livrosFiltrados;
-    private Integer id;
+    private Long id;
 
     //construtor
     public LivroListBean() {
-        livros = new LivroDAO().buscarTodas();
-        livro = new Livro();
+        livros = LivroDAO.getInstance().getList();
+        livro = Livro.Builder
+                     .newInstance()
+                     .build();
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        msgScreen(new LivroDAO().persistir(livro));
-        livros = new LivroDAO().buscarTodas();
+        LivroDAO.getInstance().persist(livro);
+        livros = LivroDAO.getInstance().getList();
     }
 
     public void exclude(ActionEvent actionEvent) {
-        for (Object a: livrosSelecionados){
-            msgScreen(new LivroDAO().remover((Livro) a));
+        for (Livro l: livrosSelecionados){
+            LivroDAO.getInstance().remove(l.getId());
         }
-        livros = new LivroDAO().buscarTodas();
+        livros = LivroDAO.getInstance().getList();
     }
     
     public void novo(ActionEvent actionEvent) {
-        livro = new Livro();
+        livro = Livro.Builder
+                     .newInstance()
+                     .build();
     }
     
-    public void buscarPorId(Integer id) {
+    public void buscarPorId(Long id) {
         if (id == null) {
             throw new BusinessException("Insira um ID");
         }
-        livrosSelecionados.add(new LivroDAO().buscar(id));
+        livrosSelecionados.add(LivroDAO.getInstance().find(id));
     }
 
     //getters and setters
@@ -95,20 +97,12 @@ public class LivroListBean extends ProcessReport implements Serializable {
         this.livrosFiltrados = livrosFiltrados;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
     }
     
 }

@@ -56,9 +56,9 @@ public class DashboardBean implements Serializable {
 
     //construtor
     public DashboardBean() {
-        reservas = new ReservaDAO().buscarTodas();
-        emprestimos = new EmprestimoDAO().buscarTodas();
-        assuntos = new AssuntoDAO().buscarTodas();
+        reservas = ReservaDAO.getInstance().getList();
+        emprestimos = EmprestimoDAO.getInstance().getList();
+        assuntos = AssuntoDAO.getInstance().getList();
     }
     
     @PostConstruct

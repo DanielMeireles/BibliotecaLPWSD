@@ -11,8 +11,6 @@ import br.cesjf.bibliotecalpwsd.util.ProcessReport;
 import com.github.adminfaces.template.exception.BusinessException;
 import java.io.Serializable;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -28,38 +26,42 @@ public class EditoraListBean extends ProcessReport implements Serializable {
     private static final long serialVersionUID = 1L;
     private Editora editora;
     private List editoras;
-    private List editorasSelecionados;
+    private List<Editora> editorasSelecionados;
     private List editorasFiltrados;
-    private Integer id;
+    private Long id;
 
     //construtor
     public EditoraListBean() {
-        editoras = new EditoraDAO().buscarTodas();
-        editora = new Editora();
+        editoras = EditoraDAO.getInstance().getList();
+        editora = Editora.Builder
+                         .newInstance()
+                         .build();
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
-        msgScreen(new EditoraDAO().persistir(editora));
-        editoras = new EditoraDAO().buscarTodas();
+        EditoraDAO.getInstance().persist(editora);
+        editoras = EditoraDAO.getInstance().getList();
     }
 
     public void exclude(ActionEvent actionEvent) {
-        for (Object a: editorasSelecionados){
-            msgScreen(new EditoraDAO().remover((Editora) a));
+        for (Editora e: editorasSelecionados){
+            EditoraDAO.getInstance().remove(e.getId());
         }
-        editoras = new EditoraDAO().buscarTodas();
+        editoras = EditoraDAO.getInstance().getList();
     }
     
     public void novo(ActionEvent actionEvent) {
-        editora = new Editora();
+        editora = Editora.Builder
+                         .newInstance()
+                         .build();
     }
     
-    public void buscarPorId(Integer id) {
+    public void buscarPorId(Long id) {
         if (id == null) {
             throw new BusinessException("Insira um ID");
         }
-        editorasSelecionados.add(new EditoraDAO().buscar(id));
+        editorasSelecionados.add(EditoraDAO.getInstance().find(id));
     }
 
     //getters and setters
@@ -95,20 +97,12 @@ public class EditoraListBean extends ProcessReport implements Serializable {
         this.editorasFiltrados = editorasFiltrados;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
-        }
     }
     
 }

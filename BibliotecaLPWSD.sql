@@ -79,7 +79,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `BibliotecaLPWSD`.`Usuario` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NOT NULL,
-  `tipo` CHAR(1) NOT NULL,
+  `tipo` VARCHAR(20) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `usuario` VARCHAR(45) NOT NULL,
   `senha` VARCHAR(45) NOT NULL,
@@ -179,5 +179,5 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 USE BibliotecaLPWSD;
-INSERT INTO Usuario (nome, tipo, email, usuario, senha) VALUES ('Administrador', '5', 'admin@admin.com', 'admin', 'admin');
+INSERT INTO Usuario (nome, tipo, email, usuario, senha) VALUES ('Administrador', 'ADMINISTRADOR', 'admin@admin.com', 'admin', 'admin');
 COMMIT;

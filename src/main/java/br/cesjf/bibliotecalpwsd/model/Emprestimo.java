@@ -42,7 +42,7 @@ public class Emprestimo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Basic(optional = false)
     @Column(name = "dataEmprestimo")
     @Temporal(TemporalType.DATE)
@@ -60,23 +60,77 @@ public class Emprestimo implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(name = "idUsuario", referencedColumnName = "id")
     private Usuario idUsuario;
-
+    
     public Emprestimo() {
     }
 
-    public Emprestimo(Integer id) {
-        this.id = id;
+    public Emprestimo(Builder builder) {
+        this.id = builder.id;
+        this.dataEmprestimo = builder.dataEmprestimo;
+        this.dataDevolucaoPrevista = builder.dataDevolucaoPrevista;
+        this.dataDevolucao = builder.dataDevolucao;
+        this.idExemplar = builder.idExemplar;
+        this.idUsuario = builder.idUsuario;
+    }
+    
+    public static class Builder {
+        
+        private Long id;
+        private Date dataEmprestimo;
+        private Date dataDevolucaoPrevista;
+        private Date dataDevolucao;
+        private Exemplar idExemplar;
+        private Usuario idUsuario;
+        
+        public static Builder newInstance() { 
+            return new Builder(); 
+        } 
+        
+        private Builder() {
+            
+        }
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setDataEmprestimo(Date dataEmprestimo) {
+            this.dataEmprestimo = dataEmprestimo;
+            return this;
+        }
+
+        public Builder setDataDevolucaoPrevista(Date dataDevolucaoPrevista) {
+            this.dataDevolucaoPrevista = dataDevolucaoPrevista;
+            return this;
+        }
+
+        public Builder setDataDevolucao(Date dataDevolucao) {
+            this.dataDevolucao = dataDevolucao;
+            return this;
+        }
+
+        public Builder setIdExemplar(Exemplar idExemplar) {
+            this.idExemplar = idExemplar;
+            return this;
+        }
+
+        public Builder setIdUsuario(Usuario idUsuario) {
+            this.idUsuario = idUsuario;
+            return this;
+        }
+        
+        public Emprestimo build() {
+            return new Emprestimo(this);
+        }
+        
     }
 
-    public Emprestimo(Integer id, Date dataEmprestimo) {
-        this.id = id;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -167,7 +221,7 @@ public class Emprestimo implements Serializable {
 
     @Override
     public String toString() {
-        return  Integer.toString(id);
+        return Long.toString(id);
     }
     
 }

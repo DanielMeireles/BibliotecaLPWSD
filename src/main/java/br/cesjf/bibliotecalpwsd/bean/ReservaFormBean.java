@@ -10,17 +10,18 @@ import br.cesjf.bibliotecalpwsd.dao.ExemplarDAO;
 import br.cesjf.bibliotecalpwsd.dao.LivroDAO;
 import br.cesjf.bibliotecalpwsd.dao.ReservaDAO;
 import br.cesjf.bibliotecalpwsd.dao.UsuarioDAO;
+import br.cesjf.bibliotecalpwsd.enums.MessageType;
+import br.cesjf.bibliotecalpwsd.enums.UserType;
 import br.cesjf.bibliotecalpwsd.model.Emprestimo;
 import br.cesjf.bibliotecalpwsd.model.Exemplar;
 import br.cesjf.bibliotecalpwsd.model.Livro;
 import br.cesjf.bibliotecalpwsd.model.Reserva;
 import br.cesjf.bibliotecalpwsd.model.Usuario;
+import br.cesjf.bibliotecalpwsd.util.Message;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.omnifaces.cdi.ViewScoped;
 import javax.inject.Named;
@@ -37,7 +38,7 @@ public class ReservaFormBean implements Serializable {
     
     private static final long serialVersionUID = 1L;
     private Reserva reserva;
-    private int id;
+    private Long id;
     private List<Exemplar> exemplaresPermitidos;
     private List<Usuario> usuariosPermitidos;
     private List<Livro> livros;
@@ -52,23 +53,25 @@ public class ReservaFormBean implements Serializable {
         if(Faces.isAjaxRequest()){
            return;
         }
-        if (id > 0) {
-            reserva = new ReservaDAO().buscar(id);
+        if (id != null) {
+            reserva = ReservaDAO.getInstance().find(id);
         } else {
-            reserva = new Reserva();
+            reserva = Reserva.Builder
+                             .newInstance()
+                             .build();
         }
-        livros = new LivroDAO().buscarTodas();
-        usuarios = new UsuarioDAO().buscarTodas();
+        livros = LivroDAO.getInstance().getList();
+        usuarios = UsuarioDAO.getInstance().getList();
     }
 
     //Métodos dos botões 
     public void record(ActionEvent actionEvent) {
         reserva.calculaDevolucaoPrevista();
-        msgScreen(new ReservaDAO().persistir(reserva));
+        ReservaDAO.getInstance().persist(reserva);
     }
     
     public void exclude(ActionEvent actionEvent) {
-        msgScreen(new ReservaDAO().remover(reserva));
+        ReservaDAO.getInstance().remove(reserva.getId());
     }
 
     //getters and setters
@@ -80,16 +83,18 @@ public class ReservaFormBean implements Serializable {
         this.reserva = reserva;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
     public void clear() {
-        reserva = new Reserva();
+        reserva = Reserva.Builder
+                         .newInstance()
+                         .build();
     }
     
     public boolean isNew() {
@@ -105,9 +110,9 @@ public class ReservaFormBean implements Serializable {
                     emp.add(e);
                 }
             }
-            if(u.getTipoTexto().equals("Aluno") && emp.size() < 3) {
+            if(u.getTipo().equals(UserType.ALUNO) && emp.size() < 3) {
                 usuariosPermitidos.add(u);
-            } else if(!u.getTipoTexto().equals("Aluno") && emp.size() < 5) {
+            } else if(!u.getTipo().equals(UserType.ALUNO) && emp.size() < 5) {
                 usuariosPermitidos.add(u);
             }
         }
@@ -116,7 +121,7 @@ public class ReservaFormBean implements Serializable {
     public void verificaUsuario(SelectEvent event) {
         usuariosPermitidos();
         if(!usuariosPermitidos.contains(reserva.getIdUsuario())) {
-            msgScreen("Não permitido. Usuário com alguma pendência.");
+            Message.logAndScreenMessage(MessageType.WARNING, "Não permitido. Usuário com alguma pendência.");
         }
     }
     
@@ -162,8 +167,8 @@ public class ReservaFormBean implements Serializable {
     }
     
     public void calcularExemplaresPermitidos(SelectEvent event) {
-        List<Exemplar> exemplares = new ExemplarDAO().buscarTodas();
-        List<Reserva> reservas = new ReservaDAO().buscarTodas();
+        List<Exemplar> exemplares = ExemplarDAO.getInstance().getList();
+        List<Reserva> reservas = ReservaDAO.getInstance().getList();
         exemplaresPermitidos = new ArrayList<>();
         Date dataReserva = reserva.getDataReserva();
         if(dataReserva != null){
@@ -184,7 +189,7 @@ public class ReservaFormBean implements Serializable {
             lista.addAll(exemplaresPermitidos);
             
             for(Exemplar e: lista) {
-                for(Emprestimo emp: new EmprestimoDAO().buscarTodas()) {
+                for(Emprestimo emp: EmprestimoDAO.getInstance().getList()) {
                     if(emp.getIdExemplar().getId() == e.getId()) {
                         if(emp.getDataDevolucao() == null && emp.getDataEmprestimo().compareTo(dataReserva) <= 0 && emp.getDataDevolucaoPrevista().compareTo(dataReserva) >= 0) {
                             exemplaresPermitidos.remove(e);
@@ -196,7 +201,7 @@ public class ReservaFormBean implements Serializable {
                         }
                     }
                 }
-                for(Reserva r: new ReservaDAO().buscarTodas()) {
+                for(Reserva r: ReservaDAO.getInstance().getList()) {
                     if(r.getIdExemplar().getId() == e.getId()){
                         if(!r.getCancelada() && r.getDataReserva().compareTo(dataReserva) <= 0 && r.getDataDevolucaoPrevista().compareTo(dataReserva) >= 0) {
                             exemplaresPermitidos.remove(e);
@@ -207,14 +212,6 @@ public class ReservaFormBean implements Serializable {
         }
         if(reserva.getIdExemplar() != null) {
             exemplaresPermitidos.add(reserva.getIdExemplar());
-        }
-    }
-    
-    public void msgScreen(String msg) {
-        if(msg.contains("Não")){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", msg));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", msg));
         }
     }
 

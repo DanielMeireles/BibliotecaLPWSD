@@ -40,7 +40,7 @@ public class Exemplar implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "circular")
     private Boolean circular;
     @OneToMany(mappedBy = "idExemplar")
@@ -50,19 +50,70 @@ public class Exemplar implements Serializable {
     private Livro idLivro;
     @OneToMany(mappedBy = "idExemplar")
     private List<Reserva> reservaList;
-
+    
     public Exemplar() {
     }
+    
+    public Exemplar(Builder builder) {
+        this.id = builder.id;
+        this.circular = builder.circular;
+        this.emprestimoList = builder.emprestimoList;
+        this.idLivro = builder.idLivro;
+        this.reservaList = builder.reservaList;
+    }
+    
+    public static class Builder {
+        
+        private Long id;
+        private Boolean circular;
+        private List<Emprestimo> emprestimoList;
+        private Livro idLivro;
+        private List<Reserva> reservaList;
+        
+        public static Builder newInstance() { 
+            return new Builder(); 
+        } 
+        
+        private Builder() {
+            
+        }
 
-    public Exemplar(Integer id) {
-        this.id = id;
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setCircular(Boolean circular) {
+            this.circular = circular;
+            return this;
+        }
+
+        public Builder setEmprestimoList(List<Emprestimo> emprestimoList) {
+            this.emprestimoList = emprestimoList;
+            return this;
+        }
+
+        public Builder setIdLivro(Livro idLivro) {
+            this.idLivro = idLivro;
+            return this;
+        }
+
+        public Builder setReservaList(List<Reserva> reservaList) {
+            this.reservaList = reservaList;
+            return this;
+        }
+        
+        public Exemplar build() {
+            return new Exemplar(this);
+        }
+        
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
